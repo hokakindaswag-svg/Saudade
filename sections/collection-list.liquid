@@ -1,0 +1,81 @@
+<div class="section{% if section.settings.tight %} section--tight{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-head" data-reveal>
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.link_text != blank -%}
+          <a class="section-head__link" href="{{ section.settings.link_url }}">{{ section.settings.link_text }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="collection-tiles{% if section.settings.mobile_scroll %} collection-tiles--scroll{% endif %}"
+         style="--tiles: {{ section.blocks.size | at_most: 5 }}; --tile-ratio: {{ section.settings.ratio }}; gap: var(--grid-gap);">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign coll = block.settings.collection
+          assign img = block.settings.image | default: coll.featured_image
+          assign title = block.settings.heading | default: coll.title
+        -%}
+        <a class="collection-tile{% if section.settings.label_position == 'below' %} collection-tile--below{% endif %}"
+           href="{{ coll.url | default: block.settings.link }}" data-reveal data-reveal-delay="{{ forloop.index0 | modulo: 4 }}"
+           {{ block.shopify_attributes }}>
+          <div class="collection-tile__media">
+            {%- if img != blank -%}
+              <img src="{{ img | image_url: width: 800 }}"
+                   srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w"
+                   sizes="(min-width: 750px) 25vw, 62vw"
+                   alt="{{ title | escape }}" width="600" height="750" loading="lazy">
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <span class="collection-tile__label">
+            <span>{{ title }}</span>
+            {% render 'icon', icon: 'arrow-right' %}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection tiles",
+  "class": "shopify-section--collections",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "SHOP BY CATEGORY" },
+    { "type": "text", "id": "link_text", "label": "Link label" },
+    { "type": "url", "id": "link_url", "label": "Link URL" },
+    { "type": "select", "id": "ratio", "label": "Tile ratio", "default": "0.75", "options": [
+      { "value": "0.75", "label": "Portrait 4:5" },
+      { "value": "0.6667", "label": "Tall 2:3" },
+      { "value": "1.0", "label": "Square" },
+      { "value": "1.3333", "label": "Landscape 4:3" }
+    ]},
+    { "type": "select", "id": "label_position", "label": "Label position", "default": "on", "options": [
+      { "value": "on", "label": "On image" },
+      { "value": "below", "label": "Below image" }
+    ]},
+    { "type": "checkbox", "id": "mobile_scroll", "label": "Swipe on mobile", "default": true },
+    { "type": "checkbox", "id": "tight", "label": "Reduce vertical spacing", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "text", "id": "heading", "label": "Title override" },
+        { "type": "url", "id": "link", "label": "Link override" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Collection tiles", "blocks": [{ "type": "tile" }, { "type": "tile" }, { "type": "tile" }, { "type": "tile" }] }
+  ]
+}
+{% endschema %}

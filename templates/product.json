@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": { "type": "vendor", "settings": {} },
+        "title": { "type": "title", "settings": {} },
+        "price": { "type": "price", "settings": { "tax_note": "Tax included. Shipping calculated at checkout." } },
+        "variant_picker": { "type": "variant_picker", "settings": {} },
+        "buy_buttons": { "type": "buy_buttons", "settings": { "show_quantity": false, "show_dynamic_checkout": true, "show_stock": true, "low_stock_threshold": 5 } },
+        "trust": { "type": "trust", "settings": { "item_1": "Ships in 48h", "item_2": "14-day returns", "item_3": "Secure checkout" } },
+        "description": { "type": "description", "settings": { "heading": "Description", "open": true } },
+        "fit": { "type": "metafield_accordion", "settings": { "heading": "Fit & sizing", "metafield_key": "fit" } },
+        "materials": { "type": "metafield_accordion", "settings": { "heading": "Material & care", "metafield_key": "materials" } },
+        "shipping": { "type": "accordion", "settings": { "heading": "Shipping & returns", "text": "<p>Orders are dispatched within 48 hours. Free shipping over €150. Returns accepted within 14 days of delivery, unworn with tags attached.</p>" } }
+      },
+      "block_order": ["vendor", "title", "price", "variant_picker", "buy_buttons", "trust", "description", "fit", "materials", "shipping"],
+      "settings": { "desktop_layout": "stack", "sticky_atc": true }
+    },
+    "complete-the-look": {
+      "type": "related-products",
+      "settings": { "heading": "COMPLETE THE LOOK", "intent": "complementary", "count": 4, "layout": "scroll", "columns": 4, "tight": true }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": { "heading": "YOU MAY ALSO LIKE", "intent": "related", "count": 4, "layout": "grid", "columns": 4 }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": { "heading": "GET IN EARLY", "text": "First access to drops, restocks & everything Saudade." }
+    }
+  },
+  "order": ["main", "complete-the-look", "related", "newsletter"]
+}

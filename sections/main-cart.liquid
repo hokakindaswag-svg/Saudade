@@ -1,0 +1,52 @@
+<div class="page-width cart-page" id="MainCart" data-section-id="{{ section.id }}">
+  {%- if cart.item_count > 0 -%}
+    <h1 class="h1" style="margin-bottom: 26px;">{{ 'sections.cart.title' | t }} ({{ cart.item_count }})</h1>
+    <div class="cart-page__grid">
+      <div>
+        {% render 'free-shipping-bar' %}
+        {% render 'cart-items', context: 'page' %}
+      </div>
+      <aside class="cart-summary">
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <div class="cart-totals" style="color: var(--color-accent);">
+              <span>{{ discount.title }}</span><span>&minus;{{ discount.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+        <div class="cart-totals">
+          <span>{{ 'sections.cart.subtotal' | t }}</span>
+          <strong>{{ cart.total_price | money_with_currency }}</strong>
+        </div>
+        <p class="cart-note">{{ 'sections.cart.taxes_and_shipping' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          {%- if settings.cart_notes -%}
+            <label class="field__label" for="CartNote">{{ 'sections.cart.note' | t }}</label>
+            <textarea class="input" id="CartNote" name="note" rows="3" style="margin-bottom: 12px;">{{ cart.note }}</textarea>
+          {%- endif -%}
+          <button type="submit" name="checkout" class="btn btn--primary btn--full btn--lg">
+            {{ 'sections.cart.checkout' | t }}
+          </button>
+        </form>
+        <ul class="product__trust" style="justify-content: center;">
+          <li>{% render 'icon', icon: 'lock' %} Secure checkout</li>
+          <li>{% render 'icon', icon: 'return' %} 14-day returns</li>
+        </ul>
+      </aside>
+    </div>
+
+    {%- if settings.cart_recommendations -%}
+      <div class="cart-recs" data-cart-recs data-product-id="{{ cart.items.first.product_id }}" style="margin-top: 46px;"></div>
+    {%- endif -%}
+  {%- else -%}
+    <div class="cart-empty">
+      <p class="h1">{{ 'sections.cart.empty' | t }}</p>
+      <p class="text-muted">Nothing in here yet. Let's fix that.</p>
+      <a class="btn btn--primary btn--lg" href="{{ routes.all_products_collection_url }}">{{ 'sections.cart.empty_cta' | t }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

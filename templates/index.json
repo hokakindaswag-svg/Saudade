@@ -1,0 +1,128 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "NEW DROP",
+        "heading": "Saudade 01",
+        "text": "",
+        "cta_text": "SHOP NOW",
+        "cta_link": "shopify://collections/all",
+        "cta_2_text": "",
+        "height": "large",
+        "mobile_tall": true,
+        "position": "bottom-left",
+        "text_color_scheme": "light",
+        "overlay_top": 15,
+        "overlay_bottom": 35,
+        "focal": "center",
+        "show_scroll_hint": false
+      }
+    },
+    "new-in": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "NEW IN",
+        "link_text": "VIEW ALL",
+        "count": 8,
+        "layout": "grid",
+        "columns": 4,
+        "columns_tablet": 3,
+        "columns_mobile": 2,
+        "full_width": false,
+        "tight": false,
+        "show_bottom_cta": false
+      }
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": { "type": "tile", "settings": {} },
+        "c2": { "type": "tile", "settings": {} },
+        "c3": { "type": "tile", "settings": {} },
+        "c4": { "type": "tile", "settings": {} }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": {
+        "heading": "SHOP BY CATEGORY",
+        "ratio": "0.75",
+        "label_position": "on",
+        "mobile_scroll": true,
+        "tight": true
+      }
+    },
+    "campaign": {
+      "type": "editorial-image",
+      "settings": {
+        "eyebrow": "CAMPAIGN",
+        "heading": "Somewhere between here and gone",
+        "text": "",
+        "cta_text": "SHOP THE DROP",
+        "height": "large",
+        "position": "bottom-left",
+        "text_color_scheme": "light",
+        "overlay": 20
+      }
+    },
+    "bestsellers": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "BESTSELLERS",
+        "link_text": "VIEW ALL",
+        "count": 8,
+        "layout": "grid",
+        "columns": 4,
+        "columns_tablet": 3,
+        "columns_mobile": 2,
+        "tight": false,
+        "show_bottom_cta": true,
+        "bottom_cta_text": "SHOP ALL"
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "m1": { "type": "item", "settings": { "text": "NEW DROP" } },
+        "m2": { "type": "item", "settings": { "text": "SAUDADE" } },
+        "m3": { "type": "item", "settings": { "text": "LIMITED RUN" } }
+      },
+      "block_order": ["m1", "m2", "m3"],
+      "settings": { "bg": "#FF2E88", "text_color": "#FFFFFF", "speed": 30 }
+    },
+    "brand": {
+      "type": "brand-world",
+      "settings": {
+        "eyebrow": "THE WORLD OF SAUDADE",
+        "heading": "Longing, worn well.",
+        "text": "<p>Saudade is the ache for something you can't name — and the outfit you wear while you chase it. Made in small runs, for the girls who leave a trace.</p>",
+        "cta_text": "OUR STORY",
+        "reverse": false,
+        "ratio": "4/5",
+        "bg": "#F1EBE6",
+        "text_color": "#141110"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "",
+        "heading": "GET IN EARLY",
+        "text": "First access to drops, restocks & everything Saudade.",
+        "button_label": "SIGN UP",
+        "disclaimer": "No spam. Unsubscribe any time.",
+        "bg": "#F1EBE6",
+        "text_color": "#141110"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "new-in",
+    "categories",
+    "campaign",
+    "bestsellers",
+    "marquee",
+    "brand",
+    "newsletter"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "show_banner": true,
+        "show_description": true,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "per_page": 24,
+        "columns": 4,
+        "columns_tablet": 3,
+        "columns_mobile": 2
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": { "heading": "GET IN EARLY", "text": "First access to drops, restocks & everything Saudade." }
+    }
+  },
+  "order": ["main", "newsletter"]
+}

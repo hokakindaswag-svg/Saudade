@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="{{ settings.color_bg }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font = settings.font_body
+      assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = body_font | font_modify: 'style', 'italic'
+      assign body_font_medium = body_font | font_modify: 'weight', '500'
+      assign heading_font = settings.font_heading
+      assign heading_font_medium = heading_font | font_modify: 'weight', '500'
+    -%}
+
+    {{ body_font | font_face: font_display: 'swap' }}
+    {{ body_font_bold | font_face: font_display: 'swap' }}
+    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {{ body_font_medium | font_face: font_display: 'swap' }}
+    {{ heading_font | font_face: font_display: 'swap' }}
+    {{ heading_font_medium | font_face: font_display: 'swap' }}
+
+    <style>
+      :root {
+        --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+        --font-body-weight: {{ body_font.weight }};
+        --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+        --font-heading-weight: {{ heading_font.weight }};
+        --font-body-scale: {{ settings.font_body_scale | divided_by: 100.0 }};
+        --font-heading-scale: {{ settings.font_heading_scale | divided_by: 100.0 }};
+
+        --color-bg: {{ settings.color_bg }};
+        --color-bg-rgb: {{ settings.color_bg.red }}, {{ settings.color_bg.green }}, {{ settings.color_bg.blue }};
+        --color-text: {{ settings.color_text }};
+        --color-text-rgb: {{ settings.color_text.red }}, {{ settings.color_text.green }}, {{ settings.color_text.blue }};
+        --color-muted: {{ settings.color_muted }};
+        --color-line: {{ settings.color_line }};
+        --color-accent: {{ settings.color_accent }};
+        --color-accent-rgb: {{ settings.color_accent.red }}, {{ settings.color_accent.green }}, {{ settings.color_accent.blue }};
+        --color-accent-2: {{ settings.color_accent_2 }};
+        --color-accent-3: {{ settings.color_accent_3 }};
+        --color-btn-bg: {{ settings.color_btn_bg }};
+        --color-btn-text: {{ settings.color_btn_text }};
+        --color-media-bg: {{ settings.color_media_bg }};
+
+        --page-width: {{ settings.page_width }}px;
+        --grid-gap: {{ settings.grid_gap }}px;
+        --section-spacing: {{ settings.section_spacing }}px;
+        --media-ratio: {{ settings.media_ratio }};
+        --radius: {{ settings.corner_radius }}px;
+        --ui-transform: {% if settings.uppercase_ui %}uppercase{% else %}none{% endif %};
+        --ui-tracking: {{ settings.ui_tracking | divided_by: 100.0 }}em;
+        --gutter: 20px;
+        --header-height: 62px;
+      }
+      @media screen and (min-width: 990px) {
+        :root { --gutter: 32px; --header-height: 76px; }
+      }
+    </style>
+
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.Saudade = {
+        routes: {
+          root: {{ routes.root_url | json }},
+          cart_add: {{ routes.cart_add_url | json }},
+          cart_change: {{ routes.cart_change_url | json }},
+          cart_update: {{ routes.cart_update_url | json }},
+          cart: {{ routes.cart_url | json }},
+          predictive_search: {{ routes.predictive_search_url | json }},
+          recommendations: {{ routes.product_recommendations_url | json }}
+        },
+        cartType: {{ settings.cart_type | json }},
+        moneyFormat: {{ shop.money_format | json }},
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          selectSize: {{ 'products.product.select_size' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }}
+        }
+      };
+    </script>
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  </head>
+
+  <body class="template--{{ request.page_type | handle }}{% if settings.animate_reveal %} anim-on{% endif %}{% if settings.animate_image_zoom %} zoom-on{% endif %}">
+    <a class="skip-link btn btn--primary" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {% section 'cart-drawer' %}
+    {%- endif -%}
+
+    {% render 'search-modal' %}
+
+    <div class="toast" id="Toast" role="status" aria-live="polite"></div>
+
+    <script>
+      (function () {
+        var w = document.querySelector('.no-js-only');
+        if (w) w.remove();
+      })();
+    </script>
+  </body>
+</html>

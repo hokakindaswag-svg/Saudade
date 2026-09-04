@@ -1,0 +1,110 @@
+{%- liquid
+  assign banner = section.settings.show_banner
+  assign img = collection.image
+-%}
+
+{%- if banner and img != blank -%}
+  <div class="collection-hero">
+    <img src="{{ img | image_url: width: 2000 }}"
+         srcset="{{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1400 }} 1400w, {{ img | image_url: width: 2000 }} 2000w"
+         sizes="100vw" alt="{{ collection.title | escape }}"
+         width="{{ img.width }}" height="{{ img.height }}" fetchpriority="high">
+    <div class="collection-hero__content">
+      <h1 class="h-display" style="font-size: clamp(3rem, 6vw, 6rem);">{{ collection.title }}</h1>
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="rte" style="max-width: 52ch; font-size: 1.3rem;">{{ collection.description | strip_html | truncatewords: 30 }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- else -%}
+  <div class="page-width">
+    <div class="collection-header">
+      <h1 class="collection-header__title">{{ collection.title }}</h1>
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="collection-header__desc rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% render 'facets', results: collection, enable_filtering: section.settings.enable_filtering, enable_sorting: section.settings.enable_sorting %}
+
+<div class="page-width collection-grid" id="ProductGridContainer">
+  {%- paginate collection.products by section.settings.per_page -%}
+    {%- if collection.products.size > 0 -%}
+      <div class="product-grid" style="--cols: {{ section.settings.columns }}; --cols-tablet: {{ section.settings.columns_tablet }}; --cols-mobile: {{ section.settings.columns_mobile }};">
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign lazy = true
+            if forloop.index <= 4
+              assign lazy = false
+            endif
+          -%}
+          {% render 'product-card', product: product, index: forloop.index, lazy: lazy %}
+
+          {%- comment -%} Optional editorial tile inside the grid {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'editorial' and block.settings.position == forloop.parentloop.index -%}
+              <div class="grid-editorial" {{ block.shopify_attributes }} data-reveal>
+                {%- if block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 1200 }}"
+                       srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                       sizes="(min-width: 990px) 50vw, 100vw" alt="{{ block.settings.heading | escape }}"
+                       width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+                {%- endif -%}
+                <div class="grid-editorial__content">
+                  {%- if block.settings.heading != blank -%}<p class="h2">{{ block.settings.heading }}</p>{%- endif -%}
+                  {%- if block.settings.cta_text != blank -%}
+                    <a class="btn btn--light" href="{{ block.settings.cta_link }}">{{ block.settings.cta_text }}</a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+
+      {% render 'pagination', paginate: paginate %}
+    {%- else -%}
+      <div class="collection-empty">
+        <p class="h2">Nothing here yet</p>
+        <p class="text-muted" style="margin-top: 10px;">Try removing a filter, or browse everything.</p>
+        <p style="margin-top: 22px;">
+          <a class="btn btn--primary" href="{{ collection.url | default: routes.all_products_collection_url }}">
+            {{ 'products.facets.clear_all' | t }}
+          </a>
+        </p>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "class": "shopify-section--collection",
+  "settings": [
+    { "type": "checkbox", "id": "show_banner", "label": "Show collection image as banner", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "Show description", "default": true },
+    { "type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true, "info": "Manage filters in Search & Discovery." },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },
+    { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Products per page", "default": 24 },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Columns (desktop)", "default": 4 },
+    { "type": "range", "id": "columns_tablet", "min": 2, "max": 4, "step": 1, "label": "Columns (tablet)", "default": 3 },
+    { "type": "range", "id": "columns_mobile", "min": 1, "max": 2, "step": 1, "label": "Columns (mobile)", "default": 2 }
+  ],
+  "blocks": [
+    {
+      "type": "editorial",
+      "name": "Editorial tile",
+      "settings": [
+        { "type": "range", "id": "position", "min": 2, "max": 24, "step": 1, "label": "Insert after product #", "default": 6 },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "text", "id": "cta_text", "label": "Button label" },
+        { "type": "url", "id": "cta_link", "label": "Button link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

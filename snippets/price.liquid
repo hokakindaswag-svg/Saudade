@@ -1,0 +1,31 @@
+{%- comment -%}
+  Renders a price block.
+  Accepts: product (object), variant (object, optional), show_from (boolean)
+{%- endcomment -%}
+{%- liquid
+  if variant
+    assign target = variant
+    assign compare = variant.compare_at_price
+  else
+    assign target = product
+    assign compare = product.compare_at_price
+  endif
+  assign money_price = target.price | money
+  if settings.currency_code_enabled
+    assign money_price = target.price | money_with_currency
+  endif
+  assign on_sale = false
+  if compare and compare > target.price
+    assign on_sale = true
+  endif
+-%}
+<div class="card__price price{% if on_sale %} price--on-sale{% endif %}" {% if price_id %}id="{{ price_id }}"{% endif %}>
+  {%- if show_from and product.price_varies -%}
+    <span class="price__current">{{ 'products.product.from_price' | t }} {{ money_price }}</span>
+  {%- else -%}
+    <span class="price__current">{{ money_price }}</span>
+  {%- endif -%}
+  {%- if on_sale -%}
+    <s class="price__compare">{% if settings.currency_code_enabled %}{{ compare | money_with_currency }}{% else %}{{ compare | money }}{% endif %}</s>
+  {%- endif -%}
+</div>

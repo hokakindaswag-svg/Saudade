@@ -1,0 +1,31 @@
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  <div data-recs-inner>
+    <p class="cart-recs__title">{{ 'sections.cart.recommendations' | t }}</p>
+    <div class="cart-recs__scroller">
+      {%- for product in recommendations.products limit: 6 -%}
+        <div class="cart-rec">
+          <a href="{{ product.url }}">
+            {%- if product.featured_media -%}
+              <img src="{{ product.featured_media | image_url: width: 300 }}" alt="{{ product.title | escape }}" width="132" height="176" loading="lazy">
+            {%- endif -%}
+            <p class="cart-rec__title">{{ product.title | truncate: 34 }}</p>
+          </a>
+          <p class="cart-rec__price">{{ product.price | money }}</p>
+          {%- if product.variants.size == 1 and product.available -%}
+            <button type="button" class="cart-rec__add" data-quick-add="{{ product.variants.first.id }}">
+              {{ 'products.product.quick_add' | t }}
+            </button>
+          {%- else -%}
+            <a class="cart-rec__add" href="{{ product.url }}">{{ 'products.product.quick_add' | t }}</a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- else -%}
+  <div data-recs-inner></div>
+{%- endif -%}
+
+{% schema %}
+{ "name": "Cart recommendations", "settings": [] }
+{% endschema %}

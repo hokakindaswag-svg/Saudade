@@ -1,0 +1,54 @@
+{%- comment -%}
+  Shared cart line-item list. Accepts: context ('drawer' | 'page')
+{%- endcomment -%}
+{%- for item in cart.items -%}
+  <div class="cart-item" data-cart-item>
+    <a class="cart-item__media" href="{{ item.url }}" aria-hidden="true" tabindex="-1">
+      {%- if item.image -%}
+        <img src="{{ item.image | image_url: width: 220 }}" alt="{{ item.image.alt | escape }}" width="110" height="138" loading="lazy">
+      {%- endif -%}
+    </a>
+    <div class="cart-item__info">
+      <h3 class="cart-item__title"><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+      {%- unless item.product.has_only_default_variant -%}
+        <p class="cart-item__variant">{{ item.variant.title }}</p>
+      {%- endunless -%}
+      {%- if item.selling_plan_allocation -%}
+        <p class="cart-item__variant">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+      {%- endif -%}
+      {%- if item.properties -%}
+        {%- for prop in item.properties -%}
+          {%- assign first = prop.first | slice: 0 -%}
+          {%- if prop.last != blank and first != '_' -%}
+            <p class="cart-item__variant">{{ prop.first }}: {{ prop.last }}</p>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if item.line_level_discount_allocations.size > 0 -%}
+        {%- for discount in item.line_level_discount_allocations -%}
+          <p class="cart-item__variant" style="color: var(--color-accent);">{{ discount.discount_application.title }} (&minus;{{ discount.amount | money }})</p>
+        {%- endfor -%}
+      {%- endif -%}
+
+      <div class="cart-item__row">
+        <div class="cart-item__qty" data-qty>
+          <button type="button" data-qty-change="-1" aria-label="Decrease quantity">&minus;</button>
+          <input type="number" value="{{ item.quantity }}" min="0" data-cart-qty-input data-line="{{ forloop.index }}"
+                 aria-label="{{ 'products.product.quantity' | t }}">
+          <button type="button" data-qty-change="1" aria-label="Increase quantity">+</button>
+        </div>
+        <div class="cart-item__price">
+          {%- if item.original_line_price != item.final_line_price -%}
+            <s class="price__compare">{{ item.original_line_price | money }}</s>
+            <span style="color: var(--color-accent);">{{ item.final_line_price | money }}</span>
+          {%- else -%}
+            {{ item.final_line_price | money }}
+          {%- endif -%}
+        </div>
+      </div>
+      <button type="button" class="cart-item__remove" data-cart-remove data-line="{{ forloop.index }}">
+        {{ 'sections.cart.remove' | t }}
+      </button>
+    </div>
+  </div>
+{%- endfor -%}

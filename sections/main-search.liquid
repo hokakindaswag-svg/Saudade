@@ -1,0 +1,66 @@
+<div class="page-width">
+  <div class="collection-header">
+    <h1 class="collection-header__title">
+      {%- if search.performed -%}
+        {{ search.results_count }} results for &ldquo;{{ search.terms | escape }}&rdquo;
+      {%- else -%}
+        {{ 'general.search.search' | t }}
+      {%- endif -%}
+    </h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" style="max-width: 480px; margin-top: 16px; display: flex; gap: 8px;">
+      <label class="visually-hidden" for="SearchPageInput">{{ 'general.search.search' | t }}</label>
+      <input class="input" id="SearchPageInput" type="search" name="q" value="{{ search.terms | escape }}"
+             placeholder="{{ 'general.search.placeholder' | t }}">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="btn btn--primary">{{ 'general.search.search' | t }}</button>
+    </form>
+  </div>
+</div>
+
+{%- if search.performed -%}
+  {% render 'facets', results: search, enable_filtering: section.settings.enable_filtering, enable_sorting: section.settings.enable_sorting %}
+
+  <div class="page-width collection-grid" id="ProductGridContainer">
+    {%- paginate search.results by 24 -%}
+      {%- if search.results.size > 0 -%}
+        <div class="product-grid" style="--cols: {{ section.settings.columns }}; --cols-tablet: 3; --cols-mobile: 2;">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item, index: forloop.index %}
+            {%- else -%}
+              <div class="card">
+                <a class="card__media" href="{{ item.url }}">
+                  {%- if item.image -%}
+                    <img class="card__img card__img--only" src="{{ item.image | image_url: width: 700 }}" alt="{{ item.title | escape }}" width="{{ item.image.width }}" height="{{ item.image.height }}" loading="lazy">
+                  {%- elsif item.featured_image -%}
+                    <img class="card__img card__img--only" src="{{ item.featured_image | image_url: width: 700 }}" alt="{{ item.title | escape }}" width="{{ item.featured_image.width }}" height="{{ item.featured_image.height }}" loading="lazy">
+                  {%- endif -%}
+                </a>
+                <div class="card__info">
+                  <h3 class="card__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <div class="collection-empty">
+          <p class="h2">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+          <p style="margin-top: 20px;"><a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Shop all</a></p>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Search results",
+  "settings": [
+    { "type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Columns (desktop)", "default": 4 }
+  ]
+}
+{% endschema %}

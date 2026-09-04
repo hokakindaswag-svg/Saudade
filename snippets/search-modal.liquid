@@ -1,0 +1,26 @@
+<div class="search-modal" id="SearchModal" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}" aria-hidden="true">
+  <form class="search-modal__head" action="{{ routes.search_url }}" method="get" role="search">
+    <label class="visually-hidden" for="SearchInput">{{ 'general.search.search' | t }}</label>
+    {% render 'icon', icon: 'search' %}
+    <input class="search-modal__input" id="SearchInput" type="search" name="q"
+           placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off"
+           data-search-input data-autofocus>
+    <input type="hidden" name="options[prefix]" value="last">
+    <button type="button" class="header__action" data-close aria-label="{{ 'general.accessibility.close' | t }}">
+      {% render 'icon', icon: 'close' %}
+    </button>
+  </form>
+
+  <div class="search-modal__results">
+    <div data-search-default>
+      {%- assign popular = linklists['main-menu'] -%}
+      <p class="section-title text-muted" style="margin-bottom: 12px;">Popular right now</p>
+      <div class="search-suggest">
+        {%- for link in popular.links limit: 8 -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div data-search-results></div>
+  </div>
+</div>

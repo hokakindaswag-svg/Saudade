@@ -1,0 +1,38 @@
+<div class="account account__form">
+  <h1 class="h1 text-center" style="margin-bottom: 24px;">{{ 'customer.login_page.title' | t }}</h1>
+  {%- form 'customer_login' -%}
+    {{ form.errors | default_errors }}
+    <div class="field">
+      <label class="field__label" for="CustomerEmail">{{ 'customer.login_page.email' | t }}</label>
+      <input class="input" type="email" id="CustomerEmail" name="customer[email]" autocomplete="email" required>
+    </div>
+    {%- if form.password_needed -%}
+      <div class="field">
+        <label class="field__label" for="CustomerPassword">{{ 'customer.login_page.password' | t }}</label>
+        <input class="input" type="password" id="CustomerPassword" name="customer[password]" autocomplete="current-password">
+      </div>
+      <p><a class="link-underline" href="#recover" onclick="document.getElementById('RecoverForm').hidden=false;return false;">{{ 'customer.login_page.forgot_password' | t }}</a></p>
+    {%- endif -%}
+    <button type="submit" class="btn btn--primary btn--full btn--lg" style="margin-top: 12px;">{{ 'customer.login_page.sign_in' | t }}</button>
+  {%- endform -%}
+
+  <div id="RecoverForm" hidden style="margin-top: 30px;">
+    <h2 class="h3">{{ 'customer.recover_password.title' | t }}</h2>
+    <p class="text-muted" style="font-size: 1.2rem; margin: 8px 0 12px;">{{ 'customer.recover_password.subtext' | t }}</p>
+    {%- form 'recover_customer_password' -%}
+      {{ form.errors | default_errors }}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status form-status--success">{{ 'customer.recover_password.success' | t }}</p>
+      {%- endif -%}
+      <div class="field">
+        <label class="field__label" for="RecoverEmail">{{ 'customer.login_page.email' | t }}</label>
+        <input class="input" type="email" id="RecoverEmail" name="email" autocomplete="email" required>
+      </div>
+      <button type="submit" class="btn btn--outline btn--full">{{ 'customer.recover_password.submit' | t }}</button>
+    {%- endform -%}
+  </div>
+
+  <p class="text-center" style="margin-top: 26px;">
+    <a class="link-underline" href="{{ routes.account_register_url }}">{{ 'customer.login_page.create_account' | t }}</a>
+  </p>
+</div>

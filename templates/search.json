@@ -1,0 +1,1 @@
+{ "sections": { "main": { "type": "main-search", "settings": { "enable_filtering": true, "enable_sorting": true, "columns": 4 } } }, "order": ["main"] }

@@ -1,0 +1,199 @@
+{%- liquid
+  assign transparent = false
+  if section.settings.transparent_on_home and template.name == 'index'
+    assign transparent = true
+  endif
+-%}
+
+<div class="header-wrap{% if transparent %} header--transparent{% endif %}{% unless section.settings.sticky %} header-wrap--unstuck{% endunless %}" data-header-wrap>
+  <header class="header header--layout-{{ section.settings.layout }}">
+    <div class="header__inner" style="--logo-w: {{ settings.logo_width }}px;">
+
+      <button type="button" class="header__burger" data-open="MobileNav" aria-label="{{ 'sections.header.menu' | t }}">
+        <span></span>
+      </button>
+
+      <nav class="header__nav" aria-label="Primary">
+        {%- for link in section.settings.menu.links -%}
+          {%- assign block_for_link = null -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.menu_item == link.title -%}
+              {%- assign block_for_link = block -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="nav__item">
+            <a class="nav__link" href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+              {{ link.title }}
+            </a>
+
+            {%- if link.links.size > 0 -%}
+              <div class="mega">
+                <div class="mega__inner">
+                  {%- for child in link.links limit: 4 -%}
+                    <div>
+                      <p class="mega__col-title">
+                        <a href="{{ child.url }}">{{ child.title }}</a>
+                      </p>
+                      {%- if child.links.size > 0 -%}
+                        <ul class="mega__list">
+                          {%- for grandchild in child.links -%}
+                            <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+
+                  {%- if block_for_link and block_for_link.settings.image != blank -%}
+                    <a class="mega__promo" href="{{ block_for_link.settings.link | default: link.url }}" {{ block_for_link.shopify_attributes }}>
+                      <div class="mega__promo-media">
+                        <img src="{{ block_for_link.settings.image | image_url: width: 700 }}"
+                             srcset="{{ block_for_link.settings.image | image_url: width: 400 }} 400w, {{ block_for_link.settings.image | image_url: width: 700 }} 700w"
+                             sizes="320px" alt="{{ block_for_link.settings.heading | escape }}"
+                             width="{{ block_for_link.settings.image.width }}" height="{{ block_for_link.settings.image.height }}" loading="lazy">
+                      </div>
+                      <span class="ui-label">{{ block_for_link.settings.heading }}</span>
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </nav>
+
+      <div class="header__logo">
+        {%- if request.page_type == 'index' -%}<h1 style="margin:0; line-height:0;">{%- endif -%}
+        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+          {%- if settings.logo != blank -%}
+            <img class="logo--dark" src="{{ settings.logo | image_url: width: 500 }}"
+                 srcset="{{ settings.logo | image_url: width: 340 }} 340w, {{ settings.logo | image_url: width: 500 }} 500w"
+                 alt="{{ shop.name | escape }}"
+                 width="{{ settings.logo.width }}" height="{{ settings.logo.height }}">
+            {%- if settings.logo_light != blank -%}
+              <img class="logo--light" src="{{ settings.logo_light | image_url: width: 500 }}"
+                   alt="{{ shop.name | escape }}"
+                   width="{{ settings.logo_light.width }}" height="{{ settings.logo_light.height }}">
+            {%- endif -%}
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+        {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
+      </div>
+
+      <div class="header__actions">
+        <button type="button" class="header__action" data-open="SearchModal" aria-label="{{ 'general.search.search' | t }}">
+          {% render 'icon', icon: 'search' %}
+          <span class="header__action-label">{{ 'general.search.search' | t }}</span>
+        </button>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="header__action" href="{{ routes.account_url }}" aria-label="{{ 'sections.header.account' | t }}">
+            {% render 'icon', icon: 'account' %}
+            <span class="header__action-label">{{ 'sections.header.account' | t }}</span>
+          </a>
+        {%- endif -%}
+
+        {%- if settings.cart_type == 'drawer' -%}
+          <button type="button" class="header__action header__action--cart" data-open="CartDrawer"
+                  aria-label="{{ 'sections.header.cart_count' | t: count: cart.item_count }}">
+        {%- else -%}
+          <a class="header__action header__action--cart" href="{{ routes.cart_url }}"
+             aria-label="{{ 'sections.header.cart_count' | t: count: cart.item_count }}">
+        {%- endif -%}
+          {% render 'icon', icon: 'cart' %}
+          <span class="header__action-label">{{ 'sections.cart.title' | t }}</span>
+          <span data-cart-icon-bubble>
+            {%- if cart.item_count > 0 -%}
+              <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
+            {%- endif -%}
+          </span>
+        {%- if settings.cart_type == 'drawer' -%}</button>{%- else -%}</a>{%- endif -%}
+      </div>
+    </div>
+  </header>
+</div>
+
+{%- comment -%} Mobile navigation drawer {%- endcomment -%}
+<div class="mobile-nav" id="MobileNav" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}" aria-hidden="true">
+  <div class="mobile-nav__head">
+    <span class="ui-label">{{ 'sections.header.menu' | t }}</span>
+    <button type="button" class="header__action" data-close aria-label="{{ 'general.accessibility.close' | t }}">
+      {% render 'icon', icon: 'close' %}
+    </button>
+  </div>
+  <div class="mobile-nav__body">
+    {%- for link in section.settings.menu.links -%}
+      {%- if link.links.size > 0 -%}
+        <button type="button" class="mobile-nav__link mobile-nav__toggle"
+                aria-expanded="false" aria-controls="MobileSub-{{ forloop.index }}">
+          {{ link.title }}
+          {% render 'icon', icon: 'chevron-down' %}
+        </button>
+        <div class="mobile-nav__sub" id="MobileSub-{{ forloop.index }}">
+          <a href="{{ link.url }}"><strong>All {{ link.title }}</strong></a>
+          {%- for child in link.links -%}
+            <a href="{{ child.url }}">{{ child.title }}</a>
+            {%- for grandchild in child.links -%}
+              <a href="{{ grandchild.url }}" style="padding-left: 28px;">{{ grandchild.title }}</a>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <a class="mobile-nav__link" href="{{ link.url }}">
+          {{ link.title }}
+          {% render 'icon', icon: 'chevron-right' %}
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.settings.image != blank and block.settings.show_in_mobile -%}
+        <a class="mobile-nav__promo" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+          <img src="{{ block.settings.image | image_url: width: 700 }}" alt="{{ block.settings.heading | escape }}"
+               width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+          <span class="ui-label">{{ block.settings.heading }}</span>
+        </a>
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <div class="mobile-nav__foot">
+    {%- if shop.customer_accounts_enabled -%}
+      <a href="{{ routes.account_url }}">{{ 'sections.header.account' | t }}</a>
+    {%- endif -%}
+    {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+    {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "shopify-section--header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "select", "id": "layout", "label": "Layout", "default": "center", "options": [
+      { "value": "center", "label": "Logo centred" },
+      { "value": "left", "label": "Logo left" }
+    ]},
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true },
+    { "type": "checkbox", "id": "transparent_on_home", "label": "Transparent over homepage hero", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "mega_promo",
+      "name": "Menu image",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "Menu item title", "info": "Must match a top-level menu item exactly, e.g. SHOP." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "heading", "label": "Caption", "default": "New arrivals" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "show_in_mobile", "label": "Also show in mobile menu", "default": true }
+      ]
+    }
+  ]
+}
+{% endschema %}

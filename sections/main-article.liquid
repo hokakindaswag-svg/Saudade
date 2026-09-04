@@ -1,0 +1,12 @@
+<article class="page-width--narrow section">
+  <p class="ui-label text-muted">{{ article.published_at | date: '%B %d, %Y' }}</p>
+  <h1 class="h1" style="margin: 10px 0 22px;">{{ article.title }}</h1>
+  {%- if article.image -%}
+    <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.title | escape }}" width="1400" height="933" style="margin-bottom: 26px;">
+  {%- endif -%}
+  <div class="rte">{{ article.content }}</div>
+  <p style="margin-top: 34px;"><a class="link-underline ui-label" href="{{ blog.url }}">{{ 'blogs.article.back_to_blog' | t: title: blog.title }}</a></p>
+</article>
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

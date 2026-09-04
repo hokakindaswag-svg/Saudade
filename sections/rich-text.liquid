@@ -1,0 +1,31 @@
+<div class="section{% if section.settings.tight %} section--tight{% endif %}">
+  <div class="page-width">
+    <div class="rich-text{% if section.settings.align == 'left' %} rich-text--left{% endif %}" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}<p class="ui-label">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="h1">{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.text != blank -%}<div class="rte text-muted" style="font-size: 1.45rem;">{{ section.settings.text }}</div>{%- endif -%}
+      {%- if section.settings.cta_text != blank -%}
+        <a class="btn btn--primary btn--lg" href="{{ section.settings.cta_link }}">{{ section.settings.cta_text }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Saudade" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Tell your story.</p>" },
+    { "type": "text", "id": "cta_text", "label": "Button label" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "select", "id": "align", "label": "Alignment", "default": "center", "options": [
+      { "value": "center", "label": "Centre" },
+      { "value": "left", "label": "Left" }
+    ]},
+    { "type": "checkbox", "id": "tight", "label": "Reduce vertical spacing", "default": false }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

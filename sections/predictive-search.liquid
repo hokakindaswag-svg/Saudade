@@ -1,0 +1,44 @@
+<div data-predictive-results>
+  {%- if predictive_search.performed -%}
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <p class="section-title text-muted" style="margin-bottom: 12px;">Products</p>
+      <div class="product-grid" style="--cols: 5; --cols-tablet: 3; --cols-mobile: 2;">
+        {%- for product in predictive_search.resources.products -%}
+          {% render 'product-card', product: product, show_quick_add: false %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if predictive_search.resources.collections.size > 0 -%}
+      <p class="section-title text-muted" style="margin: 28px 0 12px;">Collections</p>
+      <div class="search-suggest">
+        {%- for collection in predictive_search.resources.collections -%}
+          <a href="{{ collection.url }}">{{ collection.title }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if predictive_search.resources.pages.size > 0 -%}
+      <p class="section-title text-muted" style="margin: 28px 0 12px;">Pages</p>
+      <div class="search-suggest">
+        {%- for page in predictive_search.resources.pages -%}
+          <a href="{{ page.url }}">{{ page.title }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if predictive_search.resources.products.size == 0 and predictive_search.resources.collections.size == 0 and predictive_search.resources.pages.size == 0 -%}
+      <p class="text-muted">{{ 'general.search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- else -%}
+      <p style="margin-top: 30px;">
+        <a class="link-underline ui-label" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}">
+          {{ 'general.search.view_all' | t }}
+        </a>
+      </p>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Predictive search", "settings": [] }
+{% endschema %}

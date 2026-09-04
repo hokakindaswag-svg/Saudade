@@ -1,0 +1,28 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ 'gift_cards.issued.title' | t: value: gift_card.initial_value, shop: shop.name }}</title>
+    {{ content_for_header }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    <div class="page-width section text-center" style="max-width: 560px;">
+      {%- if settings.logo != blank -%}
+        <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="{{ settings.logo.width }}" height="{{ settings.logo.height }}" style="width: 200px; margin: 0 auto 26px;">
+      {%- endif -%}
+      <p class="ui-label text-muted">{{ 'gift_cards.issued.subtext' | t }}</p>
+      <p class="h-display" style="margin: 14px 0;">{{ gift_card.balance | money }}</p>
+      {%- if gift_card.expired -%}
+        <p class="form-status form-status--error">{{ 'gift_cards.issued.expired' | t }}</p>
+      {%- endif -%}
+      <p style="margin: 22px 0 8px;">{{ 'gift_cards.issued.redeem' | t }}</p>
+      <p class="h2" style="letter-spacing: .1em;">{{ gift_card.code | format_code }}</p>
+      <p style="margin-top: 26px;">
+        <a class="btn btn--primary btn--lg" href="{{ shop.url }}">{{ 'gift_cards.issued.shop_link' | t }}</a>
+      </p>
+    </div>
+  </body>
+</html>

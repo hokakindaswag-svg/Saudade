@@ -1,0 +1,45 @@
+<div class="section section--tight" style="background: {{ section.settings.bg }}; color: {{ section.settings.text_color }};">
+  <div class="page-width">
+    <div class="usp">
+      {%- for block in section.blocks -%}
+        <div class="usp__item" data-reveal data-reveal-delay="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          {% render 'icon', icon: block.settings.icon %}
+          <p class="usp__title">{{ block.settings.title }}</p>
+          {%- if block.settings.text != blank -%}<p class="usp__text">{{ block.settings.text }}</p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon row",
+  "class": "shopify-section--usp",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#FBF8F6" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#141110" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Shipping" },
+          { "value": "return", "label": "Returns" },
+          { "value": "lock", "label": "Secure" },
+          { "value": "sparkle", "label": "Sparkle" },
+          { "value": "ruler", "label": "Fit" }
+        ]},
+        { "type": "text", "id": "title", "label": "Title", "default": "Fast worldwide shipping" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Dispatched within 48h" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Icon row", "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" }] }
+  ]
+}
+{% endschema %}

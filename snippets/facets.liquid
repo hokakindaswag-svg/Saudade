@@ -1,0 +1,118 @@
+{%- comment -%}
+  Filter + sort bar.
+  Accepts: results (collection or search object), enable_filtering, enable_sorting
+{%- endcomment -%}
+{%- liquid
+  assign sort_by = results.sort_by | default: results.default_sort_by
+  assign filters_count = 0
+  for filter in results.filters
+    assign filters_count = filters_count | plus: filter.active_values.size
+  endfor
+  assign has_filters = false
+  if enable_filtering and results.filters.size > 0
+    assign has_filters = true
+  endif
+-%}
+
+<div class="facets" id="CollectionTop">
+  <div class="page-width">
+    <div id="FacetsInner">
+      <form id="FacetForm" data-facet-form>
+        {%- if results.terms -%}
+          <input type="hidden" name="q" value="{{ results.terms | escape }}">
+          <input type="hidden" name="options[prefix]" value="last">
+          <input type="hidden" name="type" value="product">
+        {%- endif -%}
+
+        <div class="facets__bar">
+          <div class="facets__left">
+            {%- if has_filters -%}
+              <button type="button" class="facets__toggle" data-facets-toggle aria-expanded="false" aria-controls="FacetsPanel">
+                {% render 'icon', icon: 'filter' %}
+                <span>{{ 'products.facets.filter' | t }}{% if filters_count > 0 %} ({{ filters_count }}){% endif %}</span>
+              </button>
+            {%- endif -%}
+            <span class="facets__count">{{ 'products.facets.product_count' | t: count: results.products_count }}</span>
+          </div>
+
+          {%- if enable_sorting and results.sort_options.size > 0 -%}
+            <div class="facets__sort">
+              <label class="visually-hidden" for="SortBy">{{ 'products.facets.sort_by' | t }}</label>
+              <select id="SortBy" name="sort_by">
+                {%- for option in results.sort_options -%}
+                  <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if has_filters -%}
+          <div class="facets__panel" id="FacetsPanel">
+            <div class="facets__groups">
+              {%- for filter in results.filters -%}
+                <fieldset class="facet" style="border: 0; padding: 0; margin: 0;">
+                  <legend class="facet__legend">{{ filter.label | escape }}</legend>
+
+                  {%- case filter.type -%}
+                    {%- when 'boolean' or 'list' -%}
+                      {%- for value in filter.values limit: 14 -%}
+                        {%- liquid
+                          assign is_disabled = false
+                          if value.count == 0 and value.active == false
+                            assign is_disabled = true
+                          endif
+                        -%}
+                        <label class="facet__option{% if is_disabled %} facet__option--disabled{% endif %}">
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"
+                                 {% if value.active %}checked{% endif %}
+                                 {% if is_disabled %}disabled{% endif %}>
+                          <span>{{ value.label | escape }} <span class="text-muted">({{ value.count }})</span></span>
+                        </label>
+                      {%- endfor -%}
+
+                    {%- when 'price_range' -%}
+                      {%- assign range_max = filter.range_max | money_without_currency | replace: ',', '' -%}
+                      <div class="facet__range">
+                        <label class="visually-hidden" for="FilterMin-{{ forloop.index }}">Minimum price</label>
+                        <input class="input" id="FilterMin-{{ forloop.index }}" type="number" inputmode="numeric"
+                               name="{{ filter.min_value.param_name }}" placeholder="0" min="0" max="{{ range_max }}"
+                               {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}>
+                        <span>&ndash;</span>
+                        <label class="visually-hidden" for="FilterMax-{{ forloop.index }}">Maximum price</label>
+                        <input class="input" id="FilterMax-{{ forloop.index }}" type="number" inputmode="numeric"
+                               name="{{ filter.max_value.param_name }}" placeholder="{{ range_max }}" min="0" max="{{ range_max }}"
+                               {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}>
+                      </div>
+                  {%- endcase -%}
+                </fieldset>
+              {%- endfor -%}
+            </div>
+
+            {%- if filters_count > 0 -%}
+              <div class="active-facets">
+                {%- for filter in results.filters -%}
+                  {%- for value in filter.active_values -%}
+                    <a class="active-facet" href="{{ value.url_to_remove }}" data-facet-remove>
+                      <span>{{ value.label | escape }}</span>
+                      {% render 'icon', icon: 'close' %}
+                    </a>
+                  {%- endfor -%}
+                {%- endfor -%}
+                <a class="active-facet" href="{{ collection.url | default: request.path }}" data-facet-remove>
+                  <span>{{ 'products.facets.clear_all' | t }}</span>
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </form>
+    </div>
+  </div>
+</div>
+
+<noscript>
+  <div class="page-width" style="padding-bottom: 12px;">
+    <button type="submit" form="FacetForm" class="btn btn--outline">{{ 'products.facets.apply' | t }}</button>
+  </div>
+</noscript>
