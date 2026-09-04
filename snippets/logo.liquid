@@ -1,0 +1,40 @@
+{%- comment -%}
+  Renders the Saudade wordmark.
+  Falls back to the bundled theme asset when nothing is set in Theme settings,
+  so the brand mark is never replaced by raw shop.name text.
+
+  Accepts:
+    variant {String}  'dark' (default) or 'light'
+    width   {Number}  CSS display width in px
+    class   {String}  extra classes
+{%- endcomment -%}
+{%- liquid
+  assign brand = settings.brand_name | default: shop.name
+  assign display_width = width | default: settings.logo_width
+  if variant == 'light'
+    assign chosen = settings.logo_light
+    assign fallback_asset = 'logo-light.png'
+  else
+    assign chosen = settings.logo
+    assign fallback_asset = 'logo.png'
+  endif
+-%}
+
+{%- if chosen != blank -%}
+  <img
+    class="logo {{ class }}"
+    src="{{ chosen | image_url: width: 600 }}"
+    srcset="{{ chosen | image_url: width: 340 }} 340w, {{ chosen | image_url: width: 600 }} 600w"
+    sizes="{{ display_width }}px"
+    alt="{{ brand | escape }}"
+    width="{{ chosen.width }}"
+    height="{{ chosen.height }}"
+    style="width: var(--logo-w, {{ display_width }}px);">
+{%- else -%}
+  <img
+    class="logo {{ class }}"
+    src="{{ fallback_asset | asset_url }}"
+    alt="{{ brand | escape }}"
+    width="528" height="144"
+    style="width: var(--logo-w, {{ display_width }}px);">
+{%- endif -%}

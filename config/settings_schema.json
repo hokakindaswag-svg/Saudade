@@ -10,103 +10,402 @@
   {
     "name": "Logo",
     "settings": [
-      { "type": "image_picker", "id": "logo", "label": "Logo (dark version)" },
-      { "type": "image_picker", "id": "logo_light", "label": "Logo (light version, for image overlays)" },
-      { "type": "range", "id": "logo_width", "min": 80, "max": 320, "step": 5, "unit": "px", "label": "Logo width (desktop)", "default": 170 },
-      { "type": "range", "id": "logo_width_mobile", "min": 70, "max": 240, "step": 5, "unit": "px", "label": "Logo width (mobile)", "default": 130 },
-      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+      {
+        "type": "text",
+        "id": "brand_name",
+        "label": "Brand name",
+        "default": "SAUDADE",
+        "info": "Used for logo alt text and copyright. Keep this as SAUDADE even if your Shopify store name differs."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo (dark version)",
+        "info": "Leave empty to use the Saudade wordmark bundled with the theme."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_light",
+        "label": "Logo (light version, for image overlays)"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 80,
+        "max": 320,
+        "step": 5,
+        "unit": "px",
+        "label": "Logo width (desktop)",
+        "default": 170
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "min": 70,
+        "max": 240,
+        "step": 5,
+        "unit": "px",
+        "label": "Logo width (mobile)",
+        "default": 130
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
     ]
   },
   {
     "name": "Colors",
     "settings": [
-      { "type": "header", "content": "Core" },
-      { "type": "color", "id": "color_bg", "label": "Page background", "default": "#FBF8F6" },
-      { "type": "color", "id": "color_text", "label": "Text", "default": "#141110" },
-      { "type": "color", "id": "color_muted", "label": "Muted text", "default": "#8A8078" },
-      { "type": "color", "id": "color_line", "label": "Borders / hairlines", "default": "#E4DCD6" },
-      { "type": "header", "content": "Brand accents" },
-      { "type": "color", "id": "color_accent", "label": "Primary accent", "default": "#FF2E88", "info": "Used for sale badges, focus rings and hover states." },
-      { "type": "color", "id": "color_accent_2", "label": "Secondary accent", "default": "#B79CFF" },
-      { "type": "color", "id": "color_accent_3", "label": "Tertiary accent", "default": "#FFD84D" },
-      { "type": "header", "content": "Buttons" },
-      { "type": "color", "id": "color_btn_bg", "label": "Primary button background", "default": "#141110" },
-      { "type": "color", "id": "color_btn_text", "label": "Primary button text", "default": "#FFFFFF" },
-      { "type": "header", "content": "Product media" },
-      { "type": "color", "id": "color_media_bg", "label": "Product image background", "default": "#F1EBE6" }
+      {
+        "type": "header",
+        "content": "Core"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Page background",
+        "default": "#FBF8F6"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#141110"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#8A8078"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Borders / hairlines",
+        "default": "#E4DCD6"
+      },
+      {
+        "type": "header",
+        "content": "Brand accents"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Primary accent",
+        "default": "#FF2E88",
+        "info": "Used for sale badges, focus rings and hover states."
+      },
+      {
+        "type": "color",
+        "id": "color_accent_2",
+        "label": "Secondary accent",
+        "default": "#B79CFF"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_3",
+        "label": "Tertiary accent",
+        "default": "#FFD84D"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_bg",
+        "label": "Primary button background",
+        "default": "#141110"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_text",
+        "label": "Primary button text",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Product media"
+      },
+      {
+        "type": "color",
+        "id": "color_media_bg",
+        "label": "Product image background",
+        "default": "#F1EBE6"
+      }
     ]
   },
   {
     "name": "Typography",
     "settings": [
-      { "type": "font_picker", "id": "font_body", "label": "Body font", "default": "assistant_n4" },
-      { "type": "font_picker", "id": "font_heading", "label": "Heading font", "default": "assistant_n4" },
-      { "type": "range", "id": "font_body_scale", "min": 90, "max": 120, "step": 5, "unit": "%", "label": "Body size", "default": 100 },
-      { "type": "range", "id": "font_heading_scale", "min": 90, "max": 140, "step": 5, "unit": "%", "label": "Heading size", "default": 100 },
-      { "type": "checkbox", "id": "uppercase_ui", "label": "Uppercase UI labels", "default": true, "info": "Nav, buttons, product cards and section titles." },
-      { "type": "range", "id": "ui_tracking", "min": 0, "max": 20, "step": 1, "unit": "/100em", "label": "UI letter-spacing", "default": 8 }
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "font_body_scale",
+        "min": 90,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "label": "Body size",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "font_heading_scale",
+        "min": 90,
+        "max": 140,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading size",
+        "default": 100
+      },
+      {
+        "type": "checkbox",
+        "id": "uppercase_ui",
+        "label": "Uppercase UI labels",
+        "default": true,
+        "info": "Nav, buttons, product cards and section titles."
+      },
+      {
+        "type": "range",
+        "id": "ui_tracking",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "/100em",
+        "label": "UI letter-spacing",
+        "default": 8
+      }
     ]
   },
   {
     "name": "Layout",
     "settings": [
-      { "type": "range", "id": "page_width", "min": 1200, "max": 2000, "step": 20, "unit": "px", "label": "Max page width", "default": 1680 },
-      { "type": "range", "id": "grid_gap", "min": 2, "max": 40, "step": 2, "unit": "px", "label": "Product grid gap", "default": 10 },
-      { "type": "range", "id": "section_spacing", "min": 20, "max": 140, "step": 4, "unit": "px", "label": "Space between sections", "default": 72 },
-      { "type": "select", "id": "media_ratio", "label": "Product image ratio", "default": "0.75", "options": [
-        { "value": "0.75", "label": "Portrait 4:5" },
-        { "value": "0.6667", "label": "Tall 2:3" },
-        { "value": "0.8", "label": "Portrait 4:5 (soft)" },
-        { "value": "1.0", "label": "Square" }
-      ]},
-      { "type": "range", "id": "corner_radius", "min": 0, "max": 24, "step": 1, "unit": "px", "label": "Corner radius", "default": 0 }
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1200,
+        "max": 2000,
+        "step": 20,
+        "unit": "px",
+        "label": "Max page width",
+        "default": 1680
+      },
+      {
+        "type": "range",
+        "id": "grid_gap",
+        "min": 2,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Product grid gap",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "min": 20,
+        "max": 140,
+        "step": 4,
+        "unit": "px",
+        "label": "Space between sections",
+        "default": 72
+      },
+      {
+        "type": "select",
+        "id": "media_ratio",
+        "label": "Product image ratio",
+        "default": "0.75",
+        "options": [
+          {
+            "value": "0.75",
+            "label": "Portrait 4:5"
+          },
+          {
+            "value": "0.6667",
+            "label": "Tall 2:3"
+          },
+          {
+            "value": "0.8",
+            "label": "Portrait 4:5 (soft)"
+          },
+          {
+            "value": "1.0",
+            "label": "Square"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Corner radius",
+        "default": 0
+      }
     ]
   },
   {
     "name": "Product cards",
     "settings": [
-      { "type": "checkbox", "id": "card_hover_image", "label": "Show second image on hover", "default": true },
-      { "type": "checkbox", "id": "card_quick_add", "label": "Enable quick add", "default": true },
-      { "type": "checkbox", "id": "card_show_swatches", "label": "Show colour swatches", "default": true },
-      { "type": "text", "id": "swatch_option_name", "label": "Colour option name", "default": "Color", "info": "Must match the option name on your products (e.g. Color or Colour)." },
-      { "type": "checkbox", "id": "card_show_sizes_on_hover", "label": "Show sizes on hover (desktop)", "default": true },
-      { "type": "checkbox", "id": "card_show_sold_out", "label": "Show sold out badge", "default": true },
-      { "type": "text", "id": "badge_new_tag", "label": "\"New\" badge tag", "default": "new", "info": "Products with this tag show a NEW badge." }
+      {
+        "type": "checkbox",
+        "id": "card_hover_image",
+        "label": "Show second image on hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_quick_add",
+        "label": "Enable quick add",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_swatches",
+        "label": "Show colour swatches",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "swatch_option_name",
+        "label": "Colour option name",
+        "default": "Color",
+        "info": "Must match the option name on your products (e.g. Color or Colour)."
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_sizes_on_hover",
+        "label": "Show sizes on hover (desktop)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_sold_out",
+        "label": "Show sold out badge",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "badge_new_tag",
+        "label": "\"New\" badge tag",
+        "default": "new",
+        "info": "Products with this tag show a NEW badge."
+      }
     ]
   },
   {
     "name": "Cart",
     "settings": [
-      { "type": "select", "id": "cart_type", "label": "Cart type", "default": "drawer", "options": [
-        { "value": "drawer", "label": "Drawer" },
-        { "value": "page", "label": "Page" }
-      ]},
-      { "type": "checkbox", "id": "cart_recommendations", "label": "Show recommended products in cart", "default": true },
-      { "type": "checkbox", "id": "cart_free_shipping_bar", "label": "Show free shipping progress bar", "default": true },
-      { "type": "number", "id": "cart_free_shipping_threshold", "label": "Free shipping threshold", "default": 150, "info": "In your store currency, whole numbers." },
-      { "type": "checkbox", "id": "cart_notes", "label": "Enable order notes", "default": false }
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "default": "drawer",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          },
+          {
+            "value": "page",
+            "label": "Page"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_recommendations",
+        "label": "Show recommended products in cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_free_shipping_bar",
+        "label": "Show free shipping progress bar",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "default": 150,
+        "info": "In your store currency, whole numbers."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_notes",
+        "label": "Enable order notes",
+        "default": false
+      }
     ]
   },
   {
     "name": "Social",
     "settings": [
-      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
-      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
-      { "type": "text", "id": "social_pinterest", "label": "Pinterest URL" },
-      { "type": "text", "id": "social_youtube", "label": "YouTube URL" }
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      }
     ]
   },
   {
     "name": "Animations",
     "settings": [
-      { "type": "checkbox", "id": "animate_reveal", "label": "Reveal sections on scroll", "default": true },
-      { "type": "checkbox", "id": "animate_image_zoom", "label": "Zoom images on hover", "default": true }
+      {
+        "type": "checkbox",
+        "id": "animate_reveal",
+        "label": "Reveal sections on scroll",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "animate_image_zoom",
+        "label": "Zoom images on hover",
+        "default": true
+      }
     ]
   },
   {
     "name": "Currency",
     "settings": [
-      { "type": "checkbox", "id": "currency_code_enabled", "label": "Show currency code", "default": false }
+      {
+        "type": "checkbox",
+        "id": "currency_code_enabled",
+        "label": "Show currency code",
+        "default": false
+      }
     ]
   }
 ]

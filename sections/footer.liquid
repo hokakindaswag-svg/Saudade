@@ -4,12 +4,7 @@
       <div class="footer__brand" data-reveal>
         {%- if section.settings.show_logo -%}
           <div class="footer__logo">
-            {%- if settings.logo != blank -%}
-              <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}"
-                   width="{{ settings.logo.width }}" height="{{ settings.logo.height }}" loading="lazy">
-            {%- else -%}
-              <span class="header__logo-text">{{ shop.name }}</span>
-            {%- endif -%}
+            {% render 'logo', variant: 'dark', width: 190 %}
           </div>
         {%- endif -%}
         {%- if section.settings.tagline != blank -%}
@@ -34,14 +29,16 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'menu' -%}
-            <div data-reveal {{ block.shopify_attributes }}>
-              <p class="footer__col-title">{{ block.settings.heading }}</p>
-              <ul class="footer__list">
-                {%- for link in block.settings.menu.links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            </div>
+            {%- if block.settings.menu.links.size > 0 -%}
+              <div data-reveal {{ block.shopify_attributes }}>
+                <p class="footer__col-title">{{ block.settings.heading }}</p>
+                <ul class="footer__list">
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
           {%- when 'text' -%}
             <div data-reveal {{ block.shopify_attributes }}>
               <p class="footer__col-title">{{ block.settings.heading }}</p>
@@ -72,7 +69,7 @@
     </div>
 
     <div class="footer__bottom">
-      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}. All rights reserved.</span>
       <span>
         {%- if section.settings.show_localization and localization.available_countries.size > 1 -%}
           {%- form 'localization', id: 'FooterCountryForm' -%}

@@ -10,9 +10,7 @@
   </head>
   <body>
     <div class="page-width section text-center" style="max-width: 560px;">
-      {%- if settings.logo != blank -%}
-        <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="{{ settings.logo.width }}" height="{{ settings.logo.height }}" style="width: 200px; margin: 0 auto 26px;">
-      {%- endif -%}
+      <div style="margin: 0 auto 26px;">{% render 'logo', variant: 'dark', width: 200 %}</div>
       <p class="ui-label text-muted">{{ 'gift_cards.issued.subtext' | t }}</p>
       <p class="h-display" style="margin: 14px 0;">{{ gift_card.balance | money }}</p>
       {%- if gift_card.expired -%}

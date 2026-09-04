@@ -5,9 +5,16 @@
   endif
 -%}
 
+<style>
+  #shopify-section-{{ section.id }} .header__logo { --logo-w: {{ settings.logo_width_mobile }}px; }
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .header__logo { --logo-w: {{ settings.logo_width }}px; }
+  }
+</style>
+
 <div class="header-wrap{% if transparent %} header--transparent{% endif %}{% unless section.settings.sticky %} header-wrap--unstuck{% endunless %}" data-header-wrap>
   <header class="header header--layout-{{ section.settings.layout }}">
-    <div class="header__inner" style="--logo-w: {{ settings.logo_width }}px;">
+    <div class="header__inner">
 
       <button type="button" class="header__burger" data-open="MobileNav" aria-label="{{ 'sections.header.menu' | t }}">
         <span></span>
@@ -65,20 +72,9 @@
 
       <div class="header__logo">
         {%- if request.page_type == 'index' -%}<h1 style="margin:0; line-height:0;">{%- endif -%}
-        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
-          {%- if settings.logo != blank -%}
-            <img class="logo--dark" src="{{ settings.logo | image_url: width: 500 }}"
-                 srcset="{{ settings.logo | image_url: width: 340 }} 340w, {{ settings.logo | image_url: width: 500 }} 500w"
-                 alt="{{ shop.name | escape }}"
-                 width="{{ settings.logo.width }}" height="{{ settings.logo.height }}">
-            {%- if settings.logo_light != blank -%}
-              <img class="logo--light" src="{{ settings.logo_light | image_url: width: 500 }}"
-                   alt="{{ shop.name | escape }}"
-                   width="{{ settings.logo_light.width }}" height="{{ settings.logo_light.height }}">
-            {%- endif -%}
-          {%- else -%}
-            <span class="header__logo-text">{{ shop.name }}</span>
-          {%- endif -%}
+        <a href="{{ routes.root_url }}" aria-label="{{ settings.brand_name | default: shop.name }}">
+          {% render 'logo', variant: 'dark', class: 'logo--dark' %}
+          {% render 'logo', variant: 'light', class: 'logo--light' %}
         </a>
         {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
       </div>

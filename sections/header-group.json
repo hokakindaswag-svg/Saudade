@@ -5,12 +5,36 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "m1": { "type": "message", "settings": { "text": "NEW DROP — SHOP NOW", "link": "shopify://collections/all" } },
-        "m2": { "type": "message", "settings": { "text": "FREE SHIPPING OVER €150" } },
-        "m3": { "type": "message", "settings": { "text": "EASY 14-DAY RETURNS" } }
+        "m1": {
+          "type": "message",
+          "settings": {
+            "text": "NEW DROP — SHOP NOW",
+            "link": "shopify://collections/all"
+          }
+        },
+        "m2": {
+          "type": "message",
+          "settings": {
+            "text": "FREE SHIPPING OVER €150"
+          }
+        },
+        "m3": {
+          "type": "message",
+          "settings": {
+            "text": "EASY 14-DAY RETURNS"
+          }
+        }
       },
-      "block_order": ["m1", "m2", "m3"],
-      "settings": { "bg": "#141110", "text_color": "#FFFFFF", "speed": 5 }
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "settings": {
+        "bg": "#FF2E88",
+        "text_color": "#FFFFFF",
+        "speed": 5
+      }
     },
     "header": {
       "type": "header",
@@ -24,5 +48,8 @@
       }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }

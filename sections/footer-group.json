@@ -5,23 +5,85 @@
     "usp-bar": {
       "type": "usp-bar",
       "blocks": {
-        "u1": { "type": "item", "settings": { "icon": "truck", "title": "Fast worldwide shipping", "text": "Dispatched within 48h" } },
-        "u2": { "type": "item", "settings": { "icon": "return", "title": "Easy returns", "text": "14 days, no drama" } },
-        "u3": { "type": "item", "settings": { "icon": "lock", "title": "Secure checkout", "text": "Apple Pay, Klarna & more" } },
-        "u4": { "type": "item", "settings": { "icon": "sparkle", "title": "Small batch", "text": "Limited runs, never restocked twice" } }
+        "u1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast worldwide shipping",
+            "text": "Dispatched within 48h"
+          }
+        },
+        "u2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Easy returns",
+            "text": "14 days, no drama"
+          }
+        },
+        "u3": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Apple Pay, Klarna & more"
+          }
+        },
+        "u4": {
+          "type": "item",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Small batch",
+            "text": "Limited runs, never restocked twice"
+          }
+        }
       },
-      "block_order": ["u1", "u2", "u3", "u4"],
+      "block_order": [
+        "u1",
+        "u2",
+        "u3",
+        "u4"
+      ],
       "settings": {}
     },
     "footer": {
       "type": "footer",
       "blocks": {
-        "f1": { "type": "menu", "settings": { "heading": "Shop", "menu": "footer" } },
-        "f2": { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } },
-        "f3": { "type": "text", "settings": { "heading": "Contact", "text": "<p>hello@saudade.com<br/>Mon–Fri, 9–17 CET</p>" } },
-        "f4": { "type": "newsletter", "settings": { "heading": "Get in early", "text": "First access to drops, restocks & everything Saudade." } }
+        "f1": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "main-menu"
+          }
+        },
+        "f2": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help",
+            "menu": "footer"
+          }
+        },
+        "f3": {
+          "type": "text",
+          "settings": {
+            "heading": "Contact",
+            "text": "<p>hello@saudade.com<br/>Mon–Fri, 9–17 CET</p>"
+          }
+        },
+        "f4": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Get in early",
+            "text": "First access to drops, restocks & everything Saudade."
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3", "f4"],
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
       "settings": {
         "show_logo": true,
         "tagline": "Made for the girls who leave a trace.",
@@ -30,5 +92,8 @@
       }
     }
   },
-  "order": ["usp-bar", "footer"]
+  "order": [
+    "usp-bar",
+    "footer"
+  ]
 }
