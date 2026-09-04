@@ -1,14 +1,50 @@
 {%- liquid
-  assign has_video = false
+  comment
+    Media priority: a video picked from Shopify Files, then an external video
+    URL, then the video bundled with the theme, then the image.
+  endcomment
+  assign video_mode = ''
   if section.settings.video != blank
-    assign has_video = true
+    assign video_mode = 'shopify'
+  elsif section.settings.video_url != blank
+    assign video_mode = 'url'
+  elsif section.settings.use_bundled_video
+    assign video_mode = 'asset'
+  endif
+
+  assign poster_url = ''
+  if section.settings.image != blank
+    assign poster_url = section.settings.image | image_url: width: 1200
+  else
+    assign poster_url = 'hero-poster.jpg' | asset_url
   endif
 -%}
 
 <div class="hero hero--h-{{ section.settings.height }} hero--{{ section.settings.text_color_scheme }}{% if section.settings.mobile_tall %} hero--mobile-tall{% endif %}">
   <div class="hero__media">
-    {%- if has_video -%}
+    {%- if video_mode == 'shopify' -%}
       {{ section.settings.video | video_tag: image_size: '1100x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+
+    {%- elsif video_mode == 'url' or video_mode == 'asset' -%}
+      {%- liquid
+        if video_mode == 'url'
+          assign video_src = section.settings.video_url
+        else
+          assign video_src = 'hero-video.mp4' | asset_url
+        endif
+      -%}
+      {%- if section.settings.desktop_video_fit == 'contain' -%}
+        <div class="hero__video-backdrop" style="background-image: url({{ poster_url }});" aria-hidden="true"></div>
+      {%- endif -%}
+      <video
+        class="hero__video hero__video--{{ section.settings.desktop_video_fit }}"
+        autoplay muted loop playsinline
+        preload="metadata"
+        poster="{{ poster_url }}"
+        aria-label="{{ section.settings.heading | escape }}">
+        <source src="{{ video_src }}" type="video/mp4">
+      </video>
+
     {%- elsif section.settings.image != blank -%}
       <img
         src="{{ section.settings.image | image_url: width: 2000 }}"
@@ -86,7 +122,13 @@
     { "type": "header", "content": "Media" },
     { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional. A portrait crop performs best on TikTok/IG traffic." },
-    { "type": "video", "id": "video", "label": "Video", "info": "Overrides the image. Autoplays muted and looped." },
+    { "type": "video", "id": "video", "label": "Video", "info": "Pick a video you uploaded to Shopify (Content > Files). Overrides everything below. Autoplays muted and looped." },
+    { "type": "checkbox", "id": "use_bundled_video", "label": "Use the video bundled with the theme", "default": false, "info": "Plays assets/hero-video.mp4. Turn off to use an image instead." },
+    { "type": "text", "id": "video_url", "label": "Or paste a video URL", "info": "A direct link to an .mp4 file, e.g. from Shopify Files. Overrides the bundled video." },
+    { "type": "select", "id": "desktop_video_fit", "label": "Video fit on desktop", "default": "cover", "options": [
+      { "value": "cover", "label": "Fill the screen (crops the sides)" },
+      { "value": "contain", "label": "Show the whole frame (best for vertical video)" }
+    ], "info": "Vertical phone video gets heavily cropped when it fills a wide screen. \"Show the whole frame\" keeps the full shot and blurs the background behind it. Mobile always fills the screen." },
     { "type": "select", "id": "focal", "label": "Image focal point", "default": "center", "options": [
       { "value": "center", "label": "Centre" },
       { "value": "top", "label": "Top" },

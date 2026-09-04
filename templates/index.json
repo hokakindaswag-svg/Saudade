@@ -9,14 +9,17 @@
         "cta_text": "SHOP NOW",
         "cta_link": "shopify://collections/all",
         "cta_2_text": "",
-        "height": "large",
+        "height": "full",
         "mobile_tall": true,
         "position": "bottom-left",
         "text_color_scheme": "light",
         "overlay_top": 15,
         "overlay_bottom": 35,
         "focal": "center",
-        "show_scroll_hint": false
+        "show_scroll_hint": false,
+        "use_bundled_video": true,
+        "video_url": "",
+        "desktop_video_fit": "contain"
       }
     },
     "new-in": {
@@ -37,12 +40,29 @@
     "categories": {
       "type": "collection-list",
       "blocks": {
-        "c1": { "type": "tile", "settings": {} },
-        "c2": { "type": "tile", "settings": {} },
-        "c3": { "type": "tile", "settings": {} },
-        "c4": { "type": "tile", "settings": {} }
+        "c1": {
+          "type": "tile",
+          "settings": {}
+        },
+        "c2": {
+          "type": "tile",
+          "settings": {}
+        },
+        "c3": {
+          "type": "tile",
+          "settings": {}
+        },
+        "c4": {
+          "type": "tile",
+          "settings": {}
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
       "settings": {
         "heading": "SHOP BY CATEGORY",
         "ratio": "0.75",
@@ -82,12 +102,35 @@
     "marquee": {
       "type": "marquee",
       "blocks": {
-        "m1": { "type": "item", "settings": { "text": "NEW DROP" } },
-        "m2": { "type": "item", "settings": { "text": "SAUDADE" } },
-        "m3": { "type": "item", "settings": { "text": "LIMITED RUN" } }
+        "m1": {
+          "type": "item",
+          "settings": {
+            "text": "NEW DROP"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "text": "SAUDADE"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "text": "LIMITED RUN"
+          }
+        }
       },
-      "block_order": ["m1", "m2", "m3"],
-      "settings": { "bg": "#FF2E88", "text_color": "#FFFFFF", "speed": 30 }
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "settings": {
+        "bg": "#FF2E88",
+        "text_color": "#FFFFFF",
+        "speed": 30
+      }
     },
     "brand": {
       "type": "brand-world",

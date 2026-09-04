@@ -329,14 +329,35 @@ body.is-locked { overflow: hidden; }
 .hero__media img, .hero__media video {
   width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
 }
+.hero__video { background: var(--color-media-bg); }
+
+/* A vertical clip filling a wide desktop hero crops down to an unreadable
+   sliver. "contain" keeps the whole frame and fills the sides with a blurred
+   still, which reads far better for phone-shot footage. Mobile is portrait
+   already, so it always covers. */
+.hero__video-backdrop {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover; background-position: center;
+  filter: blur(38px) saturate(1.15); transform: scale(1.15);
+}
+/* The video element's own background would paint over the blurred backdrop in
+   the letterboxed area, so it stays transparent when contained. */
+.hero__video--contain { z-index: 1; background: transparent; }
+@media screen and (min-width: 990px) {
+  /* Needs to outrank the base `.hero__media video { object-fit: cover }` rule. */
+  .hero__media .hero__video--contain { object-fit: contain; }
+}
+@media screen and (max-width: 989px) {
+  .hero__video-backdrop { display: none; }
+}
 .hero--h-small { --hero-h: 60vh; }
 .hero--h-medium { --hero-h: 78vh; }
 .hero--h-large { --hero-h: 92vh; }
 .hero--h-full { --hero-h: calc(100svh - var(--header-height)); }
 .hero__media { height: var(--hero-h); min-height: 420px; }
-.hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,var(--o-top,.12)) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,var(--o-bottom,.35)) 100%); }
+.hero__overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(0,0,0,var(--o-top,.12)) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,var(--o-bottom,.35)) 100%); }
 .hero__content {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
+  position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column;
   gap: 16px; padding: clamp(24px, 5vw, 64px);
   max-width: var(--page-width); margin: 0 auto; left: 0; right: 0;
 }
@@ -352,7 +373,7 @@ body.is-locked { overflow: hidden; }
 .hero--dark { color: #141110; }
 .hero--dark .hero__overlay { background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.25)); }
 .hero__scroll {
-  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  position: absolute; z-index: 3; bottom: 18px; left: 50%; transform: translateX(-50%);
   font-size: 1rem; letter-spacing: var(--ui-tracking); text-transform: var(--ui-transform);
   animation: bob 2.4s ease-in-out infinite;
 }
