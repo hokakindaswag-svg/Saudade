@@ -67,9 +67,22 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   font-size: calc(clamp(3.8rem, 8vw, 9rem) * var(--font-heading-scale));
   line-height: .92; letter-spacing: -0.02em;
 }
+.h1, .h2, .h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); line-height: 1.05; }
 .h1 { font-size: calc(clamp(2.8rem, 4.4vw, 4.8rem) * var(--font-heading-scale)); letter-spacing: -0.015em; }
 .h2 { font-size: calc(clamp(2.2rem, 3vw, 3.2rem) * var(--font-heading-scale)); letter-spacing: -0.01em; }
 .h3 { font-size: calc(1.8rem * var(--font-heading-scale)); }
+
+.ui-label,
+.section-title,
+.card__title,
+.cart-item__title,
+.cart-drawer__title,
+.collection-tile__label,
+.article-card__meta,
+.badge,
+.btn {
+  font-family: var(--font-body);
+}
 
 .ui-label {
   font-size: 1.1rem;
@@ -114,7 +127,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   font-size: 1.15rem; font-weight: 500;
   text-transform: var(--ui-transform); letter-spacing: var(--ui-tracking);
   border: 1px solid transparent; border-radius: var(--radius);
-  cursor: pointer; text-align: center;
+  cursor: pointer; text-align: center; white-space: nowrap;
   transition: background-color .25s ease, color .25s ease, border-color .25s ease, opacity .25s ease;
 }
 .btn--primary { background: var(--color-btn-bg); color: var(--color-btn-text); border-color: var(--color-btn-bg); }

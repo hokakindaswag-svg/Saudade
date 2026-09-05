@@ -28,34 +28,67 @@
 
     {{ content_for_header }}
 
+    {%- comment -%}
+      Typography.
+
+      The theme ships with its own webfonts rather than relying on Shopify's
+      font picker, so the storefront always renders in the brand's type even
+      before anything is configured. A font chosen in Theme settings still
+      wins: when Shopify resolves it to a real font object it is emitted as an
+      @font-face and placed first in the stack. When it does not resolve,
+      `.family` is empty, every font_face call is skipped (the filter raises a
+      hard Liquid error on a non-font value) and the bundled fonts carry the
+      page on their own.
+    {%- endcomment -%}
     {%- liquid
       assign body_font = settings.font_body
-      assign body_font_bold = body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = body_font | font_modify: 'style', 'italic'
-      assign body_font_medium = body_font | font_modify: 'weight', '500'
       assign heading_font = settings.font_heading
-      assign heading_font_medium = heading_font | font_modify: 'weight', '500'
+
+      assign body_font_ok = false
+      assign heading_font_ok = false
+      unless settings.use_theme_fonts
+        if body_font.family != blank
+          assign body_font_ok = true
+          assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+          assign body_font_italic = body_font | font_modify: 'style', 'italic'
+        endif
+        if heading_font.family != blank
+          assign heading_font_ok = true
+        endif
+      endunless
+
+      assign body_stack = "'Jost', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif"
+      if body_font_ok
+        assign body_stack = body_font.family | append: ', ' | append: body_font.fallback_families | append: ', ' | append: body_stack
+      endif
+
+      assign heading_stack = "'Playfair Display', Georgia, 'Times New Roman', serif"
+      if heading_font_ok
+        assign heading_stack = heading_font.family | append: ', ' | append: heading_font.fallback_families | append: ', ' | append: heading_stack
+      endif
     -%}
 
-    {%- comment -%}
-      font_face errors out on anything that isn't a real font object — guard
-      each call, since a font setting can end up blank or invalid (e.g. after
-      a re-upload that didn't carry the saved value) and must never break the
-      whole layout.
-    {%- endcomment -%}
-    {%- if body_font.family -%}{{ body_font | font_face: font_display: 'swap' }}{%- endif -%}
-    {%- if body_font_bold.family -%}{{ body_font_bold | font_face: font_display: 'swap' }}{%- endif -%}
-    {%- if body_font_italic.family -%}{{ body_font_italic | font_face: font_display: 'swap' }}{%- endif -%}
-    {%- if body_font_medium.family -%}{{ body_font_medium | font_face: font_display: 'swap' }}{%- endif -%}
-    {%- if heading_font.family -%}{{ heading_font | font_face: font_display: 'swap' }}{%- endif -%}
-    {%- if heading_font_medium.family -%}{{ heading_font_medium | font_face: font_display: 'swap' }}{%- endif -%}
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ 'jost-400-latin.woff2' | asset_url }}">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ 'playfair-display-500-latin.woff2' | asset_url }}">
 
     <style>
+      {% render 'fonts' %}
+
+      {%- comment -%} font_face emits raw CSS, so it belongs inside the style tag. {%- endcomment -%}
+      {%- if body_font_ok -%}
+        {{ body_font | font_face: font_display: 'swap' }}
+        {%- if body_font_bold.family -%}{{ body_font_bold | font_face: font_display: 'swap' }}{%- endif -%}
+        {%- if body_font_italic.family -%}{{ body_font_italic | font_face: font_display: 'swap' }}{%- endif -%}
+      {%- endif -%}
+      {%- if heading_font_ok -%}
+        {{ heading_font | font_face: font_display: 'swap' }}
+      {%- endif -%}
+
       :root {
-        --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
-        --font-body-weight: {{ body_font.weight }};
-        --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
-        --font-heading-weight: {{ heading_font.weight }};
+        --font-body: {{ body_stack }};
+        --font-body-weight: 400;
+        --font-heading: {{ heading_stack }};
+        --font-heading-weight: 500;
         --font-body-scale: {{ settings.font_body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.font_heading_scale | divided_by: 100.0 }};
 

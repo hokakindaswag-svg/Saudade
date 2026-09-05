@@ -38,6 +38,7 @@
     "animate_reveal": true,
     "animate_image_zoom": true,
     "currency_code_enabled": false,
-    "brand_name": "SAUDADE"
+    "brand_name": "SAUDADE",
+    "use_theme_fonts": true
   }
 }
