@@ -37,12 +37,18 @@
       assign heading_font_medium = heading_font | font_modify: 'weight', '500'
     -%}
 
-    {{ body_font | font_face: font_display: 'swap' }}
-    {{ body_font_bold | font_face: font_display: 'swap' }}
-    {{ body_font_italic | font_face: font_display: 'swap' }}
-    {{ body_font_medium | font_face: font_display: 'swap' }}
-    {{ heading_font | font_face: font_display: 'swap' }}
-    {{ heading_font_medium | font_face: font_display: 'swap' }}
+    {%- comment -%}
+      font_face errors out on anything that isn't a real font object — guard
+      each call, since a font setting can end up blank or invalid (e.g. after
+      a re-upload that didn't carry the saved value) and must never break the
+      whole layout.
+    {%- endcomment -%}
+    {%- if body_font.family -%}{{ body_font | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- if body_font_bold.family -%}{{ body_font_bold | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- if body_font_italic.family -%}{{ body_font_italic | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- if body_font_medium.family -%}{{ body_font_medium | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- if heading_font.family -%}{{ heading_font | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- if heading_font_medium.family -%}{{ heading_font_medium | font_face: font_display: 'swap' }}{%- endif -%}
 
     <style>
       :root {
