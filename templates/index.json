@@ -52,22 +52,6 @@
         "cta_link": "shopify://collections/the-sun-set"
       }
     },
-    "bestsellers": {
-      "type": "featured-products",
-      "settings": {
-        "heading": "BESTSELLERS",
-        "link_text": "VIEW ALL",
-        "count": 8,
-        "layout": "grid",
-        "columns": 4,
-        "columns_tablet": 3,
-        "columns_mobile": 2,
-        "tight": false,
-        "show_bottom_cta": true,
-        "bottom_cta_text": "SHOP ALL",
-        "collection": "the-sun-set"
-      }
-    },
     "marquee": {
       "type": "marquee",
       "blocks": {
@@ -131,7 +115,6 @@
     "hero",
     "new-in",
     "campaign",
-    "bestsellers",
     "marquee",
     "brand",
     "newsletter"
