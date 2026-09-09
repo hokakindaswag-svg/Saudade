@@ -7,7 +7,7 @@
         "heading": "Saudade 01",
         "text": "",
         "cta_text": "SHOP NOW",
-        "cta_link": "shopify://collections/all",
+        "cta_link": "shopify://collections/the-sun-set",
         "cta_2_text": "",
         "height": "full",
         "mobile_tall": true,
@@ -34,41 +34,8 @@
         "columns_mobile": 2,
         "full_width": false,
         "tight": false,
-        "show_bottom_cta": false
-      }
-    },
-    "categories": {
-      "type": "collection-list",
-      "blocks": {
-        "c1": {
-          "type": "tile",
-          "settings": {}
-        },
-        "c2": {
-          "type": "tile",
-          "settings": {}
-        },
-        "c3": {
-          "type": "tile",
-          "settings": {}
-        },
-        "c4": {
-          "type": "tile",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3",
-        "c4"
-      ],
-      "settings": {
-        "heading": "SHOP BY CATEGORY",
-        "ratio": "0.75",
-        "label_position": "on",
-        "mobile_scroll": true,
-        "tight": true
+        "show_bottom_cta": false,
+        "collection": "the-sun-set"
       }
     },
     "campaign": {
@@ -81,7 +48,8 @@
         "height": "large",
         "position": "bottom-left",
         "text_color_scheme": "light",
-        "overlay": 20
+        "overlay": 20,
+        "cta_link": "shopify://collections/the-sun-set"
       }
     },
     "bestsellers": {
@@ -96,7 +64,8 @@
         "columns_mobile": 2,
         "tight": false,
         "show_bottom_cta": true,
-        "bottom_cta_text": "SHOP ALL"
+        "bottom_cta_text": "SHOP ALL",
+        "collection": "the-sun-set"
       }
     },
     "marquee": {
@@ -161,7 +130,6 @@
   "order": [
     "hero",
     "new-in",
-    "categories",
     "campaign",
     "bestsellers",
     "marquee",
