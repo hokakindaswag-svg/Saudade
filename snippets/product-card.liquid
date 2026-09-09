@@ -45,12 +45,12 @@
   endfor
 
   assign size_option = null
-  assign size_position = 0
+  assign size_index = 0
   for opt in product.options_with_values
     assign lower = opt.name | downcase
     if lower == 'size' or lower == 'taille' or lower == 'sizes'
       assign size_option = opt
-      assign size_position = forloop.index
+      assign size_index = forloop.index0
     endif
   endfor
 -%}
@@ -107,7 +107,7 @@
             {%- liquid
               assign matched = null
               for v in product.variants
-                assign vopt = v.options[size_position | minus: 1]
+                assign vopt = v.options[size_index]
                 if vopt == value and v.available
                   assign matched = v
                   break
