@@ -29,6 +29,40 @@ shopify theme check          # passes clean
 
 ---
 
+## Early access mode (THE WAFFLE SET)
+
+**Theme settings → Early access → Enable Early Access Landing Page**
+
+- **ON** — the homepage is replaced by the early-access campaign
+  (`sections/early-access.liquid`): full-screen image/video, THE WAFFLE SET,
+  email field, GET EARLY ACCESS. Edit it in the Theme Editor on the homepage
+  ("Early access landing"). Products, collections, cart and account pages keep
+  working.
+- **OFF** — the normal homepage (`templates/index.json`) is shown.
+
+Sign-ups use Shopify's native customer form: each email becomes a customer in
+**Admin → Customers**, subscribed to email marketing and tagged
+`early-access, waffle-set` (editable). After submitting, the visitor sees
+"YOU'RE IN.".
+
+## Hiding a past drop
+
+**Theme settings → Hidden products** — pick a collection (set to *The Sun Set*)
+and/or a tag. Those products disappear from grids, collection pages, search,
+recommendations, the cart suggestions and the menus. Nothing is deleted in
+Admin. Direct product URLs still resolve but are marked `noindex`; to make them
+fully unreachable, set the products to Draft / unpublish them from the Online
+Store channel in Admin.
+
+## THE WAFFLE SET product page
+
+Assign the **`waffle-set`** product template to THE WAFFLE SET (product page in
+Admin → Theme template). It comes with size guide, fit and material copy that
+can be edited in the Theme Editor, or overridden per product with the
+`custom.fit`, `custom.materials` and `custom.model_info` metafields.
+
+---
+
 ## What you need to set up in Shopify
 
 These are the only things the theme expects from the store. All of them are
@@ -65,16 +99,19 @@ locales/   en.default.json
 
 ### Homepage order (`templates/index.json`)
 
-Announcement bar → Header → Hero → New in → Category tiles → Campaign
-editorial → Bestsellers → Scrolling text → Brand story → Newsletter → Icon row
-→ Footer.
+Announcement bar → Header → THE WAFFLE SET hero → New drop spotlight →
+Products → Campaign editorial → Shop collections → Bestsellers → Brand world →
+Newsletter → Icon row → Footer.
+
+Sections with no content yet (no product picked, no collections, no image)
+render nothing on the live store, so the page never shows grey placeholders.
 
 Every one of those is a section you can reorder, duplicate, hide or delete in
 the Theme Editor.
 
 ### Sections available
 
-`hero`, `featured-products`, `editorial-image`, `collection-list`,
+`early-access`, `drop-spotlight`, `hero`, `featured-products`, `editorial-image`, `collection-list`,
 `brand-world`, `newsletter`, `marquee`, `usp-bar`, `rich-text`,
 `related-products` — all with presets, so they can be added to any page.
 
@@ -92,6 +129,10 @@ locked in code.
 
 ## Notes
 
+- Fonts: Jost + Playfair Display are bundled as theme assets
+  (`snippets/fonts.liquid`). The theme uses no `font_face` / font-picker
+  settings, which is what caused the old "font_face can only be used with a
+  font drop" Liquid error.
 - `base.css` and `theme.js` are plain CSS/JS with no build step and no
   dependencies. Edit them directly.
 - The theme is progressive: filtering, cart updates and search all work without

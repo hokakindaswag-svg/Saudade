@@ -34,6 +34,7 @@
                 <p class="footer__col-title">{{ block.settings.heading }}</p>
                 <ul class="footer__list">
                   {%- for link in block.settings.menu.links -%}
+                    {%- if settings.hidden_collection.handle != blank and link.type == 'collection_link' and link.object.handle == settings.hidden_collection.handle -%}{%- continue -%}{%- endif -%}
                     <li><a href="{{ link.url }}">{{ link.title }}</a></li>
                   {%- endfor -%}
                 </ul>

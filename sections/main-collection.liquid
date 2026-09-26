@@ -1,6 +1,11 @@
 {%- liquid
   assign banner = section.settings.show_banner
   assign img = collection.image
+  assign hidden_handle = settings.hidden_collection.handle
+  assign collection_is_hidden = false
+  if hidden_handle != blank and collection.handle == hidden_handle
+    assign collection_is_hidden = true
+  endif
 -%}
 
 {%- if banner and img != blank -%}
@@ -20,6 +25,7 @@
   <div class="page-width">
     <div class="collection-header">
       <h1 class="collection-header__title">{{ collection.title }}</h1>
+
       {%- if section.settings.show_description and collection.description != blank -%}
         <div class="collection-header__desc rte">{{ collection.description }}</div>
       {%- endif -%}
@@ -27,11 +33,33 @@
   </div>
 {%- endif -%}
 
+{%- unless collection_is_hidden -%}
 {% render 'facets', results: collection, enable_filtering: section.settings.enable_filtering, enable_sorting: section.settings.enable_sorting %}
+{%- endunless -%}
 
 <div class="page-width collection-grid" id="ProductGridContainer">
   {%- paginate collection.products by section.settings.per_page -%}
-    {%- if collection.products.size > 0 -%}
+    {%- liquid
+      assign visible_count = 0
+      unless collection_is_hidden
+        for product in collection.products
+          assign is_hidden = false
+          if hidden_handle != blank
+            assign handles = product.collections | map: 'handle'
+            if handles contains hidden_handle
+              assign is_hidden = true
+            endif
+          endif
+          if settings.hidden_tag != blank and product.tags contains settings.hidden_tag
+            assign is_hidden = true
+          endif
+          unless is_hidden
+            assign visible_count = visible_count | plus: 1
+          endunless
+        endfor
+      endunless
+    -%}
+    {%- if visible_count > 0 -%}
       <div class="product-grid" style="--cols: {{ section.settings.columns }}; --cols-tablet: {{ section.settings.columns_tablet }}; --cols-mobile: {{ section.settings.columns_mobile }};">
         {%- for product in collection.products -%}
           {%- liquid
@@ -67,13 +95,29 @@
       {% render 'pagination', paginate: paginate %}
     {%- else -%}
       <div class="collection-empty">
-        <p class="h2">Nothing here yet</p>
-        <p class="text-muted" style="margin-top: 10px;">Try removing a filter, or browse everything.</p>
-        <p style="margin-top: 22px;">
-          <a class="btn btn--primary" href="{{ collection.url | default: routes.all_products_collection_url }}">
-            {{ 'products.facets.clear_all' | t }}
-          </a>
-        </p>
+        {%- liquid
+          assign filters_active = false
+          for filter in collection.filters
+            if filter.active_values.size > 0 or filter.min_value.value != blank or filter.max_value.value != blank
+              assign filters_active = true
+            endif
+          endfor
+        -%}
+        {%- if collection_is_hidden or filters_active == false -%}
+          <p class="h2">{{ 'products.collection.coming_soon' | t }}</p>
+          <p class="text-muted" style="margin-top: 10px;">{{ 'products.collection.coming_soon_text' | t }}</p>
+          <p style="margin-top: 22px;">
+            <a class="btn btn--primary" href="{{ routes.root_url }}">{{ 'products.collection.back_home' | t }}</a>
+          </p>
+        {%- else -%}
+          <p class="h2">{{ 'products.collection.no_match' | t }}</p>
+          <p class="text-muted" style="margin-top: 10px;">{{ 'products.collection.no_match_text' | t }}</p>
+          <p style="margin-top: 22px;">
+            <a class="btn btn--primary" href="{{ collection.url | default: routes.all_products_collection_url }}">
+              {{ 'products.facets.clear_all' | t }}
+            </a>
+          </p>
+        {%- endif -%}
       </div>
     {%- endif -%}
   {%- endpaginate -%}
@@ -84,8 +128,8 @@
   "name": "Collection",
   "class": "shopify-section--collection",
   "settings": [
-    { "type": "checkbox", "id": "show_banner", "label": "Show collection image as banner", "default": true },
-    { "type": "checkbox", "id": "show_description", "label": "Show description", "default": true },
+    { "type": "checkbox", "id": "show_banner", "label": "Show collection image as banner", "default": false },
+    { "type": "checkbox", "id": "show_description", "label": "Show description", "default": false },
     { "type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true, "info": "Manage filters in Search & Discovery." },
     { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },
     { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Products per page", "default": 24 },

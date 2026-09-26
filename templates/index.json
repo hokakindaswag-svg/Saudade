@@ -4,10 +4,9 @@
       "type": "hero",
       "settings": {
         "eyebrow": "NEW DROP",
-        "heading": "Saudade 01",
+        "heading": "THE WAFFLE SET",
         "text": "",
-        "cta_text": "SHOP NOW",
-        "cta_link": "shopify://collections/the-sun-set",
+        "cta_text": "SHOP THE DROP",
         "cta_2_text": "",
         "height": "full",
         "mobile_tall": true,
@@ -17,12 +16,24 @@
         "overlay_bottom": 35,
         "focal": "center",
         "show_scroll_hint": false,
-        "use_bundled_video": true,
         "video_url": "",
-        "desktop_video_fit": "contain"
+        "desktop_video_fit": "cover",
+        "fallback_color_1": "#F7B5C9",
+        "fallback_color_2": "#C9B6FF"
       }
     },
-    "new-in": {
+    "new-drop": {
+      "type": "drop-spotlight",
+      "settings": {
+        "eyebrow": "NEW DROP",
+        "text": "",
+        "cta_text": "SHOP THE SET",
+        "reverse": false,
+        "bg": "#FBF8F6",
+        "text_color": "#141110"
+      }
+    },
+    "products": {
       "type": "featured-products",
       "settings": {
         "heading": "NEW IN",
@@ -32,57 +43,55 @@
         "columns": 4,
         "columns_tablet": 3,
         "columns_mobile": 2,
-        "full_width": false,
+        "full_width": true,
         "tight": false,
         "show_bottom_cta": false,
-        "collection": "the-sun-set"
+        "bottom_cta_text": "SHOP ALL"
       }
     },
     "campaign": {
       "type": "editorial-image",
       "settings": {
-        "eyebrow": "CAMPAIGN",
-        "heading": "Somewhere between here and gone",
+        "eyebrow": "THE CAMPAIGN",
+        "heading": "THE WAFFLE SET",
         "text": "",
-        "cta_text": "SHOP THE DROP",
+        "cta_text": "SHOP THE LOOK",
         "height": "large",
         "position": "bottom-left",
         "text_color_scheme": "light",
-        "overlay": 20,
-        "cta_link": "shopify://collections/the-sun-set"
+        "overlay": 20
       }
     },
-    "marquee": {
-      "type": "marquee",
+    "collections": {
+      "type": "collection-list",
       "blocks": {
-        "m1": {
-          "type": "item",
-          "settings": {
-            "text": "NEW DROP"
-          }
-        },
-        "m2": {
-          "type": "item",
-          "settings": {
-            "text": "SAUDADE"
-          }
-        },
-        "m3": {
-          "type": "item",
-          "settings": {
-            "text": "LIMITED RUN"
-          }
-        }
+        "tile-1": { "type": "tile", "settings": {} },
+        "tile-2": { "type": "tile", "settings": {} },
+        "tile-3": { "type": "tile", "settings": {} }
       },
-      "block_order": [
-        "m1",
-        "m2",
-        "m3"
-      ],
+      "block_order": ["tile-1", "tile-2", "tile-3"],
       "settings": {
-        "bg": "#FF2E88",
-        "text_color": "#FFFFFF",
-        "speed": 30
+        "heading": "SHOP COLLECTIONS",
+        "ratio": "0.75",
+        "label_position": "below",
+        "mobile_scroll": true,
+        "tight": false
+      }
+    },
+    "bestsellers": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "BESTSELLERS",
+        "link_text": "SHOP ALL",
+        "count": 4,
+        "layout": "scroll",
+        "columns": 4,
+        "columns_tablet": 3,
+        "columns_mobile": 2,
+        "full_width": true,
+        "tight": false,
+        "show_bottom_cta": false,
+        "bottom_cta_text": "SHOP ALL"
       }
     },
     "brand": {
@@ -94,7 +103,7 @@
         "cta_text": "OUR STORY",
         "reverse": false,
         "ratio": "4/5",
-        "bg": "#F1EBE6",
+        "bg": "#F7E3EA",
         "text_color": "#141110"
       }
     },
@@ -113,9 +122,11 @@
   },
   "order": [
     "hero",
-    "new-in",
+    "new-drop",
+    "products",
     "campaign",
-    "marquee",
+    "collections",
+    "bestsellers",
     "brand",
     "newsletter"
   ]

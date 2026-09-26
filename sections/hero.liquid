@@ -1,22 +1,19 @@
 {%- liquid
   comment
     Media priority: a video picked from Shopify Files, then an external video
-    URL, then the video bundled with the theme, then the image.
+    URL, then the image. With nothing set, a brand-colour waffle texture keeps
+    the hero from ever showing a grey placeholder on the live store.
   endcomment
   assign video_mode = ''
   if section.settings.video != blank
     assign video_mode = 'shopify'
   elsif section.settings.video_url != blank
     assign video_mode = 'url'
-  elsif section.settings.use_bundled_video
-    assign video_mode = 'asset'
   endif
 
   assign poster_url = ''
   if section.settings.image != blank
     assign poster_url = section.settings.image | image_url: width: 1200
-  else
-    assign poster_url = 'hero-poster.jpg' | asset_url
   endif
 -%}
 
@@ -25,22 +22,16 @@
     {%- if video_mode == 'shopify' -%}
       {{ section.settings.video | video_tag: image_size: '1100x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
 
-    {%- elsif video_mode == 'url' or video_mode == 'asset' -%}
-      {%- liquid
-        if video_mode == 'url'
-          assign video_src = section.settings.video_url
-        else
-          assign video_src = 'hero-video.mp4' | asset_url
-        endif
-      -%}
-      {%- if section.settings.desktop_video_fit == 'contain' -%}
+    {%- elsif video_mode == 'url' -%}
+      {%- assign video_src = section.settings.video_url -%}
+      {%- if section.settings.desktop_video_fit == 'contain' and poster_url != blank -%}
         <div class="hero__video-backdrop" style="background-image: url({{ poster_url }});" aria-hidden="true"></div>
       {%- endif -%}
       <video
         class="hero__video hero__video--{{ section.settings.desktop_video_fit }}"
         autoplay muted loop playsinline
         preload="metadata"
-        poster="{{ poster_url }}"
+        {% if poster_url != blank %}poster="{{ poster_url }}"{% endif %}
         aria-label="{{ section.settings.heading | escape }}">
         <source src="{{ video_src }}" type="video/mp4">
       </video>
@@ -77,7 +68,7 @@
           fetchpriority="high">
       {%- endif -%}
     {%- else -%}
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      <div class="waffle-fallback" style="--wf-1: {{ section.settings.fallback_color_1 }}; --wf-2: {{ section.settings.fallback_color_2 }};" aria-hidden="true"></div>
     {%- endif -%}
 
     <div class="hero__overlay" style="--o-top: {{ section.settings.overlay_top | divided_by: 100.0 }}; --o-bottom: {{ section.settings.overlay_bottom | divided_by: 100.0 }};"></div>
@@ -95,7 +86,7 @@
       {%- if section.settings.cta_text != blank or section.settings.cta_2_text != blank -%}
         <div class="hero__ctas" data-reveal data-reveal-delay="3">
           {%- if section.settings.cta_text != blank -%}
-            <a class="btn btn--lg {% if section.settings.text_color_scheme == 'light' %}btn--light{% else %}btn--primary{% endif %}" href="{{ section.settings.cta_link }}">
+            <a class="btn btn--lg {% if section.settings.text_color_scheme == 'light' %}btn--light{% else %}btn--primary{% endif %}" href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}">
               {{ section.settings.cta_text }}
             </a>
           {%- endif -%}
@@ -123,8 +114,7 @@
     { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optional. A portrait crop performs best on TikTok/IG traffic." },
     { "type": "video", "id": "video", "label": "Video", "info": "Pick a video you uploaded to Shopify (Content > Files). Overrides everything below. Autoplays muted and looped." },
-    { "type": "checkbox", "id": "use_bundled_video", "label": "Use the video bundled with the theme", "default": false, "info": "Plays assets/hero-video.mp4. Turn off to use an image instead." },
-    { "type": "text", "id": "video_url", "label": "Or paste a video URL", "info": "A direct link to an .mp4 file, e.g. from Shopify Files. Overrides the bundled video." },
+    { "type": "text", "id": "video_url", "label": "Or paste a video URL", "info": "A direct link to an .mp4 file, e.g. from Shopify Files." },
     { "type": "select", "id": "desktop_video_fit", "label": "Video fit on desktop", "default": "cover", "options": [
       { "value": "cover", "label": "Fill the screen (crops the sides)" },
       { "value": "contain", "label": "Show the whole frame (best for vertical video)" }
@@ -136,11 +126,13 @@
       { "value": "left", "label": "Left" },
       { "value": "right", "label": "Right" }
     ]},
+    { "type": "color", "id": "fallback_color_1", "label": "Background colour 1 (no media)", "default": "#F7B5C9" },
+    { "type": "color", "id": "fallback_color_2", "label": "Background colour 2 (no media)", "default": "#C9B6FF" },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "NEW DROP" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Saudade 01" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "THE WAFFLE SET" },
     { "type": "text", "id": "text", "label": "Text" },
-    { "type": "text", "id": "cta_text", "label": "Button label", "default": "SHOP NOW" },
+    { "type": "text", "id": "cta_text", "label": "Button label", "default": "SHOP THE DROP" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
     { "type": "text", "id": "cta_2_text", "label": "Second button label" },
     { "type": "url", "id": "cta_2_link", "label": "Second button link" },

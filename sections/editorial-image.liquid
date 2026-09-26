@@ -9,7 +9,7 @@
              sizes="100vw" alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
              width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="lazy">
       {%- else -%}
-        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        <div class="waffle-fallback" aria-hidden="true"></div>
       {%- endif -%}
       <div class="editorial__overlay" style="--o: {{ section.settings.overlay | divided_by: 100.0 }};"></div>
       <div class="editorial__content editorial__content--{{ section.settings.position }}">
@@ -23,7 +23,7 @@
           <p class="editorial__text">{{ section.settings.text }}</p>
         {%- endif -%}
         {%- if section.settings.cta_text != blank -%}
-          <a class="btn btn--lg {% if section.settings.text_color_scheme == 'light' %}btn--light{% else %}btn--primary{% endif %}" href="{{ section.settings.cta_link }}">
+          <a class="btn btn--lg {% if section.settings.text_color_scheme == 'light' %}btn--light{% else %}btn--primary{% endif %}" href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}">
             {{ section.settings.cta_text }}
           </a>
         {%- endif -%}

@@ -6,8 +6,27 @@
     show_quick_add {Boolean} override theme setting
     sizes_attr     {String}  sizes attribute for srcset
     index          {Number}  used for reveal delay
+
+  Products in the collection / tag hidden in Theme settings → Hidden products
+  render nothing, so a past drop never surfaces in grids, search or
+  recommendations.
 {%- endcomment -%}
 
+{%- liquid
+  assign card_hidden = false
+  assign hidden_handle = settings.hidden_collection.handle
+  if hidden_handle != blank
+    assign card_collection_handles = product.collections | map: 'handle'
+    if card_collection_handles contains hidden_handle
+      assign card_hidden = true
+    endif
+  endif
+  if settings.hidden_tag != blank and product.tags contains settings.hidden_tag
+    assign card_hidden = true
+  endif
+-%}
+
+{%- unless card_hidden -%}
 {%- liquid
   assign lazy_load = true
   if lazy == false
@@ -175,3 +194,4 @@
     {%- endif -%}
   </div>
 </div>
+{%- endunless -%}

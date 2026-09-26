@@ -13,6 +13,7 @@
       <p class="section-title text-muted" style="margin: 28px 0 12px;">Collections</p>
       <div class="search-suggest">
         {%- for collection in predictive_search.resources.collections -%}
+          {%- if settings.hidden_collection.handle != blank and collection.handle == settings.hidden_collection.handle -%}{%- continue -%}{%- endif -%}
           <a href="{{ collection.url }}">{{ collection.title }}</a>
         {%- endfor -%}
       </div>

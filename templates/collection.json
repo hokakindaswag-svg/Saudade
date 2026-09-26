@@ -5,8 +5,8 @@
       "blocks": {},
       "block_order": [],
       "settings": {
-        "show_banner": true,
-        "show_description": true,
+        "show_banner": false,
+        "show_description": false,
         "enable_filtering": true,
         "enable_sorting": true,
         "per_page": 24,
@@ -17,8 +17,14 @@
     },
     "newsletter": {
       "type": "newsletter",
-      "settings": { "heading": "GET IN EARLY", "text": "First access to drops, restocks & everything Saudade." }
+      "settings": {
+        "heading": "GET IN EARLY",
+        "text": "First access to drops, restocks & everything Saudade."
+      }
     }
   },
-  "order": ["main", "newsletter"]
+  "order": [
+    "main",
+    "newsletter"
+  ]
 }

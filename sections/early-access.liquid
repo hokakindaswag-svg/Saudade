@@ -1,0 +1,246 @@
+{%- comment -%}
+  Early-access landing page.
+
+  Rendered by layout/theme.liquid in place of the homepage while
+  Theme settings → Early access → "Enable Early Access Landing Page" is on.
+
+  The email form is Shopify's native customer form: every submission creates
+  (or updates) a customer in Admin → Customers, subscribed to email marketing
+  and tagged with the tags set below, so the list can be emailed from
+  Shopify Email / Klaviyo when the drop opens.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign form_id = 'EarlyAccessForm'
+
+  assign media_mode = 'none'
+  if s.video != blank
+    assign media_mode = 'shopify_video'
+  elsif s.video_url != blank
+    assign media_mode = 'url_video'
+  elsif s.image != blank
+    assign media_mode = 'image'
+  endif
+
+  assign poster = s.image | default: s.image_mobile
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --ea-overlay: {{ s.overlay | divided_by: 100.0 }};
+    --ea-fallback-1: {{ s.fallback_color_1 }};
+    --ea-fallback-2: {{ s.fallback_color_2 }};
+    --ea-panel-bg: {{ s.panel_bg }};
+    --ea-panel-text: {{ s.panel_text }};
+    --ea-btn-bg: {{ s.button_bg }};
+    --ea-btn-text: {{ s.button_text }};
+  }
+  {%- if s.image != blank -%}
+    #shopify-section-{{ section.id }} .ea__img--desktop { object-position: {{ s.image.presentation.focal_point }}; }
+  {%- endif -%}
+  {%- if s.image_mobile != blank -%}
+    #shopify-section-{{ section.id }} .ea__img--mobile { object-position: {{ s.image_mobile.presentation.focal_point }}; }
+  {%- endif -%}
+</style>
+
+<section class="ea ea--{{ s.desktop_layout }} ea--text-{{ s.text_color_scheme }} ea--pos-{{ s.position }}{% if media_mode == 'none' %} ea--no-media{% endif %}"
+         {% unless s.show_announcement %}data-hide-announcement{% endunless %}
+         aria-label="{{ s.heading | escape }}">
+
+  <div class="ea__media">
+    {%- case media_mode -%}
+      {%- when 'shopify_video' -%}
+        {{ s.video | video_tag: image_size: '1400x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'ea__video' }}
+
+      {%- when 'url_video' -%}
+        <video class="ea__video" autoplay muted loop playsinline preload="metadata"
+               {% if poster != blank %}poster="{{ poster | image_url: width: 1400 }}"{% endif %}
+               aria-label="{{ s.heading | escape }}">
+          <source src="{{ s.video_url }}" type="video/mp4">
+        </video>
+
+      {%- when 'image' -%}
+        <img class="ea__img ea__img--desktop{% if s.image_mobile != blank %} ea__img--has-mobile{% endif %}"
+             src="{{ s.image | image_url: width: 2000 }}"
+             srcset="{{ s.image | image_url: width: 750 }} 750w,
+                     {{ s.image | image_url: width: 1100 }} 1100w,
+                     {{ s.image | image_url: width: 1500 }} 1500w,
+                     {{ s.image | image_url: width: 2000 }} 2000w,
+                     {{ s.image | image_url: width: 2800 }} 2800w"
+             sizes="{% if s.desktop_layout == 'split' %}(min-width: 990px) 58vw, {% endif %}100vw"
+             alt="{{ s.image.alt | default: s.heading | escape }}"
+             width="{{ s.image.width }}" height="{{ s.image.height }}"
+             fetchpriority="high">
+        {%- if s.image_mobile != blank -%}
+          <img class="ea__img ea__img--mobile"
+               src="{{ s.image_mobile | image_url: width: 1000 }}"
+               srcset="{{ s.image_mobile | image_url: width: 500 }} 500w,
+                       {{ s.image_mobile | image_url: width: 750 }} 750w,
+                       {{ s.image_mobile | image_url: width: 1000 }} 1000w,
+                       {{ s.image_mobile | image_url: width: 1300 }} 1300w"
+               sizes="100vw"
+               alt="{{ s.image_mobile.alt | default: s.heading | escape }}"
+               width="{{ s.image_mobile.width }}" height="{{ s.image_mobile.height }}"
+               fetchpriority="high">
+        {%- endif -%}
+
+      {%- else -%}
+        {%- comment -%} No campaign media yet: a waffle-knit texture in the brand colours. {%- endcomment -%}
+        <div class="ea__fallback" aria-hidden="true"></div>
+    {%- endcase -%}
+    <div class="ea__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="ea__panel">
+    <div class="ea__content">
+      {%- if s.show_logo -%}
+        <div class="ea__logo">
+          {% render 'logo', variant: 'light', width: s.logo_width, class: 'ea__logo-light' %}
+          {% render 'logo', variant: 'dark', width: s.logo_width, class: 'ea__logo-dark' %}
+        </div>
+      {%- endif -%}
+
+      {%- if s.eyebrow != blank -%}
+        <p class="ea__eyebrow">{{ s.eyebrow }}</p>
+      {%- endif -%}
+
+      <h1 class="ea__title">{{ s.heading }}</h1>
+
+      {%- if s.subheading != blank -%}
+        <p class="ea__sub">{{ s.subheading }}</p>
+      {%- endif -%}
+
+      {%- form 'customer', id: form_id, class: 'ea__form', novalidate: 'novalidate', data-ea-form: '' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="ea__success" role="status" tabindex="-1" data-ea-success>
+            <p class="ea__success-title">{{ s.success_heading }}</p>
+            <p class="ea__success-text">{{ s.success_text }}</p>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="contact[tags]" value="{{ s.customer_tags | escape }}">
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+          <div class="ea__fields">
+            <label class="visually-hidden" for="EarlyAccessEmail-{{ section.id }}">{{ s.email_placeholder }}</label>
+            <input class="ea__input"
+                   id="EarlyAccessEmail-{{ section.id }}"
+                   type="email"
+                   name="contact[email]"
+                   placeholder="{{ s.email_placeholder | escape }}"
+                   autocomplete="email"
+                   autocapitalize="off"
+                   autocorrect="off"
+                   spellcheck="false"
+                   inputmode="email"
+                   enterkeyhint="send"
+                   required
+                   aria-required="true"
+                   aria-describedby="EarlyAccessError-{{ section.id }}"
+                   {% if form.errors %}aria-invalid="true" value="{{ form.email | escape }}"{% endif %}
+                   data-ea-input>
+            <button type="submit" class="ea__btn" data-ea-submit>
+              <span class="btn__text">{{ s.button_label }}</span>
+            </button>
+          </div>
+
+          <p class="ea__error" id="EarlyAccessError-{{ section.id }}" role="alert" data-ea-error
+             data-msg-required="{{ 'sections.early_access.email_required' | t | escape }}"
+             data-msg-invalid="{{ 'sections.early_access.email_invalid' | t | escape }}"
+             {% unless form.errors %}hidden{% endunless %}>
+            {%- if form.errors -%}
+              {%- for field in form.errors -%}
+                {%- if field == 'form' -%}
+                  {{ form.errors.messages[field] }}
+                {%- else -%}
+                  {{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </p>
+
+          {%- if s.disclaimer != blank -%}
+            <p class="ea__disclaimer">{{ s.disclaimer }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{%- if s.show_mini_footer -%}
+  <div class="ea-foot">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}</span>
+    <span class="ea-foot__social">
+      {%- if settings.social_instagram != blank -%}
+        <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', icon: 'instagram' %}</a>
+      {%- endif -%}
+      {%- if settings.social_tiktok != blank -%}
+        <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', icon: 'tiktok' %}</a>
+      {%- endif -%}
+      {%- if settings.social_pinterest != blank -%}
+        <a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">{% render 'icon', icon: 'pinterest' %}</a>
+      {%- endif -%}
+    </span>
+    {%- if shop.privacy_policy -%}
+      <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Early access landing",
+  "class": "shopify-section--early-access",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shown instead of the homepage while Theme settings → Early access → \"Enable Early Access Landing Page\" is on."
+    },
+    { "type": "header", "content": "Campaign media" },
+    { "type": "image_picker", "id": "image", "label": "Campaign image (desktop)", "info": "Set the focal point on the image so it crops well on every screen." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Campaign image (mobile)", "info": "Optional. A vertical 4:5 or 9:16 shot works best for TikTok / Instagram traffic." },
+    { "type": "video", "id": "video", "label": "Campaign video", "info": "Optional. Overrides the images. Plays muted and looped." },
+    { "type": "text", "id": "video_url", "label": "Or a video URL (.mp4)", "info": "Optional. Used when no video is picked above." },
+    { "type": "range", "id": "overlay", "min": 0, "max": 70, "step": 5, "unit": "%", "label": "Image darkening", "default": 25 },
+    { "type": "color", "id": "fallback_color_1", "label": "Background colour 1 (no image)", "default": "#F7B5C9" },
+    { "type": "color", "id": "fallback_color_2", "label": "Background colour 2 (no image)", "default": "#C9B6FF" },
+
+    { "type": "header", "content": "Text" },
+    { "type": "checkbox", "id": "show_logo", "label": "Show logo above the title", "default": false, "info": "The logo is always in the header; turn this on for a second, larger logo in the campaign." },
+    { "type": "range", "id": "logo_width", "min": 100, "max": 360, "step": 10, "unit": "px", "label": "Campaign logo width", "default": 200 },
+    { "type": "text", "id": "eyebrow", "label": "Small line above the title" },
+    { "type": "text", "id": "heading", "label": "Title", "default": "THE WAFFLE SET" },
+    { "type": "text", "id": "subheading", "label": "Subtitle", "default": "Shoppez le prochain drop en early access." },
+
+    { "type": "header", "content": "Email form" },
+    { "type": "text", "id": "email_placeholder", "label": "Email field placeholder", "default": "Votre adresse email" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "GET EARLY ACCESS" },
+    { "type": "text", "id": "customer_tags", "label": "Customer tags", "default": "early-access, waffle-set", "info": "Added to every sign-up in Admin → Customers, so you can segment the early-access list." },
+    { "type": "text", "id": "disclaimer", "label": "Small print under the form" },
+    { "type": "text", "id": "success_heading", "label": "Success title", "default": "YOU'RE IN." },
+    { "type": "text", "id": "success_text", "label": "Success message", "default": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET." },
+
+    { "type": "header", "content": "Layout & colours" },
+    { "type": "select", "id": "desktop_layout", "label": "Desktop layout", "default": "full", "options": [
+      { "value": "full", "label": "Full-screen image" },
+      { "value": "split", "label": "Image + side panel (best for vertical photos)" }
+    ], "info": "Mobile is always full screen." },
+    { "type": "select", "id": "position", "label": "Text position (full-screen layout)", "default": "bottom-center", "options": [
+      { "value": "bottom-center", "label": "Bottom centre" },
+      { "value": "bottom-left", "label": "Bottom left" },
+      { "value": "center", "label": "Centre" }
+    ]},
+    { "type": "select", "id": "text_color_scheme", "label": "Text colour on the image", "default": "light", "options": [
+      { "value": "light", "label": "White" },
+      { "value": "dark", "label": "Dark" }
+    ], "info": "Also sets the header colour over the campaign." },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#FFFFFF" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#141110" },
+    { "type": "color", "id": "panel_bg", "label": "Side panel background (split layout)", "default": "#FBF8F6" },
+    { "type": "color", "id": "panel_text", "label": "Side panel text (split layout)", "default": "#141110" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Show the announcement bar", "default": false },
+    { "type": "checkbox", "id": "show_mini_footer", "label": "Show a mini footer under the campaign", "default": true }
+  ]
+}
+{% endschema %}

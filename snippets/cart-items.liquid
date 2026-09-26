@@ -11,7 +11,11 @@
     <div class="cart-item__info">
       <h3 class="cart-item__title"><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
       {%- unless item.product.has_only_default_variant -%}
-        <p class="cart-item__variant">{{ item.variant.title }}</p>
+        <p class="cart-item__variant">
+          {%- for option in item.options_with_values -%}
+            {{ option.name }}: {{ option.value }}{% unless forloop.last %} &middot; {% endunless %}
+          {%- endfor -%}
+        </p>
       {%- endunless -%}
       {%- if item.selling_plan_allocation -%}
         <p class="cart-item__variant">{{ item.selling_plan_allocation.selling_plan.name }}</p>

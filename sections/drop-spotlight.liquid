@@ -1,0 +1,131 @@
+{%- comment -%}
+  "New drop" spotlight: one product presented as a campaign moment.
+  Everything comes from the product picked in the Theme Editor (title, price,
+  colours, sizes, images); the images can be overridden with campaign shots.
+{%- endcomment -%}
+{%- liquid
+  assign p = section.settings.product
+  assign color_name = settings.swatch_option_name | downcase
+
+  assign img_1 = section.settings.image_1
+  assign img_2 = section.settings.image_2
+  if p != blank
+    if img_1 == blank
+      assign img_1 = p.media[0].preview_image
+    endif
+    if img_2 == blank and p.media.size > 1
+      assign img_2 = p.media[1].preview_image
+    endif
+  endif
+
+  assign color_option = null
+  assign size_option = null
+  if p != blank
+    for opt in p.options_with_values
+      assign lower = opt.name | downcase
+      if lower == color_name or lower == 'color' or lower == 'colour' or lower == 'couleur'
+        assign color_option = opt
+      elsif lower == 'size' or lower == 'taille'
+        assign size_option = opt
+      endif
+    endfor
+  endif
+-%}
+
+{%- if p != blank or request.design_mode -%}
+<div class="section spotlight-section" style="background: {{ section.settings.bg }}; color: {{ section.settings.text_color }};">
+  <div class="page-width">
+    <div class="spotlight{% if section.settings.reverse %} spotlight--reverse{% endif %}">
+
+      <div class="spotlight__media" data-reveal>
+        {%- for img in (1..2) -%}
+          {%- if forloop.index == 1 -%}{%- assign m = img_1 -%}{%- else -%}{%- assign m = img_2 -%}{%- endif -%}
+          <a class="spotlight__img" href="{{ p.url | default: '#' }}" tabindex="-1" aria-hidden="true">
+            {%- if m != blank -%}
+              <img src="{{ m | image_url: width: 1100 }}"
+                   srcset="{{ m | image_url: width: 500 }} 500w, {{ m | image_url: width: 800 }} 800w, {{ m | image_url: width: 1100 }} 1100w"
+                   sizes="(min-width: 990px) 30vw, 80vw"
+                   alt="{{ m.alt | default: p.title | escape }}"
+                   width="{{ m.width }}" height="{{ m.height }}" loading="lazy">
+            {%- else -%}
+              <div class="waffle-fallback" aria-hidden="true"></div>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      <div class="spotlight__info" data-reveal data-reveal-delay="1">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="ui-label spotlight__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h2 class="spotlight__title">
+          {%- if p != blank -%}{{ p.title }}{%- else -%}{{ 'onboarding.product_title' | t }}{%- endif -%}
+        </h2>
+
+        {%- if p != blank -%}
+          <div class="spotlight__price">{% render 'price', product: p, show_from: true %}</div>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <div class="spotlight__text rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        {%- if color_option -%}
+          <div class="spotlight__row">
+            <span class="spotlight__label">{{ color_option.name }}</span>
+            <span class="spotlight__swatches">
+              {%- for value in color_option.values -%}
+                {%- liquid
+                  assign sw = value | downcase | replace: ' ', ''
+                  assign sw_style = 'background-color: ' | append: sw | append: ';'
+                  if value.swatch.color
+                    assign sw_style = 'background-color: ' | append: value.swatch.color | append: ';'
+                  endif
+                  if value.swatch.image
+                    assign sw_url = value.swatch.image | image_url: width: 60
+                    assign sw_style = sw_style | append: ' background-image: url(' | append: sw_url | append: ');'
+                  endif
+                -%}
+                <span class="swatch swatch--static" style="{{ sw_style }}" title="{{ value | escape }}"><span class="visually-hidden">{{ value }}</span></span>
+              {%- endfor -%}
+            </span>
+          </div>
+        {%- endif -%}
+
+        {%- if size_option -%}
+          <div class="spotlight__row">
+            <span class="spotlight__label">{{ size_option.name }}</span>
+            <span class="spotlight__sizes">{{ size_option.values | join: ' · ' }}</span>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.cta_text != blank -%}
+          <a class="btn btn--primary btn--lg spotlight__cta" href="{{ p.url | default: routes.all_products_collection_url }}">
+            {{ section.settings.cta_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "New drop spotlight",
+  "class": "shopify-section--spotlight",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product", "info": "Pick THE WAFFLE SET. Title, price, colours and sizes come from the product." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "NEW DROP" },
+    { "type": "richtext", "id": "text", "label": "Short text", "info": "Optional. One line is plenty — the photos do the selling." },
+    { "type": "text", "id": "cta_text", "label": "Button label", "default": "SHOP THE SET" },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1 override", "info": "Defaults to the product's first image." },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2 override", "info": "Defaults to the product's second image." },
+    { "type": "checkbox", "id": "reverse", "label": "Images on the right", "default": false },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#FBF8F6" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#141110" }
+  ],
+  "presets": [{ "name": "New drop spotlight" }]
+}
+{% endschema %}

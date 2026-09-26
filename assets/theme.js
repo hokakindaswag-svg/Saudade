@@ -564,13 +564,19 @@
         var id = el.getAttribute('data-product-id');
         if (!id || el.getAttribute('data-loaded') === 'true') return;
         el.setAttribute('data-loaded', 'true');
-        fetch(routes.recommendations + '?product_id=' + id + '&limit=6&section_id=cart-recommendations&intent=complementary')
-          .then(function (r) { return r.text(); })
-          .then(function (html) {
-            var doc = new DOMParser().parseFromString(html, 'text/html');
-            var inner = doc.querySelector('[data-recs-inner]');
-            if (inner && inner.children.length) el.innerHTML = inner.innerHTML;
-          })
+        // Complementary products ("complete the look") first, related as a fallback.
+        function fetchRecs(intent) {
+          return fetch(routes.recommendations + '?product_id=' + id + '&limit=10&section_id=cart-recommendations&intent=' + intent)
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+              var doc = new DOMParser().parseFromString(html, 'text/html');
+              var inner = doc.querySelector('[data-recs-inner]');
+              return inner && inner.children.length ? inner.innerHTML : '';
+            });
+        }
+        fetchRecs('complementary')
+          .then(function (html) { return html || fetchRecs('related'); })
+          .then(function (html) { if (html) el.innerHTML = html; })
           .catch(function () {});
       });
     }
@@ -601,6 +607,77 @@
     }
   }
 
+  /* ---------------- early access form ---------------- */
+
+  // The form posts natively to Shopify's /contact endpoint (so the customer is
+  // really created, and Shopify's own bot protection still applies). JS only
+  // adds instant validation, a loading state and focus on the result.
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function initEarlyAccess() {
+    $$('[data-ea-form]').forEach(function (form) {
+      if (form.dataset.bound === 'true') return;
+      form.dataset.bound = 'true';
+
+      var success = $('[data-ea-success]', form);
+      if (success) {
+        try { history.replaceState(null, '', window.location.pathname); } catch (err) {}
+        setTimeout(function () { success.focus({ preventScroll: true }); }, 100);
+        return;
+      }
+
+      var input = $('[data-ea-input]', form);
+      var errorEl = $('[data-ea-error]', form);
+      var btn = $('[data-ea-submit]', form);
+      if (!input) return;
+
+      function showError(msg) {
+        if (!errorEl) return;
+        errorEl.textContent = msg;
+        errorEl.hidden = false;
+        input.setAttribute('aria-invalid', 'true');
+      }
+      function clearError() {
+        if (errorEl) errorEl.hidden = true;
+        input.removeAttribute('aria-invalid');
+      }
+
+      if (input.getAttribute('aria-invalid') === 'true') input.focus({ preventScroll: true });
+
+      on(input, 'input', function () { if (input.getAttribute('aria-invalid')) clearError(); });
+
+      on(form, 'submit', function (e) {
+        var value = input.value.trim();
+        input.value = value;
+        if (!value) {
+          e.preventDefault();
+          showError(errorEl ? errorEl.getAttribute('data-msg-required') : '');
+          input.focus();
+          return;
+        }
+        if (!EMAIL_RE.test(value)) {
+          e.preventDefault();
+          showError(errorEl ? errorEl.getAttribute('data-msg-invalid') : '');
+          input.focus();
+          return;
+        }
+        if (form.dataset.submitting === 'true') { e.preventDefault(); return; }
+        form.dataset.submitting = 'true';
+        clearError();
+        if (btn) { btn.classList.add('btn--loading'); btn.setAttribute('aria-busy', 'true'); }
+      });
+    });
+  }
+
+  // Restore the button if the page comes back from the bfcache.
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    $$('[data-ea-form]').forEach(function (form) {
+      form.dataset.submitting = 'false';
+      var btn = $('[data-ea-submit]', form);
+      if (btn) { btn.classList.remove('btn--loading'); btn.removeAttribute('aria-busy'); }
+    });
+  });
+
   /* ---------------- init ---------------- */
 
   function initAll() {
@@ -611,6 +688,7 @@
     initSearch();
     initCartRecs();
     initSwatches();
+    initEarlyAccess();
     $$('[data-product-root]').forEach(ProductPage);
   }
 
@@ -623,7 +701,7 @@
 
   // Theme editor support
   document.addEventListener('shopify:section:load', function (e) {
-    initHeader(); initAnnouncement(); initReveal(); initSearch(); initCartRecs();
+    initHeader(); initAnnouncement(); initReveal(); initSearch(); initCartRecs(); initEarlyAccess();
     $$('[data-product-root]', e.target).forEach(ProductPage);
   });
   document.addEventListener('shopify:section:select', function (e) {

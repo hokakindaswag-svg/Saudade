@@ -8,6 +8,18 @@
     "theme_support_url": "https://shopify.dev"
   },
   {
+    "name": "Early access",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "early_access_enabled",
+        "label": "Enable Early Access Landing Page",
+        "default": true,
+        "info": "ON: the homepage shows the early-access landing page (edit it under Homepage → Early access landing). OFF: the normal Saudade homepage is shown. All other pages stay reachable either way."
+      }
+    ]
+  },
+  {
     "name": "Logo",
     "settings": [
       {
@@ -141,25 +153,8 @@
     "name": "Typography",
     "settings": [
       {
-        "type": "checkbox",
-        "id": "use_theme_fonts",
-        "label": "Use the theme's fonts",
-        "default": true,
-        "info": "Playfair Display for headings, Jost for everything else. Turn this off to use the Shopify fonts picked below instead."
-      },
-      {
-        "type": "font_picker",
-        "id": "font_body",
-        "label": "Body font",
-        "default": "assistant_n4",
-        "info": "Only used when \"Use the theme's fonts\" is off."
-      },
-      {
-        "type": "font_picker",
-        "id": "font_heading",
-        "label": "Heading font",
-        "default": "assistant_n4",
-        "info": "Only used when \"Use the theme's fonts\" is off."
+        "type": "paragraph",
+        "content": "The storefront uses the SAUDADE brand fonts bundled with the theme: Playfair Display for headings, Jost for everything else."
       },
       {
         "type": "range",
@@ -361,6 +356,27 @@
         "id": "cart_notes",
         "label": "Enable order notes",
         "default": false
+      }
+    ]
+  },
+  {
+    "name": "Hidden products",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Products hidden here disappear from every product grid, collection page, search result, recommendation, the cart suggestions and the menu — without being deleted or changed in Shopify Admin."
+      },
+      {
+        "type": "collection",
+        "id": "hidden_collection",
+        "label": "Hide this collection and its products",
+        "info": "Use it for a past drop, e.g. The Sun Set."
+      },
+      {
+        "type": "text",
+        "id": "hidden_tag",
+        "label": "Also hide products with this tag",
+        "info": "Optional, e.g. archive."
       }
     ]
   },

@@ -20,6 +20,38 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
+    {%- liquid
+      comment
+        Early-access mode: while the Theme settings toggle is on, the homepage
+        is replaced by sections/early-access.liquid. Every other page (products,
+        collections, cart, account…) keeps working normally.
+      endcomment
+      assign early_access = false
+      if settings.early_access_enabled and request.page_type == 'index'
+        assign early_access = true
+      endif
+
+      assign hidden_product = false
+      if request.page_type == 'product'
+        assign hidden_handle = settings.hidden_collection.handle
+        if hidden_handle != blank
+          assign product_collection_handles = product.collections | map: 'handle'
+          if product_collection_handles contains hidden_handle
+            assign hidden_product = true
+          endif
+        endif
+        if settings.hidden_tag != blank and product.tags contains settings.hidden_tag
+          assign hidden_product = true
+        endif
+      endif
+      if request.page_type == 'collection' and settings.hidden_collection.handle != blank and collection.handle == settings.hidden_collection.handle
+        assign hidden_product = true
+      endif
+    -%}
+    {%- if hidden_product -%}
+      <meta name="robots" content="noindex">
+    {%- endif -%}
+
     {%- if page_description -%}
       <meta name="description" content="{{ page_description | escape }}">
     {%- endif -%}
@@ -29,43 +61,14 @@
     {{ content_for_header }}
 
     {%- comment -%}
-      Typography.
-
-      The theme ships with its own webfonts rather than relying on Shopify's
-      font picker, so the storefront always renders in the brand's type even
-      before anything is configured. A font chosen in Theme settings still
-      wins: when Shopify resolves it to a real font object it is emitted as an
-      @font-face and placed first in the stack. When it does not resolve,
-      `.family` is empty, every font_face call is skipped (the filter raises a
-      hard Liquid error on a non-font value) and the bundled fonts carry the
-      page on their own.
+      Typography: the brand webfonts (Jost + Playfair Display) are bundled with
+      the theme as assets and declared in snippets/fonts.liquid. No font_face /
+      font_picker calls anywhere, so a font setting can never raise a Liquid
+      error in the layout.
     {%- endcomment -%}
     {%- liquid
-      assign body_font = settings.font_body
-      assign heading_font = settings.font_heading
-
-      assign body_font_ok = false
-      assign heading_font_ok = false
-      unless settings.use_theme_fonts
-        if body_font.family != blank
-          assign body_font_ok = true
-          assign body_font_bold = body_font | font_modify: 'weight', 'bold'
-          assign body_font_italic = body_font | font_modify: 'style', 'italic'
-        endif
-        if heading_font.family != blank
-          assign heading_font_ok = true
-        endif
-      endunless
-
       assign body_stack = "'Jost', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif"
-      if body_font_ok
-        assign body_stack = body_font.family | append: ', ' | append: body_font.fallback_families | append: ', ' | append: body_stack
-      endif
-
       assign heading_stack = "'Playfair Display', Georgia, 'Times New Roman', serif"
-      if heading_font_ok
-        assign heading_stack = heading_font.family | append: ', ' | append: heading_font.fallback_families | append: ', ' | append: heading_stack
-      endif
     -%}
 
     <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ 'jost-400-latin.woff2' | asset_url }}">
@@ -73,16 +76,6 @@
 
     <style>
       {% render 'fonts' %}
-
-      {%- comment -%} font_face emits raw CSS, so it belongs inside the style tag. {%- endcomment -%}
-      {%- if body_font_ok -%}
-        {{ body_font | font_face: font_display: 'swap' }}
-        {%- if body_font_bold.family -%}{{ body_font_bold | font_face: font_display: 'swap' }}{%- endif -%}
-        {%- if body_font_italic.family -%}{{ body_font_italic | font_face: font_display: 'swap' }}{%- endif -%}
-      {%- endif -%}
-      {%- if heading_font_ok -%}
-        {{ heading_font | font_face: font_display: 'swap' }}
-      {%- endif -%}
 
       :root {
         --font-body: {{ body_stack }};
@@ -148,16 +141,22 @@
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
   </head>
 
-  <body class="template--{{ request.page_type | handle }}{% if settings.animate_reveal %} anim-on{% endif %}{% if settings.animate_image_zoom %} zoom-on{% endif %}">
+  <body class="template--{{ request.page_type | handle }}{% if early_access %} is-early-access{% endif %}{% if settings.animate_reveal %} anim-on{% endif %}{% if settings.animate_image_zoom %} zoom-on{% endif %}">
     <a class="skip-link btn btn--primary" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}
 
     <main id="MainContent" class="main" role="main" tabindex="-1">
-      {{ content_for_layout }}
+      {%- if early_access -%}
+        {% section 'early-access' %}
+      {%- else -%}
+        {{ content_for_layout }}
+      {%- endif -%}
     </main>
 
-    {% sections 'footer-group' %}
+    {%- unless early_access -%}
+      {% sections 'footer-group' %}
+    {%- endunless -%}
 
     {%- if settings.cart_type == 'drawer' -%}
       {% section 'cart-drawer' %}

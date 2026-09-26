@@ -1,22 +1,62 @@
-{%- if recommendations.performed and recommendations.products_count > 0 -%}
+{%- comment -%}
+  Loaded into the cart drawer by theme.js through the Section Rendering API.
+  Skips products already in the cart and anything hidden in
+  Theme settings → Hidden products.
+{%- endcomment -%}
+{%- liquid
+  assign hidden_handle = settings.hidden_collection.handle
+  assign cart_product_ids = cart.items | map: 'product_id'
+  assign rec_ids = ''
+  if recommendations.performed
+    for product in recommendations.products
+      assign is_hidden = false
+      if cart_product_ids contains product.id
+        assign is_hidden = true
+      endif
+      if hidden_handle != blank
+        assign handles = product.collections | map: 'handle'
+        if handles contains hidden_handle
+          assign is_hidden = true
+        endif
+      endif
+      if settings.hidden_tag != blank and product.tags contains settings.hidden_tag
+        assign is_hidden = true
+      endif
+      if product.available == false
+        assign is_hidden = true
+      endif
+      unless is_hidden
+        assign rec_ids = rec_ids | append: product.id | append: ','
+      endunless
+    endfor
+  endif
+  assign rec_list = rec_ids | split: ','
+-%}
+
+{%- if rec_list.size > 0 -%}
   <div data-recs-inner>
     <p class="cart-recs__title">{{ 'sections.cart.recommendations' | t }}</p>
     <div class="cart-recs__scroller">
-      {%- for product in recommendations.products limit: 6 -%}
+      {%- for product in recommendations.products -%}
+        {%- assign pid = product.id | append: '' -%}
+        {%- unless rec_list contains pid -%}{%- continue -%}{%- endunless -%}
         <div class="cart-rec">
           <a href="{{ product.url }}">
-            {%- if product.featured_media -%}
-              <img src="{{ product.featured_media | image_url: width: 300 }}" alt="{{ product.title | escape }}" width="132" height="176" loading="lazy">
-            {%- endif -%}
+            <div class="cart-rec__media">
+              {%- if product.featured_media -%}
+                <img src="{{ product.featured_media | image_url: width: 300 }}" alt="{{ product.title | escape }}"
+                     width="{{ product.featured_media.width }}" height="{{ product.featured_media.height }}" loading="lazy">
+              {%- endif -%}
+            </div>
             <p class="cart-rec__title">{{ product.title | truncate: 34 }}</p>
           </a>
           <p class="cart-rec__price">{{ product.price | money }}</p>
-          {%- if product.variants.size == 1 and product.available -%}
+          {%- if product.variants.size == 1 -%}
             <button type="button" class="cart-rec__add" data-quick-add="{{ product.variants.first.id }}">
               {{ 'products.product.quick_add' | t }}
             </button>
           {%- else -%}
-            <a class="cart-rec__add" href="{{ product.url }}">{{ 'products.product.quick_add' | t }}</a>
+            <a class="cart-rec__add" href="{{ product.url }}">{{ 'products.product.choose_size' | t }}</a>
           {%- endif -%}
         </div>
       {%- endfor -%}

@@ -12,8 +12,6 @@
     "color_btn_bg": "#141110",
     "color_btn_text": "#FFFFFF",
     "color_media_bg": "#F1EBE6",
-    "font_body": "assistant_n4",
-    "font_heading": "assistant_n4",
     "font_body_scale": 100,
     "font_heading_scale": 100,
     "uppercase_ui": true,
@@ -39,6 +37,8 @@
     "animate_image_zoom": true,
     "currency_code_enabled": false,
     "brand_name": "SAUDADE",
-    "use_theme_fonts": true
+    "early_access_enabled": true,
+    "hidden_collection": "the-sun-set",
+    "hidden_tag": ""
   }
 }

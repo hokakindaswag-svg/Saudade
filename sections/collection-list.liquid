@@ -1,3 +1,17 @@
+{%- liquid
+  assign hidden_handle = settings.hidden_collection.handle
+  assign tile_count = 0
+  for block in section.blocks
+    assign coll = block.settings.collection
+    if coll != blank and coll.handle != hidden_handle
+      assign tile_count = tile_count | plus: 1
+    elsif coll == blank and block.settings.image != blank and block.settings.link != blank
+      assign tile_count = tile_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if tile_count > 0 or request.design_mode -%}
 <div class="section{% if section.settings.tight %} section--tight{% endif %}">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
@@ -10,13 +24,20 @@
     {%- endif -%}
 
     <div class="collection-tiles{% if section.settings.mobile_scroll %} collection-tiles--scroll{% endif %}"
-         style="--tiles: {{ section.blocks.size | at_most: 5 }}; --tile-ratio: {{ section.settings.ratio }}; gap: var(--grid-gap);">
+         style="--tiles: {% if tile_count > 0 %}{{ tile_count | at_most: 5 }}{% else %}{{ section.blocks.size | at_most: 5 }}{% endif %}; --tile-ratio: {{ section.settings.ratio }}; gap: var(--grid-gap);">
       {%- for block in section.blocks -%}
         {%- liquid
           assign coll = block.settings.collection
           assign img = block.settings.image | default: coll.featured_image
           assign title = block.settings.heading | default: coll.title
+          assign tile_ok = false
+          if coll != blank and coll.handle != hidden_handle
+            assign tile_ok = true
+          elsif coll == blank and block.settings.image != blank and block.settings.link != blank
+            assign tile_ok = true
+          endif
         -%}
+        {%- unless tile_ok or request.design_mode -%}{%- continue -%}{%- endunless -%}
         <a class="collection-tile{% if section.settings.label_position == 'below' %} collection-tile--below{% endif %}"
            href="{{ coll.url | default: block.settings.link }}" data-reveal data-reveal-delay="{{ forloop.index0 | modulo: 4 }}"
            {{ block.shopify_attributes }}>
@@ -39,6 +60,7 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {

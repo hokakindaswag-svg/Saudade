@@ -1,4 +1,5 @@
 {%- liquid
+  assign hidden_handle = settings.hidden_collection.handle
   assign transparent = false
   if section.settings.transparent_on_home and template.name == 'index'
     assign transparent = true
@@ -22,6 +23,7 @@
 
       <nav class="header__nav" aria-label="Primary">
         {%- for link in section.settings.menu.links -%}
+          {%- if hidden_handle != blank and link.type == 'collection_link' and link.object.handle == hidden_handle -%}{%- continue -%}{%- endif -%}
           {%- assign block_for_link = null -%}
           {%- for block in section.blocks -%}
             {%- if block.settings.menu_item == link.title -%}
@@ -38,6 +40,7 @@
               <div class="mega">
                 <div class="mega__inner">
                   {%- for child in link.links limit: 4 -%}
+{%- if hidden_handle != blank and child.type == 'collection_link' and child.object.handle == hidden_handle -%}{%- continue -%}{%- endif -%}
                     <div>
                       <p class="mega__col-title">
                         <a href="{{ child.url }}">{{ child.title }}</a>
@@ -45,6 +48,7 @@
                       {%- if child.links.size > 0 -%}
                         <ul class="mega__list">
                           {%- for grandchild in child.links -%}
+{%- if hidden_handle != blank and grandchild.type == 'collection_link' and grandchild.object.handle == hidden_handle -%}{%- continue -%}{%- endif -%}
                             <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
                           {%- endfor -%}
                         </ul>
@@ -71,12 +75,18 @@
       </nav>
 
       <div class="header__logo">
-        {%- if request.page_type == 'index' -%}<h1 style="margin:0; line-height:0;">{%- endif -%}
+        {%- liquid
+          assign logo_is_h1 = false
+          if request.page_type == 'index' and settings.early_access_enabled == false
+            assign logo_is_h1 = true
+          endif
+        -%}
+        {%- if logo_is_h1 -%}<h1 style="margin:0; line-height:0;">{%- endif -%}
         <a href="{{ routes.root_url }}" aria-label="{{ settings.brand_name | default: shop.name }}">
           {% render 'logo', variant: 'dark', class: 'logo--dark' %}
           {% render 'logo', variant: 'light', class: 'logo--light' %}
         </a>
-        {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
+        {%- if logo_is_h1 -%}</h1>{%- endif -%}
       </div>
 
       <div class="header__actions">
@@ -122,6 +132,7 @@
   </div>
   <div class="mobile-nav__body">
     {%- for link in section.settings.menu.links -%}
+      {%- if hidden_handle != blank and link.type == 'collection_link' and link.object.handle == hidden_handle -%}{%- continue -%}{%- endif -%}
       {%- if link.links.size > 0 -%}
         <button type="button" class="mobile-nav__link mobile-nav__toggle"
                 aria-expanded="false" aria-controls="MobileSub-{{ forloop.index }}">
@@ -131,8 +142,10 @@
         <div class="mobile-nav__sub" id="MobileSub-{{ forloop.index }}">
           <a href="{{ link.url }}"><strong>All {{ link.title }}</strong></a>
           {%- for child in link.links -%}
+{%- if hidden_handle != blank and child.type == 'collection_link' and child.object.handle == hidden_handle -%}{%- continue -%}{%- endif -%}
             <a href="{{ child.url }}">{{ child.title }}</a>
             {%- for grandchild in child.links -%}
+{%- if hidden_handle != blank and grandchild.type == 'collection_link' and grandchild.object.handle == hidden_handle -%}{%- continue -%}{%- endif -%}
               <a href="{{ grandchild.url }}" style="padding-left: 28px;">{{ grandchild.title }}</a>
             {%- endfor -%}
           {%- endfor -%}

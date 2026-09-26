@@ -27,6 +27,8 @@
           {%- for item in search.results -%}
             {%- if item.object_type == 'product' -%}
               {% render 'product-card', product: item, index: forloop.index %}
+            {%- elsif settings.hidden_collection.handle != blank and item.handle == settings.hidden_collection.handle -%}
+              {%- continue -%}
             {%- else -%}
               <div class="card">
                 <a class="card__media" href="{{ item.url }}">
