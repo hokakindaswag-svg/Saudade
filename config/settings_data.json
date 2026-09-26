@@ -78,20 +78,18 @@
           "text_color_scheme": "light",
           "fallback_color_1": "#F7B5C9",
           "fallback_color_2": "#C9B6FF",
-          "show_text_on_image": false,
-          "hero_button_label": "GET EARLY ACCESS",
           "show_announcement": true,
           "title_prefix": "COMING SOON - ",
           "card_button_label": "SIGN UP TO BE NOTIFIED",
           "heading": "THE WAFFLE SET",
-          "signup_heading": "THE WAFFLE SET",
           "subheading": "Shoppez le prochain drop en early access.",
           "email_placeholder": "Votre adresse email",
           "button_label": "GET EARLY ACCESS",
           "customer_tags": "early-access, waffle-set",
           "disclaimer": "",
           "success_heading": "YOU'RE IN.",
-          "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET."
+          "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET.",
+          "image_opacity": 55
         }
       }
     }

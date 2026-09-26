@@ -5,13 +5,14 @@
   Theme settings → Early access → "Enable Early Access Landing Page" is on.
 
   Layout, top to bottom:
-    1. Campaign image / video, full screen, under the transparent header.
+    1. Campaign image / video, full screen and dimmed, under the transparent
+       header, with the drop name and the email sign-up on top of it
+       (Shopify's native customer form: every submission creates or updates a
+       customer in Admin → Customers, subscribed to email marketing and
+       tagged with the tags set below).
     2. The drop's pieces ("Piece" blocks): photo carousel, name, a
        "sign up to be notified" button and the price. Nothing is purchasable;
        pieces are filled by hand so the products can stay Draft in Admin.
-    3. Email sign-up (Shopify's native customer form): every submission
-       creates or updates a customer in Admin → Customers, subscribed to email
-       marketing and tagged with the tags set below.
 {%- endcomment -%}
 
 {%- liquid
@@ -34,6 +35,7 @@
 
 <style>
   #shopify-section-{{ section.id }} {
+    --ea-image-opacity: {{ s.image_opacity | divided_by: 100.0 }};
     --ea-overlay: {{ s.overlay | divided_by: 100.0 }};
     --ea-fallback-1: {{ s.fallback_color_1 }};
     --ea-fallback-2: {{ s.fallback_color_2 }};
@@ -48,7 +50,7 @@
 </style>
 
 {%- comment -%} ---------- 1. Campaign ---------- {%- endcomment -%}
-<section class="ea ea--text-{{ s.text_color_scheme }}{% if media_mode == 'none' %} ea--no-media{% endif %}{% if s.show_text_on_image %} ea--with-text{% endif %}"
+<section class="ea ea--text-{{ s.text_color_scheme }}{% if media_mode == 'none' %} ea--no-media{% endif %}"
          {% unless s.show_announcement %}data-hide-announcement{% endunless %}
          aria-label="{{ s.heading | escape }}">
   <div class="ea__media">
@@ -99,19 +101,66 @@
     <div class="ea__overlay" aria-hidden="true"></div>
   </div>
 
-  {%- if s.show_text_on_image -%}
-    <div class="ea__panel">
-      <div class="ea__content">
-        <h1 class="ea__title">{{ s.heading }}</h1>
-        {%- if s.subheading != blank -%}<p class="ea__sub">{{ s.subheading }}</p>{%- endif -%}
-        {%- if s.hero_button_label != blank -%}
-          <a class="ea__btn" href="#{{ form_id }}" data-ea-notify>{{ s.hero_button_label }}</a>
+  <div class="ea__panel" id="EarlyAccess">
+    <div class="ea__content">
+      <h1 class="ea__title">{{ s.heading }}</h1>
+      {%- if s.subheading != blank -%}
+        <p class="ea__sub">{{ s.subheading }}</p>
+      {%- endif -%}
+
+      {%- form 'customer', id: form_id, class: 'ea__form', novalidate: 'novalidate', data-ea-form: '' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="ea__success" role="status" tabindex="-1" data-ea-success>
+            <p class="ea__success-title">{{ s.success_heading }}</p>
+            <p class="ea__success-text">{{ s.success_text }}</p>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="contact[tags]" value="{{ s.customer_tags | escape }}">
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+          <label class="visually-hidden" for="EarlyAccessEmail-{{ section.id }}">{{ s.email_placeholder }}</label>
+          <input class="ea__input"
+                 id="EarlyAccessEmail-{{ section.id }}"
+                 type="email"
+                 name="contact[email]"
+                 placeholder="{{ s.email_placeholder | escape }}"
+                 autocomplete="email"
+                 autocapitalize="off"
+                 autocorrect="off"
+                 spellcheck="false"
+                 inputmode="email"
+                 enterkeyhint="send"
+                 required
+                 aria-required="true"
+                 aria-describedby="EarlyAccessError-{{ section.id }}"
+                 {% if form.errors %}aria-invalid="true" value="{{ form.email | escape }}"{% endif %}
+                 data-ea-input>
+          <button type="submit" class="ea__btn" data-ea-submit>
+            <span class="btn__text">{{ s.button_label }}</span>
+          </button>
+
+          <p class="ea__error" id="EarlyAccessError-{{ section.id }}" role="alert" data-ea-error
+             data-msg-required="{{ 'sections.early_access.email_required' | t | escape }}"
+             data-msg-invalid="{{ 'sections.early_access.email_invalid' | t | escape }}"
+             {% unless form.errors %}hidden{% endunless %}>
+            {%- if form.errors -%}
+              {%- for field in form.errors -%}
+                {%- if field == 'form' -%}
+                  {{ form.errors.messages[field] }}
+                {%- else -%}
+                  {{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </p>
+
+          {%- if s.disclaimer != blank -%}
+            <p class="ea__disclaimer">{{ s.disclaimer }}</p>
+          {%- endif -%}
         {%- endif -%}
-      </div>
+      {%- endform -%}
     </div>
-  {%- else -%}
-    <h1 class="visually-hidden">{{ s.heading }}</h1>
-  {%- endif -%}
+  </div>
 </section>
 
 {%- comment -%} ---------- 2. The pieces ---------- {%- endcomment -%}
@@ -226,70 +275,6 @@
   </div>
 {%- endif -%}
 
-{%- comment -%} ---------- 3. Email sign-up ---------- {%- endcomment -%}
-<div class="ea-signup page-width" id="EarlyAccess">
-  <div class="ea-signup__inner">
-    {%- if s.signup_heading != blank -%}
-      <h2 class="ea-signup__title">{{ s.signup_heading }}</h2>
-    {%- endif -%}
-    {%- if s.subheading != blank -%}
-      <p class="ea-signup__sub">{{ s.subheading }}</p>
-    {%- endif -%}
-
-    {%- form 'customer', id: form_id, class: 'ea-signup__form', novalidate: 'novalidate', data-ea-form: '' -%}
-      {%- if form.posted_successfully? -%}
-        <div class="ea-signup__success" role="status" tabindex="-1" data-ea-success>
-          <p class="ea-signup__success-title">{{ s.success_heading }}</p>
-          <p class="ea-signup__success-text">{{ s.success_text }}</p>
-        </div>
-      {%- else -%}
-        <input type="hidden" name="contact[tags]" value="{{ s.customer_tags | escape }}">
-        <input type="hidden" name="contact[accepts_marketing]" value="true">
-
-        <label class="visually-hidden" for="EarlyAccessEmail-{{ section.id }}">{{ s.email_placeholder }}</label>
-        <input class="ea-signup__input"
-               id="EarlyAccessEmail-{{ section.id }}"
-               type="email"
-               name="contact[email]"
-               placeholder="{{ s.email_placeholder | escape }}"
-               autocomplete="email"
-               autocapitalize="off"
-               autocorrect="off"
-               spellcheck="false"
-               inputmode="email"
-               enterkeyhint="send"
-               required
-               aria-required="true"
-               aria-describedby="EarlyAccessError-{{ section.id }}"
-               {% if form.errors %}aria-invalid="true" value="{{ form.email | escape }}"{% endif %}
-               data-ea-input>
-        <button type="submit" class="ea-signup__btn" data-ea-submit>
-          <span class="btn__text">{{ s.button_label }}</span>
-        </button>
-
-        <p class="ea-signup__error" id="EarlyAccessError-{{ section.id }}" role="alert" data-ea-error
-           data-msg-required="{{ 'sections.early_access.email_required' | t | escape }}"
-           data-msg-invalid="{{ 'sections.early_access.email_invalid' | t | escape }}"
-           {% unless form.errors %}hidden{% endunless %}>
-          {%- if form.errors -%}
-            {%- for field in form.errors -%}
-              {%- if field == 'form' -%}
-                {{ form.errors.messages[field] }}
-              {%- else -%}
-                {{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-        </p>
-
-        {%- if s.disclaimer != blank -%}
-          <p class="ea-signup__disclaimer">{{ s.disclaimer }}</p>
-        {%- endif -%}
-      {%- endif -%}
-    {%- endform -%}
-  </div>
-</div>
-
 {% schema %}
 {
   "name": "Early access landing",
@@ -305,15 +290,14 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Campaign image (mobile)", "info": "Optional. A vertical 9:16 shot works best for TikTok / Instagram traffic." },
     { "type": "video", "id": "video", "label": "Campaign video", "info": "Optional. Overrides the images. Plays muted and looped." },
     { "type": "text", "id": "video_url", "label": "Or a video URL (.mp4)", "info": "Optional. Used when no video is picked above." },
-    { "type": "range", "id": "overlay", "min": 0, "max": 70, "step": 5, "unit": "%", "label": "Darkening behind the header", "default": 20 },
-    { "type": "select", "id": "text_color_scheme", "label": "Header colour over the image", "default": "light", "options": [
+    { "type": "range", "id": "image_opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "label": "Image opacity", "default": 55, "info": "Lower = darker image, so the text and form stand out." },
+    { "type": "range", "id": "overlay", "min": 0, "max": 70, "step": 5, "unit": "%", "label": "Extra shade behind the header", "default": 20 },
+    { "type": "select", "id": "text_color_scheme", "label": "Text colour over the image", "default": "light", "options": [
       { "value": "light", "label": "White" },
       { "value": "dark", "label": "Dark" }
     ]},
     { "type": "color", "id": "fallback_color_1", "label": "Background colour 1 (no image)", "default": "#F7B5C9" },
     { "type": "color", "id": "fallback_color_2", "label": "Background colour 2 (no image)", "default": "#C9B6FF" },
-    { "type": "checkbox", "id": "show_text_on_image", "label": "Show the title on the image", "default": false, "info": "Off: the image stays clean and the title sits above the email form." },
-    { "type": "text", "id": "hero_button_label", "label": "Button on the image", "default": "GET EARLY ACCESS", "info": "Only when the title is shown on the image. Scrolls to the email form." },
     { "type": "checkbox", "id": "show_announcement", "label": "Show the announcement bar", "default": true },
 
     { "type": "header", "content": "The pieces" },
@@ -321,9 +305,8 @@
     { "type": "text", "id": "card_button_label", "label": "Button under each piece", "default": "SIGN UP TO BE NOTIFIED", "info": "Scrolls to the email form." },
 
     { "type": "header", "content": "Email sign-up" },
-    { "type": "text", "id": "heading", "label": "Drop name", "default": "THE WAFFLE SET" },
-    { "type": "text", "id": "signup_heading", "label": "Sign-up title", "default": "THE WAFFLE SET" },
-    { "type": "text", "id": "subheading", "label": "Sign-up text", "default": "Shoppez le prochain drop en early access." },
+    { "type": "text", "id": "heading", "label": "Title", "default": "THE WAFFLE SET" },
+    { "type": "text", "id": "subheading", "label": "Text under the title", "default": "Shoppez le prochain drop en early access." },
     { "type": "text", "id": "email_placeholder", "label": "Email field placeholder", "default": "Votre adresse email" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "GET EARLY ACCESS" },
     { "type": "text", "id": "customer_tags", "label": "Customer tags", "default": "early-access, waffle-set", "info": "Added to every sign-up in Admin → Customers, so you can count and email the early-access list." },
