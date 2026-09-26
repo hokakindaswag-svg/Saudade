@@ -319,7 +319,18 @@
 
   /* ---------------- header behaviour ---------------- */
 
+  function syncAnnouncementHeight() {
+    var bar = $('.shopify-section--announcement');
+    var h = bar ? bar.offsetHeight : 0;
+    document.documentElement.style.setProperty('--announcement-h', h + 'px');
+  }
+
   function initHeader() {
+    syncAnnouncementHeight();
+    if (!window.__saudadeAnnResize) {
+      window.__saudadeAnnResize = true;
+      window.addEventListener('resize', syncAnnouncementHeight, { passive: true });
+    }
     var wrap = $('[data-header-wrap]');
     if (!wrap) return;
     var last = 0;

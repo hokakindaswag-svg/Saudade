@@ -196,8 +196,14 @@ select.input {
 
 /* ---------- Header ----------------------------------------------------- */
 
-.header-wrap { position: sticky; top: 0; z-index: 50; }
-.header-wrap--unstuck { position: relative; }
+/* The section wrappers (direct children of body) carry the stickiness: a
+   sticky element can only travel inside its parent. The announcement bar
+   sticks to the very top — which also lets Safari on iOS 26 tint the status
+   bar with its colour — and the header sticks right under it. */
+.shopify-section.shopify-section--announcement { position: sticky; top: 0; z-index: 60; }
+.shopify-section.shopify-section--header { position: sticky; top: var(--announcement-h, 0px); z-index: 50; }
+.shopify-section.shopify-section--header:has(.header-wrap--unstuck) { position: relative; top: auto; }
+.header-wrap { position: relative; z-index: 50; }
 
 .header {
   position: relative;
@@ -242,7 +248,10 @@ select.input {
 .header__action--cart { position: relative; }
 
 /* Transparent header over hero */
-.header--transparent { margin-bottom: calc(-1 * var(--header-height)); }
+/* The overlap is set on the sticky section wrapper itself (not on the inner
+   element) so the negative margin doesn't collapse through and break sticking. */
+.shopify-section--header { display: flow-root; }
+.shopify-section--header:has(.header--transparent) { margin-bottom: calc(-1 * var(--header-height)); }
 .header--transparent .header { background: transparent; color: #fff; }
 .header--transparent.is-scrolled .header,
 .header--transparent .header:hover,
@@ -495,7 +504,7 @@ body.is-locked { overflow: hidden; }
 .collection-hero__content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #fff; text-align: center; background: rgba(0,0,0,.18); }
 
 .facets {
-  position: sticky; top: var(--header-height); z-index: 20;
+  position: sticky; top: calc(var(--header-height) + var(--announcement-h, 0px)); z-index: 20;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-line);
   border-top: 1px solid var(--color-line);
@@ -538,7 +547,7 @@ body.is-locked { overflow: hidden; }
 .product { display: grid; gap: 0; }
 @media screen and (min-width: 990px) {
   .product { grid-template-columns: minmax(0, 1.35fr) minmax(380px, 0.65fr); align-items: start; }
-  .product__info-wrap { position: sticky; top: calc(var(--header-height) + 20px); padding: 40px clamp(24px, 4vw, 70px) 60px; }
+  .product__info-wrap { position: sticky; top: calc(var(--header-height) + var(--announcement-h, 0px) + 20px); padding: 40px clamp(24px, 4vw, 70px) 60px; }
 }
 
 .product__media { display: grid; gap: 4px; }
