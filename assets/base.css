@@ -57,8 +57,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   position: absolute !important; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
-.skip-link { position: absolute; top: -100px; left: var(--gutter); z-index: 200; }
-.skip-link:focus { top: 10px; }
+/* .btn.skip-link: must outrank `.btn { position: relative }` further down,
+   otherwise the hidden link stays in the flow and leaves a blank strip at
+   the top of every page. */
+.btn.skip-link { position: absolute; top: -100px; left: var(--gutter); z-index: 200; }
+.btn.skip-link:focus { top: 10px; }
 
 /* ---------- Type scale ------------------------------------------------- */
 
