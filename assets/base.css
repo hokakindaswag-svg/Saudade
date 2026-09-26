@@ -1177,7 +1177,7 @@ input:checked + .option__swatch { box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 3
 .cs__head { text-align: center; margin-bottom: 26px; }
 .cs__eyebrow { margin: 0 0 8px; font-size: 1.1rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--color-accent); }
 .cs__title { font-family: var(--font-body); font-weight: 500; font-size: clamp(2.2rem, 3vw, 3.2rem); letter-spacing: .06em; text-transform: uppercase; }
-.cs__grid { max-width: 1280px; margin-inline: auto; }
+.cs__grid { max-width: 1040px; margin-inline: auto; }
 .cs-card .card__media { position: relative; }
 .cs-card .card__media .waffle-fallback { position: absolute; inset: 0; }
 .cs-card__badge { background: var(--color-text); color: var(--color-bg); }

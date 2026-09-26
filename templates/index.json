@@ -20,7 +20,7 @@
         "desktop_video_fit": "cover",
         "fallback_color_1": "#F7B5C9",
         "fallback_color_2": "#C9B6FF",
-        "cta_link": "shopify://products/the-waffle-set-camo"
+        "cta_link": "shopify://products/the-waffle-hoodie-camo"
       }
     },
     "new-drop": {
@@ -32,7 +32,7 @@
         "reverse": false,
         "bg": "#FBF8F6",
         "text_color": "#141110",
-        "product": "the-waffle-set-camo"
+        "product": "the-waffle-hoodie-camo"
       }
     },
     "products": {
