@@ -64,7 +64,11 @@
         </video>
 
       {%- when 'image' -%}
-        <img class="ea__img ea__img--desktop{% if s.image_mobile != blank %} ea__img--has-mobile{% endif %}"
+        {%- if s.image.aspect_ratio < 1 -%}
+          {%- comment -%} Portrait photo: on desktop show it whole over a blurred copy instead of a heavy crop. {%- endcomment -%}
+          <div class="ea__backdrop" style="background-image: url({{ s.image | image_url: width: 600 }});" aria-hidden="true"></div>
+        {%- endif -%}
+        <img class="ea__img ea__img--desktop{% if s.image.aspect_ratio < 1 %} ea__img--portrait{% endif %}{% if s.image_mobile != blank %} ea__img--has-mobile{% endif %}"
              src="{{ s.image | image_url: width: 2000 }}"
              srcset="{{ s.image | image_url: width: 750 }} 750w,
                      {{ s.image | image_url: width: 1100 }} 1100w,
