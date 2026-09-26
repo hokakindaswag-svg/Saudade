@@ -145,6 +145,21 @@
     <a class="skip-link btn btn--primary" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}
+    <script>
+      /* Tint the browser/status bar with the colour at the very top of the
+         page (the announcement bar when shown) so there is no pale strip
+         above it on iPhone. */
+      (function () {
+        var meta = document.querySelector('meta[name="theme-color"]');
+        var bar = document.querySelector('.announcement');
+        if (!meta) return;
+        if (bar && bar.offsetHeight) {
+          meta.setAttribute('content', getComputedStyle(bar).backgroundColor);
+        } else if (document.querySelector('.ea')) {
+          meta.setAttribute('content', '#141110'); /* dark campaign image right under the status bar */
+        }
+      })();
+    </script>
 
     <main id="MainContent" class="main" role="main" tabindex="-1">
       {%- if early_access -%}
