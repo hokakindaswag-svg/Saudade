@@ -220,6 +220,18 @@
       return;
     }
 
+    var notify = t.closest('[data-ea-notify]');
+    if (notify) {
+      var eaForm = document.getElementById('EarlyAccessForm');
+      if (eaForm) {
+        e.preventDefault();
+        var eaInput = eaForm.querySelector('[data-ea-input]');
+        eaForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (eaInput) setTimeout(function () { eaInput.focus({ preventScroll: true }); }, 450);
+      }
+      return;
+    }
+
     var remove = t.closest('[data-cart-remove]');
     if (remove) {
       e.preventDefault();

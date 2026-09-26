@@ -55,7 +55,12 @@
       "size_label": "Size",
       "color_label": "Colour",
       "choose_size": "Choose size",
-      "model": "Model"
+      "model": "Model",
+      "coming_soon": "Coming soon",
+      "waitlist_placeholder": "Votre adresse email",
+      "waitlist_button": "Get early access",
+      "waitlist_success_title": "YOU'RE IN.",
+      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}."
     },
     "facets": {
       "filter": "Filter",

@@ -37,6 +37,11 @@
   if show_quick_add == false
     assign quick_add = false
   endif
+  assign is_coming_soon = false
+  if product.tags contains 'coming-soon'
+    assign is_coming_soon = true
+    assign quick_add = false
+  endif
 
   assign main_media = product.featured_media
   assign hover_media = null
@@ -104,7 +109,9 @@
     {%- endif -%}
 
     <div class="card__badges">
-      {%- if product.available == false and settings.card_show_sold_out -%}
+      {%- if is_coming_soon -%}
+        <span class="badge cs-card__badge">{{ 'products.product.coming_soon' | t }}</span>
+      {%- elsif product.available == false and settings.card_show_sold_out -%}
         <span class="badge badge--sold">{{ 'products.product.sold_out' | t }}</span>
       {%- elsif product.compare_at_price > product.price -%}
         <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>

@@ -1168,3 +1168,39 @@ input:checked + .option__swatch { box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 3
 
 .hero .waffle-fallback { z-index: 0; }
 .editorial__media > .waffle-fallback { position: absolute; inset: 0; }
+
+/* ==========================================================================
+   Coming soon preview (under the early-access campaign) + waitlist on PDP
+   ========================================================================== */
+
+.cs { padding-top: calc(var(--section-spacing) * .8); }
+.cs__head { text-align: center; margin-bottom: 26px; }
+.cs__eyebrow { margin: 0 0 8px; font-size: 1.1rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--color-accent); }
+.cs__title { font-family: var(--font-body); font-weight: 500; font-size: clamp(2.2rem, 3vw, 3.2rem); letter-spacing: .06em; text-transform: uppercase; }
+.cs__grid { max-width: 1280px; margin-inline: auto; }
+.cs-card .card__media { position: relative; }
+.cs-card .card__media .waffle-fallback { position: absolute; inset: 0; }
+.cs-card__badge { background: var(--color-text); color: var(--color-bg); }
+.cs-card__stock {
+  display: flex; align-items: center; gap: 7px; margin: 2px 0 0;
+  font-size: 1.05rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.cs-card__dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: csPulse 1.8s ease-in-out infinite; }
+@keyframes csPulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+.cs-card__bar { height: 3px; margin-top: 4px; background: var(--color-line); overflow: hidden; }
+.cs-card__bar span { display: block; height: 100%; background: var(--color-accent); }
+.cs-card__notify {
+  align-self: flex-start; margin-top: 6px;
+  font-size: 1.05rem; font-weight: 500; letter-spacing: var(--ui-tracking); text-transform: uppercase;
+  border-bottom: 1px solid currentColor; padding-bottom: 1px;
+  position: relative; z-index: 2;
+}
+.cs-card__notify:hover { color: var(--color-accent); }
+
+.product-waitlist { margin-top: 24px; display: grid; gap: 10px; }
+.product-waitlist__label { font-size: 1.2rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--color-accent); }
+.product-waitlist__form { display: grid; gap: 10px; }
+.product-waitlist__input { min-height: 52px; font-size: 1.6rem; }
+.product-waitlist__success-title { font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: 1.8rem; }
+.product-waitlist__success:focus { outline: none; }

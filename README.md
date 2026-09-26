@@ -40,6 +40,15 @@ shopify theme check          # passes clean
   working.
 - **OFF** — the normal homepage (`templates/index.json`) is shown.
 
+Under the campaign, the **Coming soon products** section previews the drop:
+image, name, price, a COMING SOON badge and an optional stock line / bar per
+piece. Cards are filled by hand in the Theme Editor (so products can stay
+Draft) or linked to a product once it is active. Nothing can be bought — every
+card scrolls to the email form.
+
+A product tagged **`coming-soon`** shows a COMING SOON badge in grids and an
+email form instead of Add to cart on its product page.
+
 Sign-ups use Shopify's native customer form: each email becomes a customer in
 **Admin → Customers**, subscribed to email marketing and tagged
 `early-access, waffle-set` (editable). After submitting, the visitor sees

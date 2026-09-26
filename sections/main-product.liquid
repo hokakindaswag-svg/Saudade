@@ -1,4 +1,8 @@
 {%- liquid
+  assign is_coming_soon = false
+  if product.tags contains 'coming-soon'
+    assign is_coming_soon = true
+  endif
   assign current_variant = product.selected_or_first_available_variant
   assign color_name = settings.swatch_option_name | downcase
 -%}
@@ -141,6 +145,36 @@
           {%- endunless -%}
 
         {%- when 'buy_buttons' -%}
+          {%- if is_coming_soon -%}
+            <div class="product-waitlist" {{ block.shopify_attributes }}>
+              <p class="product-waitlist__label">{{ 'products.product.coming_soon' | t }}</p>
+              {%- form 'customer', id: 'ProductWaitlist', class: 'product-waitlist__form', novalidate: 'novalidate', data-ea-form: '' -%}
+                {%- if form.posted_successfully? -%}
+                  <div class="product-waitlist__success" role="status" tabindex="-1" data-ea-success>
+                    <p class="product-waitlist__success-title">{{ 'products.product.waitlist_success_title' | t }}</p>
+                    <p>{{ 'products.product.waitlist_success_text' | t: product: product.title }}</p>
+                  </div>
+                {%- else -%}
+                  <input type="hidden" name="contact[tags]" value="early-access, waitlist, {{ product.handle }}">
+                  <input type="hidden" name="contact[accepts_marketing]" value="true">
+                  <label class="visually-hidden" for="WaitlistEmail">{{ 'products.product.waitlist_placeholder' | t }}</label>
+                  <input class="input product-waitlist__input" id="WaitlistEmail" type="email" name="contact[email]"
+                         placeholder="{{ 'products.product.waitlist_placeholder' | t }}" autocomplete="email" inputmode="email"
+                         required aria-describedby="WaitlistError" data-ea-input
+                         {% if form.errors %}aria-invalid="true" value="{{ form.email | escape }}"{% endif %}>
+                  <button type="submit" class="btn btn--primary btn--full btn--lg" data-ea-submit>
+                    <span class="btn__text">{{ 'products.product.waitlist_button' | t }}</span>
+                  </button>
+                  <p class="product-form__error" id="WaitlistError" role="alert" data-ea-error
+                     data-msg-required="{{ 'sections.early_access.email_required' | t | escape }}"
+                     data-msg-invalid="{{ 'sections.early_access.email_invalid' | t | escape }}"
+                     {% unless form.errors %}hidden{% endunless %}>
+                    {%- if form.errors -%}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}{%- endif -%}
+                  </p>
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+          {%- else -%}
           <div {{ block.shopify_attributes }} data-atc-anchor>
             {%- form 'product', product, id: 'ProductForm', class: 'product-form', novalidate: 'novalidate', data-product-form: 'true' -%}
               <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -179,6 +213,7 @@
               </p>
             {%- endif -%}
           </div>
+          {%- endif -%}
 
         {%- when 'trust' -%}
           <ul class="product__trust" {{ block.shopify_attributes }}>
@@ -281,7 +316,7 @@
 </script>
 
 {%- comment -%} ---------- Sticky mobile add to cart ---------- {%- endcomment -%}
-{%- if section.settings.sticky_atc -%}
+{%- if section.settings.sticky_atc and is_coming_soon == false -%}
   <div class="sticky-atc" data-sticky-atc>
     <div class="sticky-atc__info">
       <p class="sticky-atc__title">{{ product.title }}</p>

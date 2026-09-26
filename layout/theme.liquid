@@ -149,14 +149,13 @@
     <main id="MainContent" class="main" role="main" tabindex="-1">
       {%- if early_access -%}
         {% section 'early-access' %}
+        {% section 'coming-soon' %}
       {%- else -%}
         {{ content_for_layout }}
       {%- endif -%}
     </main>
 
-    {%- unless early_access -%}
-      {% sections 'footer-group' %}
-    {%- endunless -%}
+    {% sections 'footer-group' %}
 
     {%- if settings.cart_type == 'drawer' -%}
       {% section 'cart-drawer' %}
