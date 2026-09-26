@@ -16,7 +16,7 @@
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "size_guide_text": "<p><strong>Fitted, second-skin feel.</strong> The waffle knit stretches with you — take your usual size.</p><p>Between two sizes? Size up for a softer, more relaxed fit.</p>"
+            "size_guide_text": "<p><strong>True to size.</strong> Fitted hoodie / relaxed pants.</p><p>The hoodie is intentionally cropped and close to the body, while the pants have a looser, elongated silhouette.</p><p>Between sizes? Size up for a more relaxed fit.</p>"
           }
         },
         "buy_buttons": {
@@ -48,15 +48,15 @@
           "settings": {
             "heading": "Fit & sizing",
             "metafield_key": "fit",
-            "fallback": "<p>Fitted silhouette that hugs the body. Stretchy waffle knit for all-day comfort. True to size.</p>"
+            "fallback": "<p>True to size · fitted hoodie / relaxed pants.</p>"
           }
         },
         "materials": {
           "type": "metafield_accordion",
           "settings": {
-            "heading": "Material & care",
+            "heading": "Fabric & care",
             "metafield_key": "materials",
-            "fallback": "<p>Waffle-textured cotton + elastane.</p><p>Machine wash cold, inside out. Do not tumble dry. Dry flat.</p>"
+            "fallback": "<p>Waffle-textured cotton + elastane blend.</p>"
           }
         },
         "shipping": {
