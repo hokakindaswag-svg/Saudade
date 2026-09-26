@@ -67,7 +67,7 @@
           "type": "text",
           "settings": {
             "heading": "Contact",
-            "text": "<p>hello@saudade.com<br/>Mon–Fri, 9–17 CET</p>"
+            "text": "<p><a href=\"mailto:sacredsaudade@gmail.com\">sacredsaudade@gmail.com</a><br/>Mon–Fri, 9–17 CET</p>"
           }
         },
         "f4": {

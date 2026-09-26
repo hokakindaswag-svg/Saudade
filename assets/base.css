@@ -837,12 +837,21 @@ input:checked + .option__swatch { box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 3
 /* ---------- Toast ------------------------------------------------------ */
 
 .toast {
-  position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 130%);
+  position: fixed; left: 50%; bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+  transform: translate(-50%, 20px);
   background: var(--color-text); color: var(--color-bg);
   padding: 12px 20px; border-radius: var(--radius); font-size: 1.2rem; z-index: 130;
-  transition: transform .35s cubic-bezier(.4,0,.2,1); max-width: calc(100vw - 40px); text-align: center;
+  max-width: calc(100vw - 40px); text-align: center;
+  /* Fully hidden when idle: sliding it below the fold isn't enough on iOS 26,
+     where the page extends under Safari's floating toolbar. */
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .25s ease, visibility 0s linear .35s;
 }
-.toast.is-visible { transform: translate(-50%, 0); }
+.toast:empty { display: none; }
+.toast.is-visible {
+  transform: translate(-50%, 0); opacity: 1; visibility: visible; pointer-events: auto;
+  transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .25s ease, visibility 0s;
+}
 
 /* ---------- Reveal animations ------------------------------------------ */
 
