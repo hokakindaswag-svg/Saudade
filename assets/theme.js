@@ -690,6 +690,54 @@
     });
   });
 
+  /* ---------------- early access: photo carousels + grid view ---------------- */
+
+  function initEarlyAccessGrid() {
+    $$('[data-ea-slider]').forEach(function (slider) {
+      if (slider.dataset.bound === 'true') return;
+      slider.dataset.bound = 'true';
+      var track = $('[data-ea-track]', slider);
+      var dots = $$('[data-ea-dot]', slider);
+      if (!track || dots.length < 2) return;
+      var raf;
+      on(track, 'scroll', function () {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function () {
+          var idx = Math.round(track.scrollLeft / track.clientWidth);
+          dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
+        });
+      }, { passive: true });
+      dots.forEach(function (dot) {
+        on(dot, 'click', function (e) {
+          e.preventDefault();
+          var i = parseInt(dot.getAttribute('data-ea-dot'), 10) || 0;
+          track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+        });
+      });
+    });
+
+    var grid = $('[data-ea-grid]');
+    var buttons = $$('[data-ea-view]');
+    if (!grid || !buttons.length || grid.dataset.bound === 'true') return;
+    grid.dataset.bound = 'true';
+    function setView(view) {
+      grid.setAttribute('data-view', view);
+      buttons.forEach(function (b) {
+        var active = b.getAttribute('data-ea-view') === view;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+    }
+    try { var saved = localStorage.getItem('saudade-ea-view'); if (saved) setView(saved); } catch (err) {}
+    buttons.forEach(function (b) {
+      on(b, 'click', function () {
+        var view = b.getAttribute('data-ea-view');
+        setView(view);
+        try { localStorage.setItem('saudade-ea-view', view); } catch (err) {}
+      });
+    });
+  }
+
   /* ---------------- init ---------------- */
 
   function initAll() {
@@ -701,6 +749,7 @@
     initCartRecs();
     initSwatches();
     initEarlyAccess();
+    initEarlyAccessGrid();
     $$('[data-product-root]').forEach(ProductPage);
   }
 
@@ -713,7 +762,7 @@
 
   // Theme editor support
   document.addEventListener('shopify:section:load', function (e) {
-    initHeader(); initAnnouncement(); initReveal(); initSearch(); initCartRecs(); initEarlyAccess();
+    initHeader(); initAnnouncement(); initReveal(); initSearch(); initCartRecs(); initEarlyAccess(); initEarlyAccessGrid();
     $$('[data-product-root]', e.target).forEach(ProductPage);
   });
   document.addEventListener('shopify:section:select', function (e) {

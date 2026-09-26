@@ -8,27 +8,21 @@
         "m1": {
           "type": "message",
           "settings": {
-            "text": "NEW DROP — SHOP NOW",
-            "link": "shopify://collections/all"
+            "text": "THE WAFFLE SET — COMING SOON",
+            "link": ""
           }
         },
         "m2": {
           "type": "message",
           "settings": {
-            "text": "FREE SHIPPING OVER €150"
-          }
-        },
-        "m3": {
-          "type": "message",
-          "settings": {
-            "text": "EASY 14-DAY RETURNS"
+            "text": "JOIN THE LIST FOR EARLY ACCESS",
+            "link": "/#EarlyAccess"
           }
         }
       },
       "block_order": [
         "m1",
-        "m2",
-        "m3"
+        "m2"
       ],
       "settings": {
         "bg": "#FF2E88",

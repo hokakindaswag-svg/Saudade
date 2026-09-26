@@ -104,7 +104,12 @@
     "early_access": {
       "email_invalid": "Merci d'entrer une adresse email valide.",
       "email_required": "Merci d'entrer ton adresse email.",
-      "error_generic": "Oups, quelque chose n'a pas marché. Réessaie."
+      "error_generic": "Oups, quelque chose n'a pas marché. Réessaie.",
+      "items": "Items: {{ count }}",
+      "view": "Grid view",
+      "view_large": "Large pictures",
+      "view_grid": "Two per row",
+      "photo": "Photo {{ number }} of {{ total }}"
     }
   },
   "customer": {

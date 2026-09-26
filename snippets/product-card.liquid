@@ -110,7 +110,7 @@
 
     <div class="card__badges">
       {%- if is_coming_soon -%}
-        <span class="badge cs-card__badge">{{ 'products.product.coming_soon' | t }}</span>
+        <span class="badge badge--soon">{{ 'products.product.coming_soon' | t }}</span>
       {%- elsif product.available == false and settings.card_show_sold_out -%}
         <span class="badge badge--sold">{{ 'products.product.sold_out' | t }}</span>
       {%- elsif product.compare_at_price > product.price -%}

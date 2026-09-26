@@ -96,7 +96,7 @@
         </button>
 
         {%- if shop.customer_accounts_enabled -%}
-          <a class="header__action" href="{{ routes.account_url }}" aria-label="{{ 'sections.header.account' | t }}">
+          <a class="header__action header__action--account" href="{{ routes.account_url }}" aria-label="{{ 'sections.header.account' | t }}">
             {% render 'icon', icon: 'account' %}
             <span class="header__action-label">{{ 'sections.header.account' | t }}</span>
           </a>
@@ -109,13 +109,7 @@
           <a class="header__action header__action--cart" href="{{ routes.cart_url }}"
              aria-label="{{ 'sections.header.cart_count' | t: count: cart.item_count }}">
         {%- endif -%}
-          {% render 'icon', icon: 'cart' %}
-          <span class="header__action-label">{{ 'sections.cart.title' | t }}</span>
-          <span data-cart-icon-bubble>
-            {%- if cart.item_count > 0 -%}
-              <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
-            {%- endif -%}
-          </span>
+          <span class="header__cart-text">{{ 'sections.cart.title' | t }} <span data-cart-icon-bubble>(<span data-cart-count>{{ cart.item_count }}</span>)</span></span>
         {%- if settings.cart_type == 'drawer' -%}</button>{%- else -%}</a>{%- endif -%}
       </div>
     </div>

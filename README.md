@@ -33,18 +33,18 @@ shopify theme check          # passes clean
 
 **Theme settings → Early access → Enable Early Access Landing Page**
 
-- **ON** — the homepage is replaced by the early-access campaign
-  (`sections/early-access.liquid`): full-screen image/video, THE WAFFLE SET,
-  email field, GET EARLY ACCESS. Edit it in the Theme Editor on the homepage
+- **ON** — the homepage is replaced by the early-access page
+  (`sections/early-access.liquid`). Edit it in the Theme Editor on the homepage
   ("Early access landing"). Products, collections, cart and account pages keep
   working.
 - **OFF** — the normal homepage (`templates/index.json`) is shown.
 
-Under the campaign, the **Coming soon products** section previews the drop:
-image, name, price, a COMING SOON badge and an optional stock line / bar per
-piece. Cards are filled by hand in the Theme Editor (so products can stay
-Draft) or linked to a product once it is active. Nothing can be bought — every
-card scrolls to the email form.
+The landing reads top to bottom like a drop page: full-screen campaign image
+(no text by default) → the pieces ("Piece" blocks: photo carousel,
+"COMING SOON - name", SIGN UP TO BE NOTIFIED, price, optional stock line) →
+the email sign-up → the site footer. Pieces are filled by hand in the Theme
+Editor so products can stay Draft; nothing can be bought, every button scrolls
+to the email form.
 
 A product tagged **`coming-soon`** shows a COMING SOON badge in grids and an
 email form instead of Add to cart on its product page.
