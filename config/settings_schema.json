@@ -189,8 +189,7 @@
         "min": 0,
         "max": 20,
         "step": 1,
-        "unit": "/100em",
-        "label": "UI letter-spacing",
+        "label": "UI letter-spacing (hundredths of an em)",
         "default": 8
       }
     ]
