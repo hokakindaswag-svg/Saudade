@@ -275,6 +275,33 @@
   </div>
 {%- endif -%}
 
+{%- comment -%} ---------- 3. Available now (in stock, buyable) ---------- {%- endcomment -%}
+{%- liquid
+  assign avail = s.available_collection
+  assign avail_count = 0
+  if avail != blank
+    for product in avail.products limit: 12
+      unless product.tags contains 'coming-soon'
+        assign avail_count = avail_count | plus: 1
+      endunless
+    endfor
+  endif
+-%}
+{%- if avail_count > 0 -%}
+  <div class="ea-avail page-width" id="AvailableNow">
+    <div class="section-head">
+      <h2 class="section-title">{{ s.available_heading }}</h2>
+      <a class="section-head__link" href="{{ avail.url }}">{{ 'general.search.view_all' | t }}</a>
+    </div>
+    <div class="product-grid" style="--cols: {{ avail_count | at_most: 4 }}; --cols-tablet: {{ avail_count | at_most: 3 }}; --cols-mobile: 2;">
+      {%- for product in avail.products limit: 12 -%}
+        {%- if product.tags contains 'coming-soon' -%}{%- continue -%}{%- endif -%}
+        {% render 'product-card', product: product, index: forloop.index %}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Early access landing",
@@ -304,6 +331,9 @@
     { "type": "text", "id": "title_prefix", "label": "Before each name", "default": "COMING SOON - " },
     { "type": "text", "id": "card_button_label", "label": "Button under each piece", "default": "SIGN UP TO BE NOTIFIED", "info": "Scrolls to the email form." },
 
+    { "type": "header", "content": "Available now" },
+    { "type": "collection", "id": "available_collection", "label": "In-stock collection", "info": "Shown under the coming-soon pieces with Add to cart. Leave empty to hide." },
+    { "type": "text", "id": "available_heading", "label": "Heading", "default": "AVAILABLE NOW" },
     { "type": "header", "content": "Email sign-up" },
     { "type": "text", "id": "heading", "label": "Title", "default": "THE WAFFLE SET" },
     { "type": "text", "id": "subheading", "label": "Text under the title", "default": "Shoppez le prochain drop en early access." },

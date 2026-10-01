@@ -38,7 +38,7 @@
     "currency_code_enabled": false,
     "brand_name": "SAUDADE",
     "early_access_enabled": true,
-    "hidden_collection": "the-sun-set",
+    "hidden_collection": "",
     "hidden_tag": "",
     "sections": {
       "early-access": {
@@ -89,7 +89,9 @@
           "disclaimer": "",
           "success_heading": "YOU'RE IN.",
           "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET.",
-          "image_opacity": 55
+          "image_opacity": 55,
+          "available_collection": "the-sun-set",
+          "available_heading": "AVAILABLE NOW"
         }
       }
     }
