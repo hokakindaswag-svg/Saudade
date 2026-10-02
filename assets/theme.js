@@ -388,8 +388,10 @@
     var addBtn = $('[data-add-button]', root);
     var addText = addBtn ? addBtn.querySelector('.btn__text') : null;
     var variants = [];
-    var dataEl = $('[data-variants-json]', root);
+    var dataEl = $('[data-variants-json]', root) || (root.parentElement && $('[data-variants-json]', root.parentElement));
     if (dataEl) { try { variants = JSON.parse(dataEl.textContent); } catch (err) { variants = []; } }
+    // Without variant data, keep the server-rendered button and variant as they are.
+    if (!variants.length) return;
 
     function selectedOptions() {
       return $$('[data-option-input]:checked', root).map(function (i) { return i.value; });

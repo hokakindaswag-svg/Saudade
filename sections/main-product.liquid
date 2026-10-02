@@ -297,23 +297,25 @@
       {%- endcase -%}
     {%- endfor -%}
   </div>
+
+  {%- comment -%} Must stay inside [data-product-root]: theme.js looks it up there. {%- endcomment -%}
+  <script type="application/json" data-variants-json>
+  [
+    {%- for v in product.variants -%}
+      {
+        "id": {{ v.id }},
+        "options": {{ v.options | json }},
+        "price": {{ v.price }},
+        "compare_at_price": {{ v.compare_at_price | default: 0 }},
+        "available": {{ v.available }},
+        "featured_media_id": {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+  </script>
 </div>
 
-{%- comment -%} ---------- Data for JS ---------- {%- endcomment -%}
-<script type="application/json" data-variants-json>
-[
-  {%- for v in product.variants -%}
-    {
-      "id": {{ v.id }},
-      "options": {{ v.options | json }},
-      "price": {{ v.price }},
-      "compare_at_price": {{ v.compare_at_price | default: 0 }},
-      "available": {{ v.available }},
-      "featured_media_id": {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}
-    }{% unless forloop.last %},{% endunless %}
-  {%- endfor -%}
-]
-</script>
+
 
 {%- comment -%} ---------- Sticky mobile add to cart ---------- {%- endcomment -%}
 {%- if section.settings.sticky_atc and is_coming_soon == false -%}
