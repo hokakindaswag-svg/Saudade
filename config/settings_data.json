@@ -100,7 +100,11 @@
           "customer_tags": "early-access, waffle-set",
           "disclaimer": "",
           "success_heading": "YOU'RE IN.",
-          "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET."
+          "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET.",
+          "subheading_en": "Shop the next drop in early access.",
+          "email_placeholder_en": "Your email address",
+          "disclaimer_en": "",
+          "success_text_en": "You'll be among the first to shop THE WAFFLE SET."
         }
       }
     }

@@ -1,4 +1,8 @@
 {%- liquid
+  assign use_fr = false
+  if request.locale.iso_code == 'fr' or localization.country.iso_code == 'FR'
+    assign use_fr = true
+  endif
   assign is_coming_soon = false
   if product.tags contains 'coming-soon'
     assign is_coming_soon = true
@@ -156,22 +160,23 @@
                 {%- if form.posted_successfully? -%}
                   <div class="product-waitlist__success" role="status" tabindex="-1" data-ea-success>
                     <p class="product-waitlist__success-title">{{ 'products.product.waitlist_success_title' | t }}</p>
-                    <p>{{ 'products.product.waitlist_success_text' | t: product: product.title }}</p>
+                    <p>{%- if use_fr -%}{{ 'products.product.waitlist_success_text_fr' | t: product: product.title }}{%- else -%}{{ 'products.product.waitlist_success_text' | t: product: product.title }}{%- endif -%}</p>
                   </div>
                 {%- else -%}
                   <input type="hidden" name="contact[tags]" value="early-access, waitlist, {{ product.handle }}">
                   <input type="hidden" name="contact[accepts_marketing]" value="true">
-                  <label class="visually-hidden" for="WaitlistEmail">{{ 'products.product.waitlist_placeholder' | t }}</label>
+                  {%- if use_fr -%}{%- assign wl_placeholder = 'products.product.waitlist_placeholder_fr' | t -%}{%- assign wl_req = 'sections.early_access.email_required_fr' | t -%}{%- assign wl_inv = 'sections.early_access.email_invalid_fr' | t -%}{%- else -%}{%- assign wl_placeholder = 'products.product.waitlist_placeholder' | t -%}{%- assign wl_req = 'sections.early_access.email_required' | t -%}{%- assign wl_inv = 'sections.early_access.email_invalid' | t -%}{%- endif -%}
+                  <label class="visually-hidden" for="WaitlistEmail">{{ wl_placeholder }}</label>
                   <input class="input product-waitlist__input" id="WaitlistEmail" type="email" name="contact[email]"
-                         placeholder="{{ 'products.product.waitlist_placeholder' | t }}" autocomplete="email" inputmode="email"
+                         placeholder="{{ wl_placeholder | escape }}" autocomplete="email" inputmode="email"
                          required aria-describedby="WaitlistError" data-ea-input
                          {% if form.errors %}aria-invalid="true" value="{{ form.email | escape }}"{% endif %}>
                   <button type="submit" class="btn btn--primary btn--full btn--lg" data-ea-submit>
                     <span class="btn__text">{{ 'products.product.waitlist_button' | t }}</span>
                   </button>
                   <p class="product-form__error" id="WaitlistError" role="alert" data-ea-error
-                     data-msg-required="{{ 'sections.early_access.email_required' | t | escape }}"
-                     data-msg-invalid="{{ 'sections.early_access.email_invalid' | t | escape }}"
+                     data-msg-required="{{ wl_req | escape }}"
+                     data-msg-invalid="{{ wl_inv | escape }}"
                      {% unless form.errors %}hidden{% endunless %}>
                     {%- if form.errors -%}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}{%- endif -%}
                   </p>

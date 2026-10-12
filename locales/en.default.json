@@ -66,13 +66,15 @@
       "choose_size": "Choose size",
       "model": "Model",
       "coming_soon": "Coming soon",
-      "waitlist_placeholder": "Votre adresse email",
+      "waitlist_placeholder": "Your email address",
       "waitlist_button": "Get early access",
       "waitlist_success_title": "YOU'RE IN.",
-      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}.",
+      "waitlist_success_text": "You'll be among the first to shop {{ product }}.",
       "taxes_included": "Tax included.",
       "taxes_at_checkout": "Taxes calculated at checkout.",
-      "free_shipping": "Free shipping on every order."
+      "free_shipping": "Free shipping on every order.",
+      "waitlist_placeholder_fr": "Votre adresse email",
+      "waitlist_success_text_fr": "Tu seras parmi les premières à pouvoir shopper {{ product }}."
     },
     "facets": {
       "filter": "Filter",
@@ -116,14 +118,16 @@
       "menu": "Menu"
     },
     "early_access": {
-      "email_invalid": "Merci d'entrer une adresse email valide.",
-      "email_required": "Merci d'entrer ton adresse email.",
-      "error_generic": "Oups, quelque chose n'a pas marché. Réessaie.",
+      "email_invalid": "Please enter a valid email address.",
+      "email_required": "Please enter your email address.",
+      "error_generic": "Oops, something went wrong. Please try again.",
       "items": "Items: {{ count }}",
       "view": "Grid view",
       "view_large": "Large pictures",
       "view_grid": "Two per row",
-      "photo": "Photo {{ number }} of {{ total }}"
+      "photo": "Photo {{ number }} of {{ total }}",
+      "email_required_fr": "Merci d'entrer ton adresse email.",
+      "email_invalid_fr": "Merci d'entrer une adresse email valide."
     }
   },
   "customer": {
