@@ -186,6 +186,9 @@
           assign p = block.settings.product
           assign title = block.settings.title
           assign price_text = block.settings.price
+          if cart.currency.iso_code == 'USD' and block.settings.price_usd != blank
+            assign price_text = block.settings.price_usd
+          endif
           assign manual_images = ''
           if block.settings.image_1 != blank
             assign manual_images = 'x'
@@ -350,7 +353,8 @@
       "name": "Piece",
       "settings": [
         { "type": "text", "id": "title", "label": "Name" },
-        { "type": "text", "id": "price", "label": "Price", "info": "e.g. €89 EUR" },
+        { "type": "text", "id": "price", "label": "Price", "info": "e.g. €63,99 EUR" },
+        { "type": "text", "id": "price_usd", "label": "Price for US visitors (USD)", "info": "Shown instead when the visitor shops in dollars, e.g. $78.99 USD." },
         { "type": "image_picker", "id": "image_1", "label": "Photo 1" },
         { "type": "image_picker", "id": "image_2", "label": "Photo 2" },
         { "type": "image_picker", "id": "image_3", "label": "Photo 3" },
@@ -362,8 +366,8 @@
   ],
   "default": {
     "blocks": [
-      { "type": "piece", "settings": { "title": "The Waffle Hoodie — Camo", "price": "€63,99 EUR", "product": "the-waffle-hoodie-camo" } },
-      { "type": "piece", "settings": { "title": "The Waffle Pants — Camo", "price": "€63,99 EUR", "product": "the-waffle-pants-camo" } }
+      { "type": "piece", "settings": { "title": "The Waffle Hoodie — Camo", "price": "€63,99 EUR", "price_usd": "$78.99 USD", "product": "the-waffle-hoodie-camo" } },
+      { "type": "piece", "settings": { "title": "The Waffle Pants — Camo", "price": "€63,99 EUR", "price_usd": "$78.99 USD", "product": "the-waffle-pants-camo" } }
     ]
   }
 }

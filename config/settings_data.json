@@ -51,7 +51,8 @@
               "price": "€63,99 EUR",
               "image_1": "shopify://shop_images/waffle-hoodie-camo.png",
               "stock_note": "",
-              "product": "the-waffle-hoodie-camo"
+              "product": "the-waffle-hoodie-camo",
+              "price_usd": "$78.99 USD"
             }
           },
           "pants": {
@@ -61,7 +62,8 @@
               "price": "€63,99 EUR",
               "image_1": "shopify://shop_images/waffle-pants-camo.png",
               "stock_note": "",
-              "product": "the-waffle-pants-camo"
+              "product": "the-waffle-pants-camo",
+              "price_usd": "$78.99 USD"
             }
           }
         },
