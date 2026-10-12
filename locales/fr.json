@@ -35,13 +35,14 @@
       "email_invalid": "Veuillez saisir une adresse e-mail valide.",
       "email_required": "Veuillez saisir votre adresse e-mail.",
       "error_generic": "Oups, une erreur est survenue. Veuillez réessayer.",
-      "items": "Items: {{ count }}",
+      "items": "Articles : {{ count }}",
       "view": "Affichage en grille",
       "view_large": "Grandes images",
       "view_grid": "Deux par rangée",
       "photo": "Photo {{ number }} sur {{ total }}",
       "email_required_fr": "Merci d'entrer ton adresse email.",
-      "email_invalid_fr": "Merci d'entrer une adresse email valide."
+      "email_invalid_fr": "Merci d'entrer une adresse email valide.",
+      "view_all": "Tout voir"
     }
   },
   "general": {

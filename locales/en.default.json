@@ -127,7 +127,8 @@
       "view_grid": "Two per row",
       "photo": "Photo {{ number }} of {{ total }}",
       "email_required_fr": "Merci d'entrer ton adresse email.",
-      "email_invalid_fr": "Merci d'entrer une adresse email valide."
+      "email_invalid_fr": "Merci d'entrer une adresse email valide.",
+      "view_all": "View all"
     }
   },
   "customer": {

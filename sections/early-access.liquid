@@ -325,7 +325,7 @@
   <div class="ea-avail page-width" id="AvailableNow">
     <div class="section-head">
       <h2 class="section-title">{{ s.available_heading }}</h2>
-      <a class="section-head__link" href="{{ avail.url }}">{{ 'general.search.view_all' | t }}</a>
+      <a class="section-head__link" href="{{ avail.url }}">{{ 'sections.early_access.view_all' | t }}</a>
     </div>
     <div class="product-grid" style="--cols: {{ avail_count | at_most: 4 }}; --cols-tablet: {{ avail_count | at_most: 3 }}; --cols-mobile: 2;">
       {%- for product in avail.products limit: 12 -%}
