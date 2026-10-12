@@ -60,7 +60,10 @@
       "waitlist_placeholder": "Votre adresse email",
       "waitlist_button": "Get early access",
       "waitlist_success_title": "YOU'RE IN.",
-      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}."
+      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}.",
+      "taxes_included": "Tax included.",
+      "taxes_at_checkout": "Taxes calculated at checkout.",
+      "free_shipping": "Free shipping on every order."
     },
     "facets": {
       "filter": "Filter",
@@ -94,7 +97,9 @@
       "free_shipping_progress": "You're {{ amount }} away from free shipping",
       "free_shipping_reached": "Congrats, you've unlocked free shipping",
       "recommendations": "Complete your order",
-      "size": "Size"
+      "size": "Size",
+      "taxes_included_free_shipping": "Tax included. Free shipping on every order.",
+      "taxes_at_checkout_free_shipping": "Taxes calculated at checkout. Free shipping on every order."
     },
     "header": {
       "cart_count": "Cart, {{ count }} items",

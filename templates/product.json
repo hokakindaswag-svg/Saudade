@@ -10,7 +10,7 @@
         "price": {
           "type": "price",
           "settings": {
-            "tax_note": "Tax included. Shipping calculated at checkout."
+            "tax_note": ""
           }
         },
         "variant_picker": {

@@ -72,6 +72,10 @@
             </div>
             {%- if block.settings.tax_note != blank -%}
               <p class="product__tax-note">{{ block.settings.tax_note }}</p>
+            {%- else -%}
+              <p class="product__tax-note">
+                {%- if cart.taxes_included -%}{{ 'products.product.taxes_included' | t }}{%- else -%}{{ 'products.product.taxes_at_checkout' | t }}{%- endif %} {{ 'products.product.free_shipping' | t -}}
+              </p>
             {%- endif -%}
             {%- form 'product', product, id: 'InstallmentForm' -%}
               <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -307,6 +311,8 @@
         "options": {{ v.options | json }},
         "price": {{ v.price }},
         "compare_at_price": {{ v.compare_at_price | default: 0 }},
+        "price_formatted": {{ v.price | money | json }},
+        "compare_at_price_formatted": {{ v.compare_at_price | money | json }},
         "available": {{ v.available }},
         "featured_media_id": {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}
       }{% unless forloop.last %},{% endunless %}
@@ -378,7 +384,7 @@
     { "type": "vendor", "name": "Vendor", "limit": 1, "settings": [] },
     { "type": "title", "name": "Title", "limit": 1, "settings": [] },
     { "type": "price", "name": "Price", "limit": 1, "settings": [
-      { "type": "text", "id": "tax_note", "label": "Note under price", "default": "Tax included. Shipping calculated at checkout." }
+      { "type": "text", "id": "tax_note", "label": "Note under price", "info": "Leave empty for an automatic note (tax included or not for the shopper's country, plus free shipping)." }
     ]},
     { "type": "variant_picker", "name": "Variant picker", "limit": 1, "settings": [
       { "type": "page", "id": "size_guide_page", "label": "Size guide page", "info": "Shown in a modal from the \"Size guide\" link next to the size selector." },

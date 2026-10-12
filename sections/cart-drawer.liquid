@@ -49,7 +49,7 @@
           <span>{{ 'sections.cart.subtotal' | t }}</span>
           <strong>{{ cart.total_price | money_with_currency }}</strong>
         </div>
-        <p class="cart-note">{{ 'sections.cart.taxes_and_shipping' | t }}</p>
+        <p class="cart-note">{%- if cart.taxes_included -%}{{ 'sections.cart.taxes_included_free_shipping' | t }}{%- else -%}{{ 'sections.cart.taxes_at_checkout_free_shipping' | t }}{%- endif -%}</p>
         <form action="{{ routes.cart_url }}" method="post" id="CartDrawerForm">
           <button type="submit" name="checkout" class="btn btn--primary btn--full btn--lg">
             {{ 'sections.cart.checkout' | t }} &middot; {{ cart.total_price | money }}

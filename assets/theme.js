@@ -441,9 +441,9 @@
         window.history.replaceState({}, '', url.toString());
       }
       if (priceEl && variant) {
-        var html = '<span class="price__current">' + formatMoney(variant.price) + '</span>';
+        var html = '<span class="price__current">' + (variant.price_formatted || formatMoney(variant.price)) + '</span>';
         if (variant.compare_at_price && variant.compare_at_price > variant.price) {
-          html += '<s class="price__compare">' + formatMoney(variant.compare_at_price) + '</s>';
+          html += '<s class="price__compare">' + (variant.compare_at_price_formatted || formatMoney(variant.compare_at_price)) + '</s>';
           priceEl.classList.add('price--on-sale');
         } else { priceEl.classList.remove('price--on-sale'); }
         priceEl.innerHTML = html;
@@ -455,7 +455,7 @@
       }
       // Sticky bar mirror
       var stickyPrice = $('[data-sticky-price]');
-      if (stickyPrice && variant) stickyPrice.textContent = formatMoney(variant.price);
+      if (stickyPrice && variant) stickyPrice.textContent = variant.price_formatted || formatMoney(variant.price);
 
       // Scroll gallery to the variant image
       if (variant && variant.featured_media_id) {
