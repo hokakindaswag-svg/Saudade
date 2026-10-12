@@ -63,7 +63,7 @@
           "type": "accordion",
           "settings": {
             "heading": "Shipping",
-            "text": "<p>Orders are dispatched within 48 hours. Free shipping over €150.</p>"
+            "text": "<p>Orders are dispatched within 48 hours. Free shipping on every order, worldwide.</p>"
           }
         },
         "model": {

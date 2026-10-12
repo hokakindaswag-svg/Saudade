@@ -30,7 +30,7 @@
     "badge_new_tag": "new",
     "cart_type": "drawer",
     "cart_recommendations": true,
-    "cart_free_shipping_bar": true,
+    "cart_free_shipping_bar": false,
     "cart_free_shipping_threshold": 150,
     "cart_notes": false,
     "animate_reveal": true,

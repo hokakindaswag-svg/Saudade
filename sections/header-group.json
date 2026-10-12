@@ -18,11 +18,19 @@
             "text": "JOIN THE LIST FOR EARLY ACCESS",
             "link": "/#EarlyAccess"
           }
+        },
+        "m3": {
+          "type": "message",
+          "settings": {
+            "text": "FREE SHIPPING ON EVERY ORDER",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "m1",
-        "m2"
+        "m2",
+        "m3"
       ],
       "settings": {
         "bg": "#F9D3E0",
