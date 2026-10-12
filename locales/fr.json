@@ -1,0 +1,149 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "cart": {
+      "title": "Panier",
+      "empty": "Votre panier est vide",
+      "empty_cta": "Commencer vos achats",
+      "subtotal": "Sous-total",
+      "checkout": "Paiement",
+      "view_cart": "Voir le panier",
+      "remove": "Supprimer",
+      "note": "Note de commande",
+      "taxes_and_shipping": "Frais de port et taxes calculés au moment du paiement.",
+      "free_shipping_progress": "Vous n'êtes plus qu'à {{ amount }} de la livraison gratuite",
+      "free_shipping_reached": "Félicitations, vous avez débloqué la livraison gratuite",
+      "recommendations": "Finalisez votre commande",
+      "size": "Taille"
+    },
+    "header": {
+      "cart_count": "Panier, {{ count }} articles",
+      "account": "Compte",
+      "menu": "Menu"
+    },
+    "early_access": {
+      "email_invalid": "Veuillez saisir une adresse e-mail valide.",
+      "email_required": "Veuillez saisir votre adresse e-mail.",
+      "error_generic": "Oups, une erreur est survenue. Veuillez réessayer.",
+      "items": "Items: {{ count }}",
+      "view": "Affichage en grille",
+      "view_large": "Grandes images",
+      "view_grid": "Deux par rangée",
+      "photo": "Photo {{ number }} sur {{ total }}"
+    }
+  },
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Passer au contenu",
+      "close": "Fermer",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "menu": "Menu"
+    },
+    "search": {
+      "search": "Rechercher",
+      "placeholder": "Rechercher des produits",
+      "no_results": "Aucun résultat pour « {{ terms }} ».",
+      "results_count": "{{ count }} résultats",
+      "view_all": "Voir tous les résultats"
+    },
+    "newsletter_form": {
+      "email_placeholder": "Adresse e-mail",
+      "submit": "S'inscrire",
+      "success": "Vous êtes pris. Vérifiez votre boîte de réception."
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "load_more": "Charger plus"
+    },
+    "share": {
+      "copied": "Lien copié"
+    },
+    "404": {
+      "title": "Page introuvable",
+      "subtext": "La page que vous recherchez n'existe pas.",
+      "link": "Continuer mes achats"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Épuisé",
+      "unavailable": "Indisponible",
+      "select_size": "Sélectionner la taille",
+      "quick_add": "Ajout rapide",
+      "on_sale": "Soldes",
+      "new": "Nouveau",
+      "sale_price": "Prix de vente",
+      "regular_price": "Prix habituel",
+      "from_price": "De",
+      "size_guide": "Guide des tailles",
+      "quantity": "Quantité",
+      "low_stock": "Plus que {{ count }} exemplaires restants",
+      "notify_me": "Prévenez-moi",
+      "vendor": "Fournisseur",
+      "sku": "UGS",
+      "media_gallery": "Images du produit",
+      "size_label": "Taille",
+      "color_label": "Couleur",
+      "choose_size": "Choisir la taille",
+      "model": "Modèle",
+      "coming_soon": "Bientôt disponible",
+      "waitlist_placeholder": "Votre adresse e-mail",
+      "waitlist_button": "Obtenez un accès anticipé",
+      "waitlist_success_title": "VOUS ÊTES PRIS.",
+      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}."
+    },
+    "facets": {
+      "filter": "Filtrer",
+      "filter_and_sort": "Filtrer et trier",
+      "sort_by": "Trier par",
+      "clear": "Effacer",
+      "clear_all": "Tout effacer",
+      "apply": "Postuler",
+      "product_count": "{{ count }} produits",
+      "reset": "Réinitialiser"
+    },
+    "collection": {
+      "coming_soon": "La prochaine sortie arrive",
+      "coming_soon_text": "De nouvelles pièces arriveront bientôt ici.",
+      "back_home": "Retour à l'accueil",
+      "no_match": "Aucun résultat",
+      "no_match_text": "Essayez de supprimer un filtre."
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Compte",
+      "details": "Détails du compte",
+      "view_addresses": "Voir les adresses",
+      "return": "Retourner au compte",
+      "orders": "Historique des commandes",
+      "no_orders": "Vous n'avez pas encore passé de commande."
+    },
+    "activate_account": {
+      "title": "Activer le compte",
+      "subtext": "Créez votre mot de passe pour activer votre compte.",
+      "submit": "Activer le compte",
+      "cancel": "Refuser l'invitation",
+      "password": "Mot de passe",
+      "password_confirm": "Confirmer le mot de passe"
+    },
+    "addresses": {
+      "title": "Adresses",
+      "add_new": "Ajouter une nouvelle adresse",
+      "edit_address": "Modifier l'adresse",
+      "first_name": "Prénom",
+      "last_name": "Nom de famille"
+    }
+  }
+}

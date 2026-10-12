@@ -1,5 +1,16 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
+    "early_access_enabled": true,
+    "brand_name": "SAUDADE",
     "logo_width": 170,
     "logo_width_mobile": 130,
     "color_bg": "#FBF8F6",
@@ -33,13 +44,11 @@
     "cart_free_shipping_bar": false,
     "cart_free_shipping_threshold": 150,
     "cart_notes": false,
+    "hidden_collection": "",
+    "hidden_tag": "",
     "animate_reveal": true,
     "animate_image_zoom": true,
     "currency_code_enabled": false,
-    "brand_name": "SAUDADE",
-    "early_access_enabled": true,
-    "hidden_collection": "",
-    "hidden_tag": "",
     "sections": {
       "early-access": {
         "type": "early-access",
@@ -49,10 +58,10 @@
             "settings": {
               "title": "The Waffle Hoodie — Camo",
               "price": "€63,99 EUR",
+              "price_usd": "$78.99 USD",
               "image_1": "shopify://shop_images/waffle-hoodie-camo.png",
               "stock_note": "",
-              "product": "the-waffle-hoodie-camo",
-              "price_usd": "$78.99 USD"
+              "product": "the-waffle-hoodie-camo"
             }
           },
           "pants": {
@@ -60,10 +69,10 @@
             "settings": {
               "title": "The Waffle Pants — Camo",
               "price": "€63,99 EUR",
+              "price_usd": "$78.99 USD",
               "image_1": "shopify://shop_images/waffle-pants-camo.png",
               "stock_note": "",
-              "product": "the-waffle-pants-camo",
-              "price_usd": "$78.99 USD"
+              "product": "the-waffle-pants-camo"
             }
           }
         },
@@ -74,13 +83,16 @@
         "settings": {
           "image": "shopify://shop_images/waffle-set-hero.jpg",
           "image_mobile": "shopify://shop_images/waffle-set-hero.jpg",
+          "image_opacity": 55,
           "overlay": 20,
           "text_color_scheme": "light",
           "fallback_color_1": "#F7B5C9",
           "fallback_color_2": "#C9B6FF",
           "show_announcement": true,
-          "title_prefix": "COMING SOON - ",
+          "title_prefix": "COMING SOON -",
           "card_button_label": "SIGN UP TO BE NOTIFIED",
+          "available_collection": "the-sun-set",
+          "available_heading": "AVAILABLE NOW",
           "heading": "THE WAFFLE SET",
           "subheading": "Shoppez le prochain drop en early access.",
           "email_placeholder": "Votre adresse email",
@@ -88,10 +100,7 @@
           "customer_tags": "early-access, waffle-set",
           "disclaimer": "",
           "success_heading": "YOU'RE IN.",
-          "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET.",
-          "image_opacity": 55,
-          "available_collection": "the-sun-set",
-          "available_heading": "AVAILABLE NOW"
+          "success_text": "Tu seras parmi les premières à pouvoir shopper THE WAFFLE SET."
         }
       }
     }
