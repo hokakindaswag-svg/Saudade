@@ -22,7 +22,9 @@
       "free_shipping_progress": "Vous n'êtes plus qu'à {{ amount }} de la livraison gratuite",
       "free_shipping_reached": "Félicitations, vous avez débloqué la livraison gratuite",
       "recommendations": "Finalisez votre commande",
-      "size": "Taille"
+      "size": "Taille",
+      "taxes_included_free_shipping": "Taxes incluses. Livraison offerte sur toutes les commandes.",
+      "taxes_at_checkout_free_shipping": "Taxes calculées au paiement. Livraison offerte sur toutes les commandes."
     },
     "header": {
       "cart_count": "Panier, {{ count }} articles",
@@ -37,7 +39,9 @@
       "view": "Affichage en grille",
       "view_large": "Grandes images",
       "view_grid": "Deux par rangée",
-      "photo": "Photo {{ number }} sur {{ total }}"
+      "photo": "Photo {{ number }} sur {{ total }}",
+      "email_required_fr": "Merci d'entrer ton adresse email.",
+      "email_invalid_fr": "Merci d'entrer une adresse email valide."
     }
   },
   "general": {
@@ -101,7 +105,12 @@
       "waitlist_placeholder": "Votre adresse e-mail",
       "waitlist_button": "Obtenez un accès anticipé",
       "waitlist_success_title": "VOUS ÊTES PRIS.",
-      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}."
+      "waitlist_success_text": "Tu seras parmi les premières à pouvoir shopper {{ product }}.",
+      "taxes_included": "Taxes incluses.",
+      "taxes_at_checkout": "Taxes calculées au paiement.",
+      "free_shipping": "Livraison offerte sur toutes les commandes.",
+      "waitlist_placeholder_fr": "Votre adresse email",
+      "waitlist_success_text_fr": "Tu seras parmi les premières à pouvoir shopper {{ product }}."
     },
     "facets": {
       "filter": "Filtrer",
