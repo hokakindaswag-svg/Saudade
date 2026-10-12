@@ -143,7 +143,112 @@
       "add_new": "Ajouter une nouvelle adresse",
       "edit_address": "Modifier l'adresse",
       "first_name": "Prénom",
-      "last_name": "Nom de famille"
+      "last_name": "Nom de famille",
+      "company": "Société",
+      "address1": "Adresse 1",
+      "address2": "Adresse 2",
+      "city": "Ville",
+      "country": "Pays",
+      "province": "Province",
+      "zip": "Code postal",
+      "phone": "Téléphone",
+      "set_default": "Définir comme adresse par défaut",
+      "add": "Ajouter une adresse",
+      "update": "Mettre à jour l'adresse",
+      "cancel": "Annuler",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette adresse ?"
+    },
+    "login_page": {
+      "title": "Connexion",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "forgot_password": "Mot de passe oublié ?",
+      "sign_in": "Connexion",
+      "create_account": "Créer un compte",
+      "guest_title": "Continuer en tant qu'invité",
+      "guest_continue": "Continuer",
+      "cancel": "Retour au magasin"
+    },
+    "recover_password": {
+      "title": "Réinitialisez votre mot de passe",
+      "subtext": "Nous vous enverrons un e-mail pour réinitialiser votre mot de passe.",
+      "submit": "Soumettre",
+      "success": "Nous vous avons envoyé un e-mail contenant un lien pour mettre à jour votre mot de passe.",
+      "cancel": "Annuler"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "first_name": "Prénom",
+      "last_name": "Nom de famille",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Créer"
+    },
+    "reset_password": {
+      "title": "Réinitialiser le mot de passe du compte",
+      "subtext": "Saisissez un nouveau mot de passe.",
+      "password": "Mot de passe",
+      "password_confirm": "Confirmer le mot de passe",
+      "submit": "Réinitialiser le mot de passe"
+    },
+    "order": {
+      "title": "Commander {{ name }}",
+      "date_html": "Placé le {{ date }}",
+      "billing_address": "Adresse de facturation",
+      "shipping_address": "Adresse de livraison",
+      "payment_status": "État du paiement",
+      "fulfillment_status": "État de la commande",
+      "product": "Produit",
+      "sku": "UGS",
+      "price": "Prix",
+      "quantity": "Quantité",
+      "total": "Total",
+      "subtotal": "Sous-total",
+      "shipping": "Expédition",
+      "tax": "Impôt",
+      "discount": "Remise"
+    },
+    "orders": {
+      "order_number": "Commande",
+      "date": "Date",
+      "payment_status": "État du paiement",
+      "fulfillment_status": "État de la commande",
+      "total": "Total"
+    },
+    "log_out": "Déconnexion",
+    "log_in": "Connexion"
+  },
+  "blogs": {
+    "article": {
+      "read_more": "Lire la suite",
+      "back_to_blog": "Retour à {{ title }}"
+    },
+    "comments": {
+      "title": "Laisser un commentaire",
+      "name": "Nom",
+      "email": "E-mail",
+      "message": "Message",
+      "post": "Publier le commentaire",
+      "success": "Votre commentaire a été publié.",
+      "success_moderated": "Votre commentaire a bien été envoyé. Il sera publié sous peu.",
+      "moderated": "Veuillez noter que les commentaires doivent être approuvés avant d'être publiés."
     }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Voici votre carte-cadeau {{ value }} pour {{ shop }}",
+      "subtext": "Votre carte-cadeau",
+      "expired": "Expiré",
+      "redeem": "Utilisez ce code lors du paiement pour utiliser votre carte-cadeau.",
+      "shop_link": "Commencer vos achats",
+      "print": "Imprimer",
+      "add_to_apple_wallet": "Ajouter à Apple Wallet"
+    }
+  },
+  "onboarding": {
+    "product_title": "Produit exemple",
+    "collection_title": "Collection d'exemples"
   }
 }
