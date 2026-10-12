@@ -72,8 +72,8 @@
           "pants"
         ],
         "settings": {
-          "image": "shopify://shop_images/waffle-set-campaign.png",
-          "image_mobile": "shopify://shop_images/waffle-set-campaign.png",
+          "image": "shopify://shop_images/waffle-set-hero.jpg",
+          "image_mobile": "shopify://shop_images/waffle-set-hero.jpg",
           "overlay": 20,
           "text_color_scheme": "light",
           "fallback_color_1": "#F7B5C9",
